@@ -3,7 +3,7 @@
 import axios from 'axios'
 import {BASE_URL} from './config'
 import storage from 'storage-controller'
-import { _router } from '../../main'
+import {_router} from '../../main'
 
 const TIME_OUT = 10000
 const COMMON_HEADER = {}

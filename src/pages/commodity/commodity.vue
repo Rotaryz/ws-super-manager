@@ -2,7 +2,6 @@
   <div class="activity">
     <div class="ac-tab">
       <date-select></date-select>
-      <admin-select :select="activityType" role="activity"></admin-select>
       <search></search>
       <div class="excel">导出Exce</div>
     </div>
@@ -24,8 +23,8 @@
           <div class="list-item list-text">---</div>
           <div class="list-item list-text">---</div>
           <div class="list-item list-text">{{'---'}}</div>
-          <div class="list-item list-text">{{'---'}}
-          </div>
+          <div class="list-item list-text">{{'---'}}</div>
+          <div class="list-item list-text">{{'---'}}</div>
         </div>
       </div>
       <div class="page">
@@ -41,7 +40,7 @@
   import AdminSelect from 'components/admin-select/admin-select' // 下拉框
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
-  const TITLELIST = ['活动图片', '活动标题', '活动价', '活动类型', '活动状态', '活动来源', '创建时间']
+  const TITLELIST = ['商品图片', '商品标题', '商品单价', '浏览量', '销量', '商品状态', '商品来源', '创建时间']
 
   export default {
     name: 'activity',

@@ -7,6 +7,7 @@ const Login = () => import('pages/login/login') // 登录
 const Demo = () => import('pages/demo/demo') // 事例
 const MemberList = () => import('pages/member-list/member-list') // 事例
 const Activity = () => import('pages/activity/activity') // 事例
+const Commodity = () => import('pages/commodity/commodity') // 事例
 
 Vue.use(Router)
 
@@ -50,6 +51,12 @@ const route = new Router({
         component: Activity,
         meta: {
           title: '活动管理'
+        }
+      }, {
+        path: 'commodity',
+        component: Commodity,
+        meta: {
+          title: '商品管理'
         }
       }
 

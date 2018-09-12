@@ -36,9 +36,11 @@
         </div>
       </div>
       <div class="input-box">
+        跳至
         <input type="number" class="border-page input-height-item" v-model="pageInput"/>
+        页
       </div>
-      <div class="border-page input-height-item" @click="goPage" @mouseenter="notAllowed" :style="{'cursor': isHand.handGo}">跳转</div>
+      <!--<div class="border-page input-height-item" @click="goPage" @mouseenter="notAllowed" :style="{'cursor': isHand.handGo}">跳转</div>-->
     </div>
   </div>
 </template>
@@ -258,7 +260,7 @@
         display: flex
         line-height: 25px
         border-radius: 3px
-        margin-right: 10px
+        margin: 0 10px
         border: 1px solid $color-lineCC
         font-size: $font-size-medium
       div.border-page
@@ -327,8 +329,10 @@
         width: 39px
         text-align: center
       .input-box
+        white-space: nowrap
+        display: flex
         height: 29px
-        width: 43px
+        align-items: center
         margin-right: 10px
       .page-box
         width: 85px
