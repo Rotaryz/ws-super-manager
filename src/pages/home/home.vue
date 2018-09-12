@@ -60,7 +60,7 @@
     .content
       overflow: hidden
       flex: 1
-      overflow: hidden
+
   .content-box
     height: 100%
 </style>

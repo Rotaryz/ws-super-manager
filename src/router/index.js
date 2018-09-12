@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import storage from 'storage-controller'
+import storage from 'storage-controller'
 
 const Home = () => import('pages/home/home')
 const Login = () => import('pages/login/login') // 登录
@@ -9,6 +9,8 @@ const MemberList = () => import('pages/member-list/member-list') // 团队管理
 const BusinessList = () => import('pages/business-list/business-list') // 商家管理
 const AgentOrder = () => import('pages/agent-order/agent-order') // 消费客户
 const RetailOrder = () => import('pages/retail-order/retail-order') // 潜在客户
+const Activity = () => import('pages/activity/activity') // 事例
+const Commodity = () => import('pages/commodity/commodity') // 事例
 
 Vue.use(Router)
 
@@ -47,6 +49,18 @@ const route = new Router({
         meta: {
           title: '客户管理,潜在客户'
         }
+      }, {
+        path: 'activity',
+        component: Activity,
+        meta: {
+          title: '活动管理'
+        }
+      }, {
+        path: 'commodity',
+        component: Commodity,
+        meta: {
+          title: '商品管理'
+        }
       }
 
       ]
@@ -57,17 +71,17 @@ const route = new Router({
     }
   ]
 })
-// const DEFAULT_ROUTE = '/agent-management/agent-list'
-// const OAUTH_ROUTE = '/login'
-// route.beforeEach((to, from, next) => {
-//   if (to.path === '/') {
-//     const token = storage.get('aiToken')
-//     if (token) {
-//       next({path: DEFAULT_ROUTE, replace: true})
-//     } else {
-//       next({path: OAUTH_ROUTE, replace: true})
-//     }
-//   }
-//   next()
-// })
+const DEFAULT_ROUTE = '/activity'
+const OAUTH_ROUTE = '/login'
+route.beforeEach((to, from, next) => {
+  if (to.path === '/') {
+    const token = storage.get('aiToken')
+    if (token) {
+      next({path: DEFAULT_ROUTE, replace: true})
+    } else {
+      next({path: OAUTH_ROUTE, replace: true})
+    }
+  }
+  next()
+})
 export default route

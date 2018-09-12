@@ -16,12 +16,17 @@
 </template>
 
 <script>
-  const NAV = [{title: '今天', status: 'today'}, {title: '昨天', status: 'yesterday'}, {title: '7天', status: 'week'}, {title: '30天', status: 'month'}, {title: '自定义', status: ''}]
+  const NAV = [{title: '今天', status: '1'}, {title: '昨天', status: '2'}, {title: '7天', status: '3'}, {title: '30天', status: '4'}, {title: '自定义', status: ''}]
   export default {
     name: 'date-select',
+    props: {
+      arrTitle: {
+        type: Array,
+        default: () => NAV
+      }
+    },
     data() {
       return {
-        arrTitle: NAV,
         tabIndex: 0,
         showPicker: true,
         moreTime: ''
@@ -31,7 +36,11 @@
       checkTab(index) {
         this.tabIndex = index
         let status = this.arrTitle[index].status
-        this.$emit('checkTab', status)
+        if (!status) {
+          this.moreTime = ''
+          return
+        }
+        this.$emit('checkTime', status)
       }
     },
     watch: {
