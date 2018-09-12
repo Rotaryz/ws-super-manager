@@ -5,6 +5,7 @@ import Router from 'vue-router'
 const Home = () => import('pages/home/home')
 const Login = () => import('pages/login/login') // 登录
 const Demo = () => import('pages/demo/demo') // 事例
+const DataOverview = () => import('pages/data-overview/data-overview') // 事例
 
 Vue.use(Router)
 
@@ -18,6 +19,12 @@ const route = new Router({
         component: Demo,
         meta: {
           title: '商家管理,商家列表'
+        }
+      }, {
+        path: 'data-overview',
+        component: DataOverview,
+        meta: {
+          title: ''
         }
       }]
     },

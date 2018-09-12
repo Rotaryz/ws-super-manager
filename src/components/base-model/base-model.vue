@@ -15,7 +15,7 @@
         </transition>
       </div>
     </div>
-    <div class="tag">
+    <div class="tag" v-if="titleArr">
       <div class="tag-title">
         <span class="title-item" v-for="(item,index) in titleArr" :key="index">{{index > 0 ? '/' : ''}} {{item}}</span>
       </div>
