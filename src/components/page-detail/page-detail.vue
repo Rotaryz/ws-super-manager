@@ -4,6 +4,7 @@
     <div class="page">
       <div class="page-icon" @click="subtract" :style="{'cursor': isHand.handLeft}" @mouseenter="notAllowed">
       </div>
+      <!--{{page}}/{{pageDtail.total_page}}-->
       <div class="pade-detail">{{page}}/{{pageDtail.total_page}}</div>
       <div class="page-icon page-icon-two" @click="addPage" @mouseenter="notAllowed" :style="{'cursor': isHand.handRight}">
       </div>
