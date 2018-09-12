@@ -32,6 +32,5 @@
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
   .demo
-    padding-top: 90px
     display: flex
 </style>

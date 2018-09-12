@@ -8,35 +8,22 @@
     <div class="login-box">
       <p class="login-title">智慧改变销售</p>
       <div class="login-content">
-        <div class="user input-box">
+        <div class="user input-box" :class="{'input-height': focusPhone}">
           <span class="input-icon"></span>
           <input class="inputs" value="asd" type="text"
-                 placeholder="请输入用户名" v-model="user" />
+                 placeholder="请输入用户名" v-model="user"/>
         </div>
-        <div class="passward input-box">
+        <div class="passward input-box" :class="{'input-height': focusPass}">
           <span class="input-icon"></span>
           <input class="inputs" type="password"
-                 placeholder="请输入密码" v-model="password" />
-        </div>
-        <div class="input-box shop hand" @click="_showMore">
-          <span class="input-icon"></span>
-          <div class="inputs">{{role}}</div>
-          <span class="input-way" :class="{'input-way-active': isShowMore}"></span>
-          <transition name="fade">
-            <ul class="shop-list" v-if="isShowMore" @click.stop>
-              <li class="shop-item" v-for="(item, index) in shopArr" :key="index" @click="_checkRole(index)">
-                {{item}}
-                <img src="./icon-select_login@2x.png" class="shop-icon" v-if="shopIndex === index">
-              </li>
-            </ul>
-          </transition>
+                 placeholder="请输入密码" v-model="password"/>
         </div>
       </div>
       <!--<div class="remenber hand" @click="remenberPassWord">-->
       <!--<i class="check" :class="{'check-yes' : remenber}"></i>-->
       <!--<span class="tip">记住密码</span>-->
       <!--</div>-->
-      <div class="submit-no hand ws-btn-blue" @click="login">
+      <div class="submit-no hand" :class="{'submit-disable': !isLogin}" @click="login">
         登录
       </div>
     </div>
@@ -45,9 +32,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { Login } from 'api'
+  import {Login} from 'api'
   import Toast from 'components/toast/toast'
-  import { mapGetters, mapActions } from 'vuex'
   import storage from 'storage-controller'
 
   export default {
@@ -58,15 +44,10 @@
         user: '',
         password: '',
         remenber: true,
-        isShowMore: false,
-        shopArr: ['赞播AI微店', '赞播AI智推'],
-        shopIndex: 0,
-        role: '赞播AI微店'
+        isShowMore: false
       }
     },
     created() {
-      this.shopIndex = this.project === 'ws' ? 0 : 1
-      this.role = this.shopArr[this.shopIndex]
       window.onkeydown = (e) => {
         if (e.keyCode === 13) {
           this.login()
@@ -74,32 +55,14 @@
       }
     },
     computed: {
-      ...mapGetters(['project']),
       isLogin() {
         return this.user && this.password
       }
     },
     methods: {
-      ...mapActions(['setProject']),
-      _showMore() {
-        this.isShowMore = !this.isShowMore
-      },
-      _checkRole(index) {
-        this.shopIndex = index
-        this.role = this.shopArr[index]
-        let title = index === 0 ? 'ws' : 'card'
-        this.setProject(title)
-        storage.set('project', title)
-        setTimeout(() => {
-          this.isShowMore = false
-        }, 100)
-      },
       hideFocus() {
         this.focusPhone = false
         this.focusPass = false
-      },
-      remenberPassWord() {
-        this.remenber = !this.remenber
       },
       login() {
         if (this.user === '') {
@@ -117,7 +80,7 @@
             storage.set('aiToken', data.access_token)
             storage.set('userName', data.admin_info.username)
             setTimeout(() => {
-              this.$router.push('/agent-management/agent-list')
+              this.$router.push('/activity')
             }, 300)
           } else if (res.error) {
             this.$refs.toast.show(res.message)
@@ -164,9 +127,11 @@
         margin-left: 10px
         font-size: 36px
     .login-box
-      display :flex
-      flex-direction :column
-      align-items :center
+      display: flex
+      flex-direction: column
+      align-items: center
+      border-radius: 3px
+      overflow: hidden
       .login-title
         font-size: 32px
         font-family: $fontFamilyLight
@@ -191,16 +156,17 @@
         background: $color-white
         border-radius: 3px
         margin: 62px 0 30px
-        height: 240px
+        height: 162px
+        overflow: hidden
       .input-box
         width: 100%
-        height: 80px
+        height: 81px
         font-size: $font-size-small
         position: relative
         border-bottom: 1px solid #EFEFEF
-        box-sizing :border-box
+        box-sizing: border-box
         &:last-child
-          border-bottom :none
+          border-bottom: none
         .inputs
           text-indent: 65px
           height: 100%
@@ -301,6 +267,8 @@
           color: #9B9B9B
 
   .submit-no
+    color :$color-white
+    background :$color-4985FC
     display: flex
     height: 50px
     width: 468px
@@ -312,6 +280,4 @@
     font-size: $font-size-medium16
     font-family: $fontFamilyLight
 
-  .submit-disable
-    background: $color-active
 </style>
