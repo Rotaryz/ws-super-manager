@@ -34,8 +34,8 @@
     </div>
   </div>
 </template>
-
 <script>
+  import {Goods} from 'api'
   import Search from 'components/search/search' // 搜索框
   import AdminSelect from 'components/admin-select/admin-select' // 下拉框
   import DateSelect from 'components/date-select/date-select' // 下拉框
@@ -51,7 +51,18 @@
           select: false,
           show: false,
           children: [{content: '活动类型', data: []}]
-        }]
+        }],
+        page: 1
+      }
+    },
+    created() {
+      this._getGoodsList()
+    },
+    methods: {
+      async _getGoodsList() {
+        let data = {page: this.page, date_type: 1, title: '', sort_type: ''}
+        let res = await Goods.goods(data)
+        console.log(res)
       }
     },
     components: {
@@ -62,6 +73,7 @@
     }
   }
 </script>
+
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"

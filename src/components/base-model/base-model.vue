@@ -15,7 +15,7 @@
         </transition>
       </div>
     </div>
-    <div class="tag" v-if="length">
+    <div class="tag" v-if="showTag">
       <div class="tag-title">
         <span class="title-item" v-for="(item,index) in titleArr" :key="index">{{index > 0 ? '/' : ''}} {{item}}</span>
       </div>
@@ -44,7 +44,7 @@
 
 <script>
   // import { ERR_OK } from 'api/config'
-  import { mapGetters } from 'vuex'
+  import {mapGetters} from 'vuex'
   import Toast from 'components/toast/toast'
   import storage from 'storage-controller'
 
@@ -52,6 +52,10 @@
     name: 'base-model',
     props: {
       isHide: {
+        type: Boolean,
+        default: true
+      },
+      showTag: {
         type: Boolean,
         default: true
       }
@@ -111,14 +115,7 @@
       }
     },
     computed: {
-      ...mapGetters(['titleArr']),
-      length () {
-        if (this.titleArr[0] === '数据概况') {
-          return false
-        } else {
-          return true
-        }
-      }
+      ...mapGetters(['titleArr'])
     },
     components: {
       Toast

@@ -2,12 +2,12 @@ import request from '../common/js/request'
 
 export default {
   /**
-   * 登录
+   * 商品列表
    * @param data
    * @returns {*}
    */
   goods(data) {
     let url = '/api/admin/goods'
-    return request.post(url, data)
+    return request.get(url, data)
   }
 }
