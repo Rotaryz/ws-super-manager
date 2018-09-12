@@ -46,28 +46,28 @@
       showHeight: HEIGHT
     }, {
       title: '商家管理',
-      url: '/demo',
+      url: '/member-list',
       icon: require('./icon-shop_select@2x.png'),
       childrenIndex: -1,
       children: [{
         title: '团队列表',
-        url: '/demo'
+        url: '/member-list'
       }, {
         title: '商家列表',
-        url: '/business-management/business-list'
+        url: '/business-list'
       }],
       showHeight: HEIGHT
     }, {
       title: '客户管理',
-      url: '/order-management/agent-order',
+      url: '/agent-order',
       icon: require('./icon-client_select@2x.png'),
       childrenIndex: -1,
       children: [{
         title: '消费客户',
-        url: '/order-management/agent-order'
+        url: '/agent-order'
       }, {
         title: '潜在客户',
-        url: '/order-management/retail-order'
+        url: '/retail-order'
       }],
       showHeight: HEIGHT
     }, {
