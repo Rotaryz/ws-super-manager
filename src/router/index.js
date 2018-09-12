@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import storage from 'storage-controller'
+import storage from 'storage-controller'
 
 const Home = () => import('pages/home/home')
 const Login = () => import('pages/login/login') // 登录
@@ -61,17 +61,17 @@ const route = new Router({
     }
   ]
 })
-// const DEFAULT_ROUTE = '/data'
-// const OAUTH_ROUTE = '/login'
-// route.beforeEach((to, from, next) => {
-//   if (to.path === '/') {
-//     const token = storage.get('aiToken')
-//     if (token) {
-//       next({path: DEFAULT_ROUTE, replace: true})
-//     } else {
-//       next({path: OAUTH_ROUTE, replace: true})
-//     }
-//   }
-//   next()
-// })
+const DEFAULT_ROUTE = '/activity'
+const OAUTH_ROUTE = '/login'
+route.beforeEach((to, from, next) => {
+  if (to.path === '/') {
+    const token = storage.get('aiToken')
+    if (token) {
+      next({path: DEFAULT_ROUTE, replace: true})
+    } else {
+      next({path: OAUTH_ROUTE, replace: true})
+    }
+  }
+  next()
+})
 export default route

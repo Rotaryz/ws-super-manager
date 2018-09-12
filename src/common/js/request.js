@@ -3,6 +3,7 @@
 import axios from 'axios'
 import {BASE_URL} from './config'
 import storage from 'storage-controller'
+import { _router } from '../../main'
 
 const TIME_OUT = 10000
 const COMMON_HEADER = {}
@@ -49,6 +50,11 @@ function checkCode(res) {
   }
   // 如果网络请求成功，而提交的数据，或者是后端的一些未知错误所导致的，可以根据实际情况进行捕获异常
   if (res.data && (res.data.code !== ERR_OK)) {
+    switch (res.data.code) {
+      case TIME_OUT:
+        _router.push('/login')
+        break
+    }
     throw requestException(res)
   }
   return res.data
