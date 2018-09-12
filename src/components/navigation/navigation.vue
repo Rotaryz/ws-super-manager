@@ -83,11 +83,11 @@
     }, {
       title: '活动管理',
       icon: require('./icon-activity_select@2x.png'),
-      url: '/financial-management/platform-income',
+      url: '/activity',
       childrenIndex: -1,
       children: [{
         title: '活动管理',
-        url: '/financial-management/platform-income'
+        url: '/activity'
       }],
       showHeight: HEIGHT
     }, {

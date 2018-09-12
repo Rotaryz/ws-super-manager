@@ -1,7 +1,8 @@
 'use strict'
 
 import axios from 'axios'
-import {baseUrl} from './config'
+import {BASE_URL} from './config'
+import storage from 'storage-controller'
 
 const TIME_OUT = 10000
 const COMMON_HEADER = {}
@@ -9,7 +10,7 @@ const ERR_OK = 0
 const ERR_NO = -404
 
 const http = axios.create({
-  baseURL: baseUrl.api,
+  baseURL: BASE_URL.api,
   timeout: TIME_OUT,
   headers: COMMON_HEADER
 })
@@ -71,7 +72,10 @@ export default {
     return http({
       method: 'post',
       url,
-      data // post 请求时带的参数
+      data, // post 请求时带的参数
+      headers: {
+        Authorization: storage.get('aiToken')
+      }
     }).then((response) => {
       return checkStatus(response)
     }).then((res) => {
@@ -82,7 +86,10 @@ export default {
     return http({
       method: 'get',
       url,
-      params // get 请求时带的参数
+      params, // get 请求时带的参数
+      headers: {
+        Authorization: storage.get('aiToken')
+      }
     }).then((response) => {
       return checkStatus(response)
     }).then((res) => {
@@ -93,7 +100,10 @@ export default {
     return http({
       method: 'put',
       url,
-      data // put 请求时带的参数
+      data, // put 请求时带的参数
+      headers: {
+        Authorization: storage.get('aiToken')
+      }
     }).then((response) => {
       return checkStatus(response)
     }).then((res) => {
@@ -104,7 +114,10 @@ export default {
     return http({
       method: 'delete',
       url,
-      data // put 请求时带的参数
+      data, // put 请求时带的参数
+      headers: {
+        Authorization: storage.get('aiToken')
+      }
     }).then((response) => {
       return checkStatus(response)
     }).then((res) => {

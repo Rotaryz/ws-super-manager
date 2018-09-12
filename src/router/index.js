@@ -6,6 +6,7 @@ const Home = () => import('pages/home/home')
 const Login = () => import('pages/login/login') // 登录
 const Demo = () => import('pages/demo/demo') // 事例
 const MemberList = () => import('pages/member-list/member-list') // 事例
+const Activity = () => import('pages/activity/activity') // 事例
 
 Vue.use(Router)
 
@@ -44,6 +45,12 @@ const route = new Router({
         meta: {
           title: '潜在客户'
         }
+      }, {
+        path: 'activity',
+        component: Activity,
+        meta: {
+          title: '活动管理'
+        }
       }
 
       ]
@@ -54,7 +61,7 @@ const route = new Router({
     }
   ]
 })
-// const DEFAULT_ROUTE = '/agent-management/agent-list'
+// const DEFAULT_ROUTE = '/data'
 // const OAUTH_ROUTE = '/login'
 // route.beforeEach((to, from, next) => {
 //   if (to.path === '/') {

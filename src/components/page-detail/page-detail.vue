@@ -53,7 +53,7 @@
           return {
             total: 1, // 总数量
             per_page: 10, // 一页条数
-            total_page: 20 // 总页数
+            total_page: 1 // 总页数
           }
         }
       }
@@ -74,6 +74,18 @@
     computed: {
       indexs() {
         let ret = []
+        if (this.pageDtail.total_page <= 9 && this.pageDtail.total_page > 0) {
+          for (let i = 1; i <= this.pageDtail.total_page; i++) {
+            this.showEnd = false
+            this.backClipped = false
+            ret.push(i)
+          }
+          return ret
+        } else if (this.pageDtail.total_page === 0) {
+          this.showEnd = false
+          this.backClipped = false
+          return [1]
+        }
         if (this.page < 4) {
           this.backClipped = true
           this.showFirst = false
@@ -209,7 +221,7 @@
       display: flex
       align-items: center
       .pade-detail
-        align-items :center
+        align-items: center
         display: flex
         .page-child
           width: 26px
@@ -224,7 +236,7 @@
         .page-hide-more
           width: 20px
           height: 4px
-          display :inline-block
+          display: inline-block
           margin-right: 8px
           icon-image('icon-spot')
         .page-child-active

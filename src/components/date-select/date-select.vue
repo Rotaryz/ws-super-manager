@@ -31,7 +31,11 @@
       checkTab(index) {
         this.tabIndex = index
         let status = this.arrTitle[index].status
-        this.$emit('checkTab', status)
+        if (!status) {
+          this.moreTime = ''
+          return
+        }
+        this.$emit('checkTime', status)
       }
     },
     watch: {
