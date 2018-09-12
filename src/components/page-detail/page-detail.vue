@@ -5,7 +5,13 @@
       <div class="page-icon" @click="subtract" :style="{'cursor': isHand.handLeft}" @mouseenter="notAllowed">
       </div>
       <!--{{page}}/{{pageDtail.total_page}}-->
-      <div class="pade-detail">{{page}}/{{pageDtail.total_page}}</div>
+      <div class="pade-detail">
+        <span>...</span>
+        <span class="page-child hand" :class="{'page-child-active': page === index + 1}" v-if="index < page + 3 || pageDtail.total_page === index + 1" v-for="(item, index) in pageDtail.total_page" :key>
+          {{item}}
+        </span>
+        <span>...</span>
+      </div>
       <div class="page-icon page-icon-two" @click="addPage" @mouseenter="notAllowed" :style="{'cursor': isHand.handRight}">
       </div>
       <div class="page-box" :class="{'input-height': pageDetail}">
@@ -28,7 +34,7 @@
         </div>
       </div>
       <div class="input-box">
-        <input type="number" class="border-page input-height-item" v-model="pageInput" />
+        <input type="number" class="border-page input-height-item" v-model="pageInput"/>
       </div>
       <div class="border-page input-height-item" @click="goPage" @mouseenter="notAllowed" :style="{'cursor': isHand.handGo}">跳转</div>
     </div>
@@ -45,7 +51,7 @@
           return {
             total: 1, // 总数量
             per_page: 10, // 一页条数
-            total_page: 0 // 总页数
+            total_page: 10 // 总页数
           }
         }
       }
@@ -59,6 +65,37 @@
         page: 1
       }
     },
+    computed: {
+      indexs: function () {
+        let left = 1
+        let right = this.pages
+        let ar = []
+        if (this.pages >= 7) {
+          if (this.current_page > 5 && this.current_page < this.pages - 4) {
+            left = Number(this.current_page) - 3
+            right = Number(this.current_page) + 3
+          } else {
+            if (this.current_page <= 5) {
+              left = 1
+              right = 7
+            } else {
+              right = this.pages
+              left = this.pages - 6
+            }
+          }
+        }
+        while (left <= right) {
+          ar.push(left)
+          left++
+        }
+        return ar
+      },
+      efont: function () {
+        if (this.pages <= 7) return false
+        return this.page > 5
+      }
+    },
+
     created() {
       window.onkeydown = (e) => {
         if (e.keyCode === 13) {
@@ -146,7 +183,20 @@
       display: flex
       align-items: center
       .pade-detail
-        margin-right: 10px
+        display: flex
+        .page-child
+          width: 26px
+          height: @width
+          box-sizing: border-box
+          border-radius: 3px
+          border-1px($color-ccc, 3px)
+          font-size: $font-size-small12
+          color: $color-text33
+          line-height: 26px
+          margin-right: 8px
+        .page-child-active
+          border-1px($color-4985FC, 3px)
+          color: $color-4985FC
       .page-icon
         cursor: pointer
         icon-image('icon-before')
