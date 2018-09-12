@@ -21,11 +21,11 @@ const route = new Router({
           title: '商家管理,商家列表'
         }
       }, {
-          path: '/member-list',
-          component: MemberList,
-          meta: {
-            title: '团队列表'
-          }
+        path: '/member-list',
+        component: MemberList,
+        meta: {
+          title: '团队列表'
+        }
       }, {
         path: '/business-list',
         component: MemberList,

@@ -137,18 +137,6 @@
       this.info(path)
     },
     methods: {
-      // 切换账户
-      _checkPeo(status) {
-        this.showRole = false
-        this.navList[1].showHeight = HEIGHT
-        this.info('/agent-management/agent-list')
-        this.navList.map((item) => {
-          item.childrenIndex = -1
-          item.url = item.children[0].url
-          return item
-        })
-        this.$router.replace('/agent-management/agent-list')
-      },
       hideRole() {
         this.showRole = false
       },
@@ -156,15 +144,13 @@
         this.showRole = !this.showRole
       },
       info(path) {
-        let rootType = path.split('/')
-        let type = rootType[rootType.length - 1]
+        let type = path
         this.navList.forEach((item, idx) => {
           if (item.children.length > 1) {
             item.children.forEach((items, index) => {
               if (items.url.includes(type)) {
-                this.showChild(idx)
+                this.showChild(idx, false)
                 this.bigChildren(index)
-                sessionStorage.setItem('title', [item.title, items.title])
               } else {
                 item.showHeight = HEIGHT
               }

@@ -6,11 +6,13 @@
       </div>
       <!--{{page}}/{{pageDtail.total_page}}-->
       <div class="pade-detail">
-        <span>...</span>
-        <span class="page-child hand" :class="{'page-child-active': page === index + 1}" v-if="index < page + 3 || pageDtail.total_page === index + 1" v-for="(item, index) in pageDtail.total_page" :key>
-          {{item}}
+        <span class="page-child hand" v-show="showFirst" @click="getPage(1)">1</span>
+        <span v-show="preClipped" class="page-hide-more"></span>
+        <span class="page-child hand" :class="{'page-child-active': page === num}" @click="getPage(num)" v-for="(num, index) in indexs" :key="index">
+          {{num}}
         </span>
-        <span>...</span>
+        <span v-show="backClipped" class="page-hide-more"></span>
+        <span class="page-child hand" v-show="showEnd" :class="{'page-child-active': page === pageDtail.total_page}" @click="getPage(pageDtail.total_page)">{{pageDtail.total_page}}</span>
       </div>
       <div class="page-icon page-icon-two" @click="addPage" @mouseenter="notAllowed" :style="{'cursor': isHand.handRight}">
       </div>
@@ -51,7 +53,7 @@
           return {
             total: 1, // 总数量
             per_page: 10, // 一页条数
-            total_page: 10 // 总页数
+            total_page: 20 // 总页数
           }
         }
       }
@@ -62,37 +64,57 @@
         pageInput: '',
         isHand: {handLeft: 'pointer', handRight: 'pointer', handGo: 'pointer'},
         pageIndex: 0,
-        page: 1
+        page: 1,
+        backClipped: true,
+        preClipped: false,
+        showFirst: false,
+        showEnd: true
       }
     },
     computed: {
-      indexs: function () {
-        let left = 1
-        let right = this.pages
-        let ar = []
-        if (this.pages >= 7) {
-          if (this.current_page > 5 && this.current_page < this.pages - 4) {
-            left = Number(this.current_page) - 3
-            right = Number(this.current_page) + 3
-          } else {
-            if (this.current_page <= 5) {
-              left = 1
-              right = 7
-            } else {
-              right = this.pages
-              left = this.pages - 6
-            }
+      indexs() {
+        let ret = []
+        if (this.page < 4) {
+          this.backClipped = true
+          this.showFirst = false
+          this.preClipped = false
+          this.showEnd = true
+          for (let i = 1; i <= 4; i++) {
+            ret.push(i)
+          }
+        } else if (this.page === 4) {
+          this.backClipped = true
+          this.showFirst = false
+          this.preClipped = false
+          for (let i = 1; i <= 6; i++) {
+            ret.push(i)
+          }
+        } else if (this.page > 4 && this.page < this.pageDtail.total_page - 2) {
+          this.showFirst = true
+          this.preClipped = true
+          this.showEnd = true
+          this.backClipped = true
+          for (let i = this.page - 2; i <= this.page + 2; i++) {
+            ret.push(i)
+          }
+        } else if (this.page === this.pageDtail.total_page - 3) {
+          this.showFirst = true
+          this.showEnd = false
+          this.backClipped = false
+          this.preClipped = true
+          for (let i = this.pageDtail.total_page - 3; i <= this.pageDtail.total_page; i++) {
+            ret.push(i)
+          }
+        } else if (this.page > this.pageDtail.total_page - 3) {
+          this.showFirst = true
+          this.showEnd = false
+          this.backClipped = false
+          this.preClipped = true
+          for (let i = this.pageDtail.total_page - 3; i <= this.pageDtail.total_page; i++) {
+            ret.push(i)
           }
         }
-        while (left <= right) {
-          ar.push(left)
-          left++
-        }
-        return ar
-      },
-      efont: function () {
-        if (this.pages <= 7) return false
-        return this.page > 5
+        return ret
       }
     },
 
@@ -116,6 +138,10 @@
       }
     },
     methods: {
+      getPage(page) {
+        this.page = page
+        this.$emit('addPage', this.page)
+      },
       subtract() {
         if (this.page > 1) {
           this.page--
@@ -183,6 +209,7 @@
       display: flex
       align-items: center
       .pade-detail
+        align-items :center
         display: flex
         .page-child
           width: 26px
@@ -194,6 +221,12 @@
           color: $color-text33
           line-height: 26px
           margin-right: 8px
+        .page-hide-more
+          width: 20px
+          height: 4px
+          display :inline-block
+          margin-right: 8px
+          icon-image('icon-spot')
         .page-child-active
           border-1px($color-4985FC, 3px)
           color: $color-4985FC
@@ -286,6 +319,7 @@
         width: 43px
         margin-right: 10px
       .page-box
+        width: 85px
         height: 29px
         margin-right: 10px
 </style>
