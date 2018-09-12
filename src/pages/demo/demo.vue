@@ -4,7 +4,7 @@
     <!--<AdminSelect></AdminSelect>-->
     <!--<Search></Search>-->
     <!--<div class="excel">导出excel</div>-->
-    <!--<PageDetail></PageDetail>-->
+    <PageDetail></PageDetail>
   </div>
 </template>
 

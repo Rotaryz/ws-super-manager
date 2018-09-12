@@ -231,12 +231,10 @@
         width: 39px
         text-align: center
       .input-box
-        border: 2px solid $color-white
         height: 29px
         width: 43px
         margin-right: 10px
       .page-box
-        border: 2px solid $color-white
         height: 29px
         margin-right: 10px
 </style>

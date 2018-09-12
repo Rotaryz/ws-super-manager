@@ -7,16 +7,16 @@
       </div>
       <ul class="nav-big">
         <li class="nav-item" v-for="(item , index) in navList" :key="index" @click="showChild(index)" :style="{'height':item.showHeight+'px'}">
-          <router-link :to="{path: item.url}" class="nav-tap">
+          <router-link :to="{path: item.url}" class="nav-tap" :class="{'nav-tap-active':bigChild === index,'nav-item-no-border':item.children.length > 1}">
             <span class="nav-icon"><img :src="item.icon" class="nav-pic"></span>
             <div class="nav-title" v-show="!showAnimation">
               <span>{{item.title}}</span>
             </div>
-            <i class="nav" :class="{'nav-active': item.showHeight !== 69}" v-show="!showAnimation"></i>
+            <i class="nav" :class="{'nav-active': item.showHeight !== 58}" v-show="!showAnimation"></i>
           </router-link>
           <ul class="nav-big-child" v-if="item.children">
             <li class="nav-item" v-for="(items , idx) in item.children" :key="idx" @click.stop="bigChildren(idx)">
-              <router-link :to="{path: items.url}" class="nav-tap">
+              <router-link :to="{path: items.url}" class="nav-tap-small">
                 <span class="nav-icon"><img src=""></span>
                 <div class="nav-title">
                   <span v-for="(child , index) in items.title" :key="index">{{child}}</span>
@@ -32,96 +32,90 @@
 
 <script type="text/ecmascript-6">
   const HEIGHT = 69
+  const SMALLHEIGHT = 58
   const NAVLIST = [
     {
-      title: '首页',
-      url: '/agent-management',
-      icon: require('./icon-index@2x.png'),
+      title: '数据概况',
+      url: '/demo',
+      icon: require('./icon-data@2x.png'),
       childrenIndex: -1,
       children: [{
-        title: '首页',
-        url: '/agent-management'
+        title: '数据概况',
+        url: '/demo'
       }],
       showHeight: HEIGHT
     }, {
       title: '商家管理',
-      url: '/agent-management/agent-list',
-      icon: require('./icon-business_manage@2x.png'),
+      url: '/demo',
+      icon: require('./icon-shop_select@2x.png'),
       childrenIndex: -1,
       children: [{
-        title: '代理商管理',
-        url: '/agent-management/agent-list',
-        type: 'normal'
+        title: '团队列表',
+        url: '/demo'
       }, {
-        title: '企业管理',
-        url: '/business-management/business-list',
-        type: 'normal'
+        title: '商家列表',
+        url: '/business-management/business-list'
+      }],
+      showHeight: HEIGHT
+    }, {
+      title: '客户管理',
+      url: '/order-management/agent-order',
+      icon: require('./icon-client_select@2x.png'),
+      childrenIndex: -1,
+      children: [{
+        title: '消费客户',
+        url: '/order-management/agent-order'
       }, {
-        title: '成员管理',
-        url: '/member-management/member-list',
-        type: 'ws'
+        title: '潜在客户',
+        url: '/order-management/retail-order'
+      }],
+      showHeight: HEIGHT
+    }, {
+      title: '商品管理',
+      icon: require('./icon-goods_select@2x.png'),
+      url: '/financial-management/platform-income',
+      childrenIndex: -1,
+      children: [{
+        title: '商品管理',
+        url: '/financial-management/platform-income'
+      }],
+      showHeight: HEIGHT
+    }, {
+      title: '活动管理',
+      icon: require('./icon-activity_select@2x.png'),
+      url: '/financial-management/platform-income',
+      childrenIndex: -1,
+      children: [{
+        title: '活动管理',
+        url: '/financial-management/platform-income'
       }],
       showHeight: HEIGHT
     }, {
       title: '订单管理',
-      url: '/order-management/agent-order',
-      icon: require('./icon-order_manage@2x.png'),
-      childrenIndex: -1,
-      children: [{
-        title: '代理订单',
-        url: '/order-management/agent-order',
-        type: 'normal'
-      }, {
-        title: '零售订单',
-        url: '/order-management/retail-order',
-        type: 'ws'
-      }],
-      showHeight: HEIGHT
-    }, {
-      title: '财务管理',
-      icon: require('./icon-money_manage@2x.png'),
-      url: '/financial-management/platform-income',
-      childrenIndex: -1,
-      children: [{
-        title: '平台收入',
-        url: '/financial-management/platform-income',
-        type: 'normal'
-      }, {
-        title: '发放记录',
-        url: '/financial-management/platform-expend',
-        type: 'ws'
-      }
-        // , {
-        //   title: '提现管理',
-        //   url: '/financial-management/cash-management',
-        //   type: 'ws'
-        // }
-      ],
-      showHeight: HEIGHT
-    }, {
-      title: '发布管理',
-      icon: require('./icon-money_manage@2x.png'),
+      icon: require('./icon-order_select@2x.png'),
       url: '/mina-management/mina-release',
       childrenIndex: -1,
       children: [{
-        title: '小程序发布',
-        url: '/mina-management/mina-release',
-        type: 'normal'
+        title: '商品订单',
+        url: '/mina-management/mina-release'
+      }, {
+        title: '开通门店',
+        url: '/mina-management/mina-release'
+      }]
+    }, {
+      title: '财务管理',
+      icon: require('./icon-money_select@2x.png'),
+      url: '/mina-management/mina-release',
+      childrenIndex: -1,
+      children: [{
+        title: '交易记录',
+        url: '/mina-management/mina-release'
+      }, {
+        title: '提现申请',
+        url: '/mina-management/mina-release'
       }]
     }
   ]
-  //   , {
-  //   title: '基础设置',
-  //   icon: require('./icon-basic_setting@2x.png'),
-  //   url: '/role-management/role-list',
-  //   childrenIndex: -1,
-  //   children: [{
-  //   title: '角色设置',
-  //   url: '/role-management/role-list',
-  //   type: 'normal'
-  // }],
-  //   showHeight: HEIGHT
-  // }
   export default {
     data() {
       return {
@@ -162,63 +156,86 @@
         this.showRole = !this.showRole
       },
       info(path) {
-        let type = path
+        let rootType = path.split('/')
+        let type = rootType[rootType.length - 1]
         this.navList.forEach((item, idx) => {
-          item.children.forEach((items, index) => {
-            if (items.url.includes(type)) {
+          if (item.children.length > 1) {
+            item.children.forEach((items, index) => {
+              if (items.url.includes(type)) {
+                this.showChild(idx)
+                this.bigChildren(index)
+                sessionStorage.setItem('title', [item.title, items.title])
+              } else {
+                item.showHeight = HEIGHT
+              }
+            })
+          } else {
+            if (item.url.includes(type)) {
               this.showChild(idx)
-              this.bigChildren(index)
-            } else {
-              item.showHeight = HEIGHT
+              sessionStorage.setItem('title', [item.title])
             }
-          })
+          }
         })
       },
       showChild(index, status = true) {
         this.smallIndex = index
         clearInterval(this.timer)
-        let childCode = this.navList[index].childrenIndex === -1 ? 0 : this.navList[index].childrenIndex
-        this.recodIndex = index
-        this.navList[this.recodIndex].childrenIndex = childCode
-        this.bigChild = -1
-        clearInterval(this.timer)
-        for (let i = 0; i < this.navList.length; i++) {
-          if (i !== index && this.navList[i].showHeight > HEIGHT) {
-            clearInterval(this.sortTimer)
-            this.sortTimer = setInterval(() => {
-              if (this.navList[i].showHeight <= HEIGHT) {
-                this.navList[i].showHeight = HEIGHT
-                clearInterval(this.sortTimer)
-                return
+        if (this.navList[index].children.length === 1) {
+          if (this.recodIndex !== -1) {
+            this.timer = setInterval(() => {
+              if (this.navList[this.recodIndex].showHeight <= HEIGHT) {
+                this.navList[this.recodIndex].showHeight = HEIGHT
+                clearInterval(this.timer)
+                return false
               }
-              this.navList[i].showHeight -= 20
+              this.navList[this.recodIndex].showHeight -= 20
             }, 30)
-          } else {
-            clearInterval(this.timer)
-            let num = 0
-            this.navList[index].children.forEach((item) => {
-              num++
-            })
-            if (this.navList[index].showHeight === HEIGHT) {
-              let target = (num + 1) * HEIGHT
-              this.timer = setInterval(() => {
-                if (this.navList[index].showHeight >= target) {
-                  this.navList[index].showHeight = target
-                  clearInterval(this.timer)
+          }
+          this.bigChild = index
+          sessionStorage.setItem('title', [this.navList[index].title])
+        } else if (this.navList[index].children.length > 1) {
+          clearInterval(this.timer)
+          let childCode = this.navList[index].childrenIndex === -1 ? 0 : this.navList[index].childrenIndex
+          this.recodIndex = index
+          this.navList[this.recodIndex].childrenIndex = childCode
+          sessionStorage.setItem('title', [this.navList[index].title, this.navList[index].children[childCode].title])
+          this.bigChild = -1
+          clearInterval(this.timer)
+          for (let i = 0; i < this.navList.length; i++) {
+            if (i !== index && this.navList[i].showHeight > HEIGHT) {
+              clearInterval(this.sortTimer)
+              this.sortTimer = setInterval(() => {
+                if (this.navList[i].showHeight <= HEIGHT) {
+                  this.navList[i].showHeight = HEIGHT
+                  clearInterval(this.sortTimer)
                   return
                 }
-                this.navList[index].showHeight += 20
+                this.navList[i].showHeight -= 20
               }, 30)
             } else {
-              if (status) {
+              clearInterval(this.timer)
+              let num = index === 0 ? 1 : this.navList[index].children.length
+              if (this.navList[index].showHeight === HEIGHT) {
+                let target = num * SMALLHEIGHT + HEIGHT
                 this.timer = setInterval(() => {
-                  if (this.navList[index].showHeight <= HEIGHT) {
-                    this.navList[index].showHeight = HEIGHT
+                  if (this.navList[index].showHeight >= target) {
+                    this.navList[index].showHeight = target
                     clearInterval(this.timer)
                     return
                   }
-                  this.navList[index].showHeight -= 20
+                  this.navList[index].showHeight += 20
                 }, 30)
+              } else {
+                if (status) {
+                  this.timer = setInterval(() => {
+                    if (this.navList[index].showHeight <= HEIGHT) {
+                      this.navList[index].showHeight = HEIGHT
+                      clearInterval(this.timer)
+                      return
+                    }
+                    this.navList[index].showHeight -= 20
+                  }, 30)
+                }
               }
             }
           }
@@ -248,7 +265,7 @@
   .navigation
     background: $color-menu-background
     float: left
-    color: $color-lineCC
+    color: $color-white
     height: 100vh
     position: relative
     z-index: 1000
@@ -276,11 +293,12 @@
           overflow: hidden
           border-bottom: 1px solid #3B3B43
           .nav-tap
+            height: 58px
+            margin: 5.5px 0
             transition: all 0.2s
             align-items: center
-            color: $color-lineCC
+            color: $color-white
             display: flex
-            height: 69px
             width: 100%
             position: relative
             box-sizing: border-box
@@ -314,56 +332,35 @@
               transition: transform 0.2s
             &:hover
               background: rgba(255, 255, 255, 0.1)
+              border-color: transparent
               transition: all 0.2s
           .nav-tap-active
-            border-left: 6px solid rgba(255, 255, 255, 0.1)
+            background: rgba(255, 255, 255, .1)
+            border-left: 6px solid $color-4985FC !important
         .nav-big-child
           .nav-item
+            height: 58px
             border-bottom: none
+            display: flex
+            .nav-tap-small
+              width: 100%
+              height: 58px
+              border-left: 6px solid $color-menu-background
+              &:hover
+                background: rgba(255, 255, 255, 0.1)
+                border-color: transparent
+                transition: all 0.2s
+              .nav-icon
+                width: 46px
             .router-link-active
-              background: rgba(255, 255, 255, 0.1) !important
-              border-left: 6px solid $color-4985FC
-          .nav-tap
-            border-left: 6px solid $color-menu-background
-            .nav-icon
-              width: 46px
+              background: rgba(255, 255, 255, 0.1)
+              border-left: 6px solid $color-4985FC !important
           .nav-title
-            margin-left: 13px
+            color: $color-white
+            margin-left: -13px
 
       .big-hide
         width: 79px
         transition: all .2s
-
-  /*微商*/
-  .card-big
-    background: $color-menu-background
-    transition: all 0.5s
-    .big-show .nav-big
-      .nav-item
-        border-bottom: 0.5px solid #3B3B43
-        .nav-tap
-          border-left: 6px solid transparent
-          &:hover
-            background: rgba(255, 255, 255, 0.1)
-        .nav-big-child .nav-item .router-link-active
-          background: rgba(255, 255, 255, 0.1)
-          border-left: 6px solid $color-active !important
-          transition: all 0.5s
-
-  //智推
-  .ws-big
-    background: $color-43455C
-    transition: all 0.5s
-    .big-show .nav-big
-      .nav-item
-        border-bottom: 0.5px solid #3C3E54
-        .nav-tap
-          border-left: 6px solid transparent
-          &:hover
-            background: $color-3F4055
-        .nav-big-child .nav-item .router-link-active
-          transition: all 0.5s
-          background: $color-3F4055
-          border-left: 6px solid $color-pink-CA799A !important
 
 </style>
