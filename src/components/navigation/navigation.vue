@@ -36,12 +36,12 @@
   const NAVLIST = [
     {
       title: '数据概况',
-      url: '/demo',
+      url: '/data-overview',
       icon: require('./icon-data@2x.png'),
       childrenIndex: -1,
       children: [{
         title: '数据概况',
-        url: '/demo'
+        url: '/data-overview'
       }],
       showHeight: HEIGHT
     }, {

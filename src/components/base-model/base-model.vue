@@ -15,7 +15,7 @@
         </transition>
       </div>
     </div>
-    <div class="tag" v-if="titleArr">
+    <div class="tag" v-if="length">
       <div class="tag-title">
         <span class="title-item" v-for="(item,index) in titleArr" :key="index">{{index > 0 ? '/' : ''}} {{item}}</span>
       </div>
@@ -111,7 +111,14 @@
       }
     },
     computed: {
-      ...mapGetters(['titleArr'])
+      ...mapGetters(['titleArr']),
+      length () {
+        if (this.titleArr[0] === '数据概况') {
+          return false
+        } else {
+          return true
+        }
+      }
     },
     components: {
       Toast

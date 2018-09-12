@@ -63,7 +63,7 @@ const route = new Router({
         path: 'data-overview',
         component: DataOverview,
         meta: {
-          title: ''
+          title: '数据概况'
         }
       }]
     },

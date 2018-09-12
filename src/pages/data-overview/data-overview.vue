@@ -32,6 +32,7 @@
         </div>
       </div>
     </div>
+    <div class="data-bottom"></div>
     <!--<DateSelect></DateSelect>-->
     <!--<AdminSelect></AdminSelect>-->
     <!--<Search></Search>-->
@@ -241,17 +242,17 @@
     -webkit-box-sizing: border-box
     text-align: left
   .data-top
-    display: flex
     layout(row)
     width: 100%
+    margin-bottom: 20px
     .data-left
       width: 55.5%
       padding-right: 20px
       .left-con
         height: 380px
         background: #fff
-        box-shadow: 0 1px 3px 0 rgba(0,8,39,0.10)
         width: 100%
+        box-shadow: 0 1px 3px 0 rgba(0,8,39,0.10)
         border-radius: 3px
         padding-right: 30px
         .title
@@ -358,6 +359,10 @@
             font-size: $font-size-large18
             color: $color-text-66
             padding-left: 80px
+  .data-bottom
+    background: $color-white
+    box-shadow: 0 1px 3px 0 rgba(0,8,39,0.10)
+    border-radius: 3px
   .z
     width: 1px
 </style>
