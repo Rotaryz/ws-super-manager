@@ -42,9 +42,9 @@
         type: Object,
         default: () => {
           return {
-            total: 1,
-            per_page: 10,
-            total_page: 0
+            total: 1, // 总数量
+            per_page: 10, // 一页条数
+            total_page: 0 // 总页数
           }
         }
       }

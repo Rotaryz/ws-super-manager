@@ -7,7 +7,7 @@
           <router-view ref="mina" @showToast="showToast" @showShade="showShade" @hideShade="hideShade" @showImage="showImage"></router-view>
         </div>
       </base-model>
-      <router-view @showChild="showChild"/>
+      <!--<router-view @showChild="showChild"/>-->
     </div>
   </div>
 </template>

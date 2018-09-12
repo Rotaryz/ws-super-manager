@@ -17,7 +17,7 @@ const route = new Router({
         path: 'demo',
         component: Demo,
         meta: {
-          title: 'sjoahsdi'
+          title: '商家管理,商家列表'
         }
       }]
     },
