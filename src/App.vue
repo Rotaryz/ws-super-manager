@@ -29,6 +29,9 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   #app
+    width: 100vw
+    height: 100vh
+    overflow: hidden
     font-family: PingFangSC-Regular, 'Avenir', Helvetica, Arial, sans-serif
     -webkit-font-smoothing: antialiased
     -moz-osx-font-smoothing: grayscale
