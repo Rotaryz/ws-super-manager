@@ -2,10 +2,9 @@
   <div class="agent-order">
     <div class="content-top">
       <div class="left">
-        <DateSelect></DateSelect>
+        <DateSelect @checkTab="checkTab"></DateSelect>
         <Search></Search>
       </div>
-      <!--<AdminSelect></AdminSelect>-->
       <div class="excel">导出Excel</div>
     </div>
     <div class="content-list">
@@ -14,7 +13,21 @@
       </div>
       <div class="list-content">
         <div class="list-item" v-for="val in arr">
-          <span v-for="item in headerList">{{item}}</span>
+          <div class="item">
+            <img class="head-img" src="" alt="">
+          </div>
+          <span class="item">啦啦啦</span>
+          <span class="item">男</span>
+          <span class="item">广东广州</span>
+          <span class="item">13584260103</span>
+          <div class="long-item">
+            <span>收货人：市民老王</span>
+            <span>手机号：13584260103</span>
+            <p>收获地址：广东省广州市海珠区新港街道新港中路397号</p>
+          </div>
+          <span class="item">100</span>
+          <span class="item">780.00</span>
+          <span class="item">2018-09-12</span>
         </div>
       </div>
     </div>
@@ -45,6 +58,11 @@
     },
     mounted() {
       // this.$emit('showShade')
+    },
+    methods: {
+      checkTab(status) {
+        console.log(status)
+      }
     }
   }
 </script>
@@ -70,6 +88,7 @@
       .left
         display: flex
     .content-list
+      text-align: left
       flex: 1
       font-size: 14px
       margin-bottom: 23px
@@ -81,11 +100,14 @@
         font-family: $fontFamilyMeddle
         display: flex
         justify-content: space-between
-        padding: 0 40px
+        padding-left: 40px
         color: $color-text33
         border-bottom: 1px solid $color-line
-        .header-key:first-child
-          text-align: center
+        .header-key
+          flex: 1
+          text-align: left
+          &:nth-of-type(6)
+            flex: 3.8
       .list-content
         height: 92.4%
         .list-item
@@ -94,8 +116,14 @@
           display: flex
           align-items: center
           justify-content: space-between
-          padding: 0 40px
+          padding-left: 40px
           box-sizing: border-box
           border-bottom: 1px solid $color-line
+          .item
+            flex: 1
+          .long-item
+            flex: 3.8
+            line-height: 18px
+
 
 </style>

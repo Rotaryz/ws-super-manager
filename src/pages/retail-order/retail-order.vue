@@ -14,7 +14,13 @@
       </div>
       <div class="list-content">
         <div class="list-item" v-for="val in arr">
-          <span v-for="item in headerList">{{item}}</span>
+          <div class="item">
+            <img class="head-img" src="" alt="">
+          </div>
+          <span class="item">某某某</span>
+          <span class="item">男</span>
+          <span class="item">广东广州</span>
+          <span class="item">2018-09-12</span>
         </div>
       </div>
     </div>
@@ -81,11 +87,14 @@
         font-family: $fontFamilyMeddle
         display: flex
         justify-content: space-between
-        padding: 0 40px
+        padding-left: 40px
         color: $color-text33
         border-bottom: 1px solid $color-line
-        .header-key:first-child
-          text-align: center
+        .header-key
+          flex: 1.8
+          text-align: left
+          &:last-child
+            flex: 1
       .list-content
         height: 92.4%
         .list-item
@@ -94,8 +103,12 @@
           display: flex
           align-items: center
           justify-content: space-between
-          padding: 0 40px
+          padding-left: 40px
           box-sizing: border-box
           border-bottom: 1px solid $color-line
-
+          text-align: left
+          .item
+            flex: 1.8
+            &:last-child
+              flex: 1
 </style>
