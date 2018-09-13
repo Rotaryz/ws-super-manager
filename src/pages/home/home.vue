@@ -26,9 +26,11 @@
       }
     },
     methods: {
+      // 是否显示标题
       setTab(status) {
         this.showTag = status
       },
+      // 是否显示空白页
       setNull(status = false) {
         this.showNull = status
       },
