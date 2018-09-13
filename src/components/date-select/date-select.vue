@@ -65,12 +65,11 @@
   .date
     display: flex
     .date-item
-      box-sizing: border-box
       line-height: 28px
       font-size: $font-size-small12
       color: $color-text-66
       width: 60px
-      height: 28px
+      height: 26px
       position: relative
       transition: all 0.4s
       border: 0.5px solid $color-textD9

@@ -79,6 +79,9 @@
       this._getUrl()
       await this._getGoodsList()
     },
+    destroyed() {
+      this.$emit('setNull', false)
+    },
     methods: {
       _getUrl() {
         this.downUrl = BASE_URL.api + `/api/admin/goods-export?access_token=${storage.get('aiToken')}&limit=10&title=${this.keyWord}&time=${this.date}&sort_type=${this.sortType}&start_time=${this.startTime}&end_time=${this.endTime}`
