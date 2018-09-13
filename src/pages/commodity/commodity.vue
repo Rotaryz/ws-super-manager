@@ -1,35 +1,45 @@
 <template>
   <div class="activity">
     <div class="ac-tab">
-      <date-select></date-select>
-      <search></search>
-      <div class="excel">导出Excel</div>
+      <date-select @checkTime="_checkTime"></date-select>
+      <search @search="_search" placeholerTxt="请输入商品名称"></search>
+      <a :href="downUrl" class="excel">导出Excel</a>
     </div>
     <div class="form-list">
       <div class="list-header">
-        <div class="list-item" v-for="(item, index) in titleList" :key="index">
+        <div class="list-item" :class="{'hand': index ===3 || index === 4}" v-for="(item, index) in titleList" :key="index" @click="_sortList(index)">
           {{item}}
+          <div class="sort" v-if="index ===3">
+            <span class="sort-item sort-top" :class="{'sort-top-active': showIndex === 3 && sortType === 1}"></span>
+            <span class="sort-item sort-end" :class="{'sort-end-active' :  showIndex === 3 && sortType === 2}"></span>
+          </div>
+          <div class="sort" v-if="index ===4">
+            <span class="sort-item sort-top" :class="{'sort-top-active': showIndex === 4 && sortType === 3}"></span>
+            <span class="sort-item sort-end" :class="{'sort-end-active': showIndex === 4 && sortType === 4}"></span>
+          </div>
         </div>
       </div>
       <div class="list">
-        <div class="list-box">
+        <div class="list-box" v-for="(item, index) in goodsList" :key="index">
           <div class="list-item list-text">
             <div class="pic-box">
-              <img src="" class="pic">
+              <img :src="item.image_url" class="pic">
             </div>
           </div>
-          <div class="list-item list-text">{{'---'}}</div>
-          <div class="list-item list-text">{{'---'}}</div>
-          <div class="list-item list-text">---</div>
-          <div class="list-item list-text">---</div>
-          <div class="list-item list-text">{{'---'}}</div>
-          <div class="list-item list-text">{{'---'}}</div>
-          <div class="list-item list-text">{{'---'}}</div>
+          <div class="list-item list-text">{{item.title || '---'}}</div>
+          <div class="list-item list-text">{{item.original_price + '' || '---'}}</div>
+          <div class="list-item list-text">{{item.browse_count + '' || '---'}}</div>
+          <div class="list-item list-text">{{item.sale_count + '' || '---'}}</div>
+          <div class="list-item list-text">{{item.is_online === 0 ? '已下架' : item.is_online === 1 ? '已上架' : '---'}}</div>
+          <div class="list-item list-text">
+            <router-link tag="a" target="_blank" :to="'/business-list?num='+ item.merchant_name" class="bule hand">{{item.merchant_name || '---'}}</router-link>
+          </div>
+          <div class="list-item list-text">{{item.created_at || '---'}}</div>
         </div>
       </div>
       <div class="page">
         <!--:pageDtail="pageTotal" @addPage="_addPage"-->
-        <page-detail ref="page"></page-detail>
+        <page-detail ref="page" :pageDtail="pageTotal" @addPage="_addPage"></page-detail>
       </div>
     </div>
   </div>
@@ -39,7 +49,10 @@
   import Search from 'components/search/search' // 搜索框
   import AdminSelect from 'components/admin-select/admin-select' // 下拉框
   import DateSelect from 'components/date-select/date-select' // 下拉框
-  import PageDetail from 'components/page-detail/page-detail' // 下拉框
+  import PageDetail from 'components/page-detail/page-detail'
+  import {ERR_OK, BASE_URL} from '../../common/js/config' // 下拉框
+  import storage from 'storage-controller'
+
   const TITLELIST = ['商品图片', '商品标题', '商品单价', '浏览量', '销量', '商品状态', '商品来源', '创建时间']
 
   export default {
@@ -47,22 +60,92 @@
     data() {
       return {
         titleList: TITLELIST,
-        activityType: [{
-          select: false,
-          show: false,
-          children: [{content: '活动类型', data: []}]
-        }],
-        page: 1
+        page: 1,
+        date: 'today',
+        keyWord: '',
+        startTime: '',
+        endTime: '',
+        sortType: 0,
+        fiDate: 'today',
+        fiStart: '',
+        fiEnd: '',
+        showIndex: 0,
+        goodsList: [],
+        pageTotal: {
+          total: 1,
+          per_page: 10,
+          total_page: 1
+        },
+        downUrl: ''
       }
     },
-    created() {
-      this._getGoodsList()
+    async created() {
+      this._getUrl()
+      await this._getGoodsList()
     },
     methods: {
+      _getUrl() {
+        this.downUrl = BASE_URL.api + `/api/admin/goods-export?access_token=${storage.get('aiToken')}&limit=10&title=${this.keyWord}&time=${this.date}&sort_type=${this.sortType}&start_time=${this.startTime}&end_time=${this.endTime}`
+      },
+      async _sortList(index) {
+        if (index !== 3 || index !== 4) {
+          return
+        }
+        this.showIndex = index
+        switch (index) {
+          case 3:
+            this.sortType = this.sortType !== 1 ? 1 : 2
+            break
+          case 4:
+            this.sortType = this.sortType !== 3 ? 3 : 4
+            break
+        }
+        this.page = 1
+        this.$refs.page.beginPage()
+        await this._getGoodsList()
+      },
+      async _search(word) {
+        this.page = 1
+        this.sortType = 0
+        this.keyWord = word
+        this.date = this.fiDate
+        this.startTime = this.fiStart
+        this.endTime = this.fiEnd
+        this.$refs.page.beginPage()
+        await this._getGoodsList()
+      },
       async _getGoodsList() {
-        let data = {page: this.page, date_type: 1, title: '', sort_type: ''}
+        let data = {limit: 10, page: this.page, time: this.date, title: this.keyWord, start_time: this.startTime, end_time: this.endTime, sort_type: this.sortType}
         let res = await Goods.goods(data)
-        console.log(res)
+        if (res.error !== ERR_OK) {
+          this.$emit('setNull', true)
+          this.$emit('showToast', res.message)
+          return
+        }
+        let pages = res.meta
+        this.pageTotal = Object.assign({}, {
+          total: pages.total,
+          per_page: pages.per_page,
+          total_page: pages.last_page
+        })
+        this.goodsList = res.data
+        this.$emit('setNull', !this.goodsList.length)
+        console.log(this.goodsList)
+      },
+      _checkTime(time) {
+        if (typeof time === 'string') {
+          this.fiDate = time
+          this.fiStart = ''
+          this.fiEnd = ''
+          return
+        }
+        this.fiDate = ''
+        this.fiStart = time[0]
+        this.fiEnd = time[1]
+      },
+      async _addPage(page) {
+        this.page = page
+        await this._getGoodsList()
       }
     },
     components: {
@@ -114,6 +197,8 @@
     border-bottom: 1px solid $color-line
     background: $color-big-background
     .list-item
+      display: flex
+      align-items: center
       font-family: $fontFamilyMeddle
       color: $color-text33
 
@@ -133,7 +218,6 @@
           height: 40px
           width: 40px
           overflow: hidden
-          background: $color-text33
           .pic
             width: 40px
       .list-item-tap
@@ -143,7 +227,8 @@
         no-wrap()
         width: 90%
         color: $color-text-66
-    no-wrap()
+        .bule
+          color: $color-4985FC
 
   .list-item-img
     width: 60px
@@ -157,6 +242,35 @@
     position: relative
     text-align: left
     overflow: hidden
+    .sort
+      display: flex
+      flex-direction: column
+      justify-content: space-between
+      height: 19px
+      margin-left: 10px
+      .sort-item
+        border: 4px solid $color-text99
+        transition: all 0.4s
+      .sort-top
+        border-top: 4px solid transparent
+        border-left: 4px solid transparent
+        border-right: 4px solid transparent
+      .sort-end
+        border-bottom: 4px solid transparent
+        border-left: 4px solid transparent
+        border-right: 4px solid transparent
+      .sort-top-active
+        border: 4px solid $color-4985FC
+        border-top: 4px solid transparent
+        border-left: 4px solid transparent
+        border-right: 4px solid transparent
+        transition: all 0.4s
+      .sort-end-active
+        border: 4px solid $color-4985FC
+        border-bottom: 4px solid transparent
+        border-left: 4px solid transparent
+        border-right: 4px solid transparent
+        transition: all 0.4s
     .showDetail
       cursor: pointer
       font-size: $font-size-small

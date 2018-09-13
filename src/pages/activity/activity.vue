@@ -1,10 +1,10 @@
 <template>
   <div class="activity">
     <div class="ac-tab">
-      <date-select></date-select>
-      <admin-select :select="activityType" role="activity"></admin-select>
-      <search></search>
-      <div class="excel">导出Excel</div>
+      <date-select @checkTime="_checkTime"></date-select>
+      <admin-select :select="activityType" role="activity"  @setValue="setValue"></admin-select>
+      <search @search="_search" placeholerTxt="请输入商品名称"></search>
+      <a class="excel">导出Excel</a>
     </div>
     <div class="form-list">
       <div class="list-header">
@@ -41,6 +41,10 @@
   import AdminSelect from 'components/admin-select/admin-select' // 下拉框
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
+  import {ERR_OK, BASE_URL} from '../../common/js/config' // 下拉框
+  import storage from 'storage-controller'
+  import {Goods} from 'api'
+
   const TITLELIST = ['活动图片', '活动标题', '活动价', '活动类型', '活动状态', '活动来源', '创建时间']
 
   export default {
@@ -51,8 +55,82 @@
         activityType: [{
           select: false,
           show: false,
-          children: [{content: '活动类型', data: []}]
-        }]
+          children: [{content: '活动类型', data: [{title: '全部', status: ''}, {title: '火爆拼团', status: '1'}, {title: '疯狂砍价', status: '3'}]}]
+        }],
+        page: 1,
+        date: 'today',
+        keyWord: '',
+        startTime: '',
+        endTime: '',
+        fiDate: 'today',
+        fiStart: '',
+        fiEnd: '',
+        status: '',
+        statusEnd: '',
+        showIndex: 0,
+        goodsList: [],
+        pageTotal: {
+          total: 1,
+          per_page: 10,
+          total_page: 1
+        },
+        downUrl: ''
+      }
+    },
+    async created() {
+      this._getUrl()
+      await this._getGoodsList()
+    },
+    methods: {
+      setValue(item) {
+        this.activityType[0].children[0].content = item.title
+        this.statusEnd = item.status
+      },
+      _getUrl() {
+        this.downUrl = BASE_URL.api + `/api/admin/goods-export?access_token=${storage.get('aiToken')}&limit=10&title=${this.keyWord}&time=${this.date}&sort_type=${this.sortType}&start_time=${this.startTime}&end_time=${this.endTime}`
+      },
+      async _search(word) {
+        this.page = 1
+        this.keyWord = word
+        this.date = this.fiDate
+        this.startTime = this.fiStart
+        this.endTime = this.fiEnd
+        this.status = this.statusEnd
+        this.$refs.page.beginPage()
+        await this._getGoodsList()
+      },
+      _checkTime(time) {
+        if (typeof time === 'string') {
+          this.fiDate = time
+          this.fiStart = ''
+          this.fiEnd = ''
+          return
+        }
+        this.fiDate = ''
+        this.fiStart = time[0]
+        this.fiEnd = time[1]
+      },
+      async _getGoodsList() {
+        let data = {limit: 10, page: this.page, time: this.date, activity_name: this.keyWord, start_time: this.startTime, end_time: this.endTime, rule_id: this.status}
+        let res = await Goods.activities(data)
+        if (res.error !== ERR_OK) {
+          this.$emit('setNull', true)
+          this.$emit('showToast', res.message)
+          return
+        }
+        let pages = res.meta
+        this.pageTotal = Object.assign({}, {
+          total: pages.total,
+          per_page: pages.per_page,
+          total_page: pages.last_page
+        })
+        this.goodsList = res.data
+        this.$emit('setNull', !this.goodsList.length)
+        console.log(this.goodsList)
+      },
+      async _addPage(page) {
+        this.page = page
+        await this._getGoodsList()
       }
     },
     components: {
