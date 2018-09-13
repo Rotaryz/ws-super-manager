@@ -65,10 +65,6 @@
         keyWord: '',
         startTime: '',
         endTime: '',
-        sortType: 0,
-        fiDate: 'today',
-        fiStart: '',
-        fiEnd: '',
         showIndex: 0,
         goodsList: [],
         pageTotal: {
@@ -88,7 +84,7 @@
         this.downUrl = BASE_URL.api + `/api/admin/goods-export?access_token=${storage.get('aiToken')}&limit=10&title=${this.keyWord}&time=${this.date}&sort_type=${this.sortType}&start_time=${this.startTime}&end_time=${this.endTime}`
       },
       async _sortList(index) {
-        if (index !== 3 || index !== 4) {
+        if (index !== 3 && index !== 4) {
           return
         }
         this.showIndex = index
@@ -108,9 +104,6 @@
         this.page = 1
         this.sortType = 0
         this.keyWord = word
-        this.date = this.fiDate
-        this.startTime = this.fiStart
-        this.endTime = this.fiEnd
         this.$refs.page.beginPage()
         await this._getGoodsList()
       },
@@ -122,6 +115,7 @@
           this.$emit('showToast', res.message)
           return
         }
+        this._getUrl()
         let pages = res.meta
         this.pageTotal = Object.assign({}, {
           total: pages.total,
@@ -130,18 +124,21 @@
         })
         this.goodsList = res.data
         this.$emit('setNull', !this.goodsList.length)
-        console.log(this.goodsList)
       },
-      _checkTime(time) {
+      async _checkTime(time) {
         if (typeof time === 'string') {
-          this.fiDate = time
-          this.fiStart = ''
-          this.fiEnd = ''
-          return
+          this.date = time
+          this.startTime = ''
+          this.endTime = ''
+        } else {
+          this.date = ''
+          this.startTime = time[0]
+          this.endTime = time[1]
         }
-        this.fiDate = ''
-        this.fiStart = time[0]
-        this.fiEnd = time[1]
+        this.page = 1
+        this.sortType = 0
+        this.$refs.page.beginPage()
+        await this._getGoodsList()
       },
       async _addPage(page) {
         this.page = page
