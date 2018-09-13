@@ -93,27 +93,29 @@
     }, {
       title: '订单管理',
       icon: require('./icon-order_select@2x.png'),
-      url: '/mina-management/mina-release',
+      url: '/goods-order',
       childrenIndex: -1,
       children: [{
         title: '商品订单',
-        url: '/mina-management/mina-release'
+        url: '/goods-order'
       }, {
         title: '开通门店',
-        url: '/mina-management/mina-release'
-      }]
+        url: '/open-order'
+      }],
+      showHeight: HEIGHT
     }, {
       title: '财务管理',
       icon: require('./icon-money_select@2x.png'),
-      url: '/mina-management/mina-release',
+      url: '/exchange',
       childrenIndex: -1,
       children: [{
         title: '交易记录',
-        url: '/mina-management/mina-release'
+        url: '/exchange'
       }, {
         title: '提现申请',
-        url: '/mina-management/mina-release'
-      }]
+        url: '/withdraw'
+      }],
+      showHeight: HEIGHT
     }
   ]
   export default {
