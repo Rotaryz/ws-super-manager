@@ -1,13 +1,13 @@
 <template>
   <div class="activity">
     <div class="ac-tab">
-      <date-select></date-select>
-      <admin-select :select="activityType" role="activity"></admin-select>
-      <search></search>
+      <date-select @checkTime="checkTime"></date-select>
+      <admin-select :select="activityType" role="activity" @setValue="setType"></admin-select>
+      <search @search="searchBtn"></search>
       <div class="excel">导出Excel</div>
     </div>
     <ul class="tab-list">
-      <li class="item" v-for="(item, index) in tabStatus" v-bind:key="index" :class="index === 3 ? 'active' : ''">{{item.text}}</li>
+      <li class="item" v-for="(item, index) in tabStatus" v-bind:key="index" :class="indexActive === index ? 'active' : ''" @click="checkTab(item, index)">{{item.text}}</li>
     </ul>
     <div class="form-list">
       <div class="list-header">
@@ -16,21 +16,20 @@
         </div>
       </div>
       <div class="list">
-        <div class="list-box">
-          <div class="list-item list-text">{{'---'}}</div>
-          <div class="list-item list-text">{{'商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称'}}</div>
-          <div class="list-item list-text">{{'---'}}</div>
-          <div class="list-item list-text">---</div>
-          <div class="list-item list-text">---</div>
-          <div class="list-item list-text">{{'---'}}</div>
-          <div class="list-item list-text">{{'---'}}</div>
-          <div class="list-item list-text">{{'---'}}</div>
-          <div class="list-item list-text">{{'---'}}</div>
+        <div class="list-box" v-for="(item, index) in goodsList" :key="index">
+          <div class="list-item list-text">{{item.order_sn}}</div>
+          <div class="list-item list-text">{{item.title}}</div>
+          <div class="list-item list-text">{{item.price}}</div>
+          <div class="list-item list-text">{{item.num}}</div>
+          <div class="list-item list-text">{{item.total_price}}</div>
+          <div class="list-item list-text">{{item.source}}</div>
+          <div class="list-item list-text">{{item.name}}</div>
+          <div class="list-item list-text">{{item.created_at}}</div>
+          <div class="list-item list-text">{{item.status}}</div>
         </div>
       </div>
       <div class="page">
-        <!--:pageDtail="pageTotal" @addPage="_addPage"-->
-        <page-detail ref="page"></page-detail>
+        <page-detail ref="page" :pageDtail="goodsPage" @addPage="goPage"></page-detail>
       </div>
     </div>
   </div>
@@ -41,8 +40,10 @@
   import AdminSelect from 'components/admin-select/admin-select' // 下拉框
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
+  import {Order} from 'api'
+  import {ERR_OK} from 'common/js/config'
   const TITLELIST = ['订单号', '商品信息', '单价', '数量', '实付金额', '业务类型', '下单用户', '下单时间', '状态']
-  const ORDERSTATUS = [{text: '全部订单', status: 0}, {text: '待付款', status: 0}, {text: '待发货', status: 0}, {text: '待收货', status: 0}, {text: '已完成', status: 0}, {text: '已关闭', status: 0}]
+  const ORDERSTATUS = [{text: '全部订单', status: 0}, {text: '待付款', status: 1}, {text: '待发货', status: 2}, {text: '待收货', status: 3}, {text: '已完成', status: 4}, {text: '已关闭', status: 4}]
 
   export default {
     name: 'goods-order',
@@ -54,7 +55,77 @@
           show: false,
           children: [{content: '活动类型', data: []}]
         }],
-        tabStatus: ORDERSTATUS
+        tabStatus: ORDERSTATUS,
+        rqData: {
+          time: 'today',
+          start_time: 0,
+          end_time: 0,
+          order_sn: '',
+          trade_type: 0,
+          page: 1,
+          status: 1,
+          limit: 10
+        },
+        goodsList: [],
+        goodsPage: {
+          total: 0, // 总数量
+          per_page: 10, // 一页条数
+          total_page: 1 // 总页数
+        },
+        indexActive: 0
+      }
+    },
+    methods: {
+      getGoodsOrdersData() {
+        Order.shopOrder(this.rqData).then((res) => {
+          if (res.error === ERR_OK) {
+            this.goodsList = res.data
+            this.goodsPage.total = res.meta.total
+            this.goodsPage.per_page = res.meta.per_page
+            this.goodsPage.total_page = res.meta.last_page
+            this.$emit('setNull', !this.goodsList.length)
+          } else {
+            this.$emit('setNull', true)
+            this.$emit('showToast', res.message)
+          }
+        })
+      },
+      checkTime(index) {
+        if (index.constructor === Array) {
+          this.rqData.start_time = index[0]
+          this.rqData.end_time = index[1]
+          this.rqData.time = ''
+        } else {
+          this.rqData.start_time = ''
+          this.rqData.end_time = ''
+          this.rqData.time = index
+        }
+        this.rqData.page = 1
+        this.$refs.page.beginPage()
+        this.getGoodsOrdersData()
+      },
+      setType(type) {
+        this.rqData.trade_type = type.status
+        this.rqData.page = 1
+        this.$refs.page.beginPage()
+        this.getGoodsOrdersData()
+      },
+      checkTab(item, index) {
+        this.indexActive = index
+        this.rqData.status = item.status
+        this.rqData.page = 1
+        this.$refs.page.beginPage()
+        this.getGoodsOrdersData()
+      },
+      searchBtn(text) {
+        this.rqData.order_sn = text
+        this.rqData.page = 1
+        this.$refs.page.beginPage()
+        this.getGoodsOrdersData()
+      },
+      goPage(page) {
+        this.rqData.page = page
+        this.getGoodsOrdersData()
       }
     },
     components: {
@@ -171,6 +242,7 @@
     margin-bottom: 20px
     border-bottom-1px()
     .item
+      cursor: pointer
       background: $color-FAFAFA
       width: 120px
       font-size: $font-size-medium14

@@ -81,7 +81,9 @@
             this.exchagePage.total = res.meta.total
             this.exchagePage.per_page = res.meta.per_page
             this.exchagePage.total_page = res.meta.last_page
+            this.$emit('setNull', !this.exchangeList.length)
           } else {
+            this.$emit('setNull', true)
             this.$emit('showToast', res.message)
           }
         })
@@ -96,9 +98,15 @@
           this.rqData.end_time = ''
           this.rqData.time = index
         }
+        this.rqData.page = 1
+        this.$refs.page.beginPage()
+        this.getExchangeData()
       },
       setType(type) {
         this.rqData.trade_type = type.status
+        this.rqData.page = 1
+        this.$refs.page.beginPage()
+        this.getExchangeData()
       },
       searchBtn(text) {
         this.rqData.order_sn = text
