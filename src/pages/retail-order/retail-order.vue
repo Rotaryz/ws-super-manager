@@ -2,7 +2,7 @@
   <div class="retail-order">
     <div class="content-top">
       <div class="left">
-        <DateSelect></DateSelect>
+        <DateSelect @checkTime="checkTime"></DateSelect>
         <Search></Search>
       </div>
       <!--<AdminSelect></AdminSelect>-->
@@ -40,7 +40,6 @@
       return {
         headerList: ['客户头像', '客户昵称', '性别', '地区', '加入时间'],
         arr: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
       }
     },
     components: {
@@ -51,6 +50,11 @@
     },
     mounted() {
       // this.$emit('showShade')
+    },
+    methods: {
+      checkTime(status) {
+        console.log(status)
+      }
     }
   }
 </script>

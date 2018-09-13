@@ -2,7 +2,7 @@
   <div class="agent-order">
     <div class="content-top">
       <div class="left">
-        <DateSelect @checkTab="checkTab"></DateSelect>
+        <DateSelect @checkTime="checkTime"></DateSelect>
         <Search></Search>
       </div>
       <div class="excel">导出Excel</div>
@@ -47,7 +47,6 @@
       return {
         headerList: ['客户头像', '客户昵称', '性别', '地区', '手机号', '收货地址', '完成订单', '消费金额', '加入时间'],
         arr: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
       }
     },
     components: {
@@ -60,7 +59,7 @@
       // this.$emit('showShade')
     },
     methods: {
-      checkTab(status) {
+      checkTime(status) {
         console.log(status)
       }
     }
