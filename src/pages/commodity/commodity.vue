@@ -32,7 +32,7 @@
           <div class="list-item list-text">{{item.sale_count + '' || '---'}}</div>
           <div class="list-item list-text">{{item.is_online === 0 ? '已下架' : item.is_online === 1 ? '已上架' : '---'}}</div>
           <div class="list-item list-text">
-            <router-link tag="a" target="_blank" :to="'/business-list?num='+ item.merchant_name" class="bule hand">{{item.merchant_name || '---'}}</router-link>
+            <router-link tag="a" target="_blank" :to="'/business-list?num='+ item.merchant_account" class="bule hand">{{item.merchant_name || '---'}}</router-link>
           </div>
           <div class="list-item list-text">{{item.created_at || '---'}}</div>
         </div>

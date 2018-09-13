@@ -1,16 +1,18 @@
 <template>
   <ul class="date">
-    <li class="date-item hand" :class="{'date-item-fi-active':index === tabIndex && index === 0,'date-item-ce-active': index === tabIndex && index !== 0, 'date-item-ne-active': index> 0 && index - 1 === tabIndex}" v-for="(item, index) in arrTitle" :key="index" @click="checkTab(index)">
+    <li class="date-item hand" :class="{'date-item-active': tabIndex === index}" v-for="(item, index) in arrTitle" :key="index" @click="checkTab(index)">
       {{item.title}}
-      <div class="block" v-if="item.status === ''" v-show="tabIndex === 4">
-        <el-date-picker
-          v-model="moreTime"
-          type="daterange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期">
-        </el-date-picker>
-      </div>
+      <transition name="fade">
+        <div class="block" v-if="item.status === ''" v-show="tabIndex === 4">
+          <el-date-picker
+            v-model="moreTime"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期">
+          </el-date-picker>
+        </div>
+      </transition>
     </li>
   </ul>
 </template>
@@ -69,43 +71,115 @@
       color: $color-text-66
       width: 60px
       height: 28px
-      border-top: 0.5px solid $color-textD9
-      border-bottom: 0.5px solid $color-textD9
       position: relative
+      transition: all 0.4s
+      border: 0.5px solid $color-textD9
+      &:nth-child(2), &:nth-child(3), &:nth-child(4), &:nth-child(5)
+        border-left: none
       &:last-child
-        border-right: 0.5px solid $color-textD9
         border-top-right-radius: 4px
         border-bottom-right-radius: 4px
+        &:after
+          border-top-right-radius: 4px
+          border-bottom-right-radius: 4px
+        &:before
+          border-top-right-radius: 4px
+          border-bottom-right-radius: 4px
       &:first-child
-        border-left: 0.5px solid $color-textD9
         border-top-left-radius: 4px
         border-bottom-left-radius: 4px
         &:after
-          display: none
+          border-top-left-radius: 4px
+          border-bottom-left-radius: 4px
+        &:before
+          border-top-left-radius: 4px
+          border-bottom-left-radius: 4px
       &:after
-        position: absolute
-        left: 0
-        height: 100%
-        width: 1px
-        transform: scaleX(0.5)
-        background: $color-textD9
         content: ''
-    /*第一个*/
-    .date-item.date-item-fi-active
-      border-color: $color-4985FC
+        border-top: 0.5px solid transparent
+        border-bottom: 0.5px solid transparent
+        position: absolute
+        z-index: 5
+        height: 100%
+        width: 0
+        right: 0
+        top: -0.5px
+        box-sizing: content-box
+        transition: all 0.4s
+      &:before
+        content: ''
+        border-right: 0.5px solid transparent
+        border-left: 0.5px solid transparent
+        position: absolute
+        z-index: 5
+        height: 0
+        width: 100%
+        bottom: 0
+        left: 0
+        box-sizing: content-box
+        transition: all 0.4s
+
+    .date-item-active
+      transition: all 0.4s
       color: $color-4985FC
       &:after
-        background: $color-4985FC
-    /*中间*/
-    .date-item.date-item-ce-active
-      color: $color-4985FC
-      border-color: $color-4985FC
-      &:after
-        background: $color-4985FC
-    .date-item.date-item-ne-active
-      &:after
-        background: $color-4985FC
+        border-color: $color-4985FC
+        transition: all 0.4s
+        width: 100%
+      &:before
+        border-color: $color-4985FC
+        transition: all 0.4s
+        height: 100%
+
+  /*
+  &:last-child
+    border-right: 0.5px solid $color-textD9
+    border-top-right-radius: 4px
+    border-bottom-right-radius: 4px
+  &:first-child
+    border-left: 0.5px solid $color-textD9
+    border-top-left-radius: 4px
+    border-bottom-left-radius: 4px
+    &:after
+      display: none
+  &:after
+    transition: all 0.5s
+    position: absolute
+    left: 0
+    height: 100%
+    width: 1px
+    transform: scaleX(0.5)
+    background: $color-textD9
+    content: ''
+//第一个
+.date-item.date-item-fi-active
+  transition: all 0.5s
+  border-color: $color-4985FC
+  color: $color-4985FC
+  &:after
+    transition: all 0.5s
+    background: $color-4985FC
+//中间
+.date-item.date-item-ce-active
+  color: $color-4985FC
+  border-color: $color-4985FC
+  transition: all 0.5s
+
+  &:after
+    background: $color-4985FC
+    transition: all 0.5s
+
+.date-item.date-item-ne-active
+  &:after
+    transition: all 0.5s
+    background: $color-4985FC*/
 
   .block
     row-center()
+    z-index: 10
+    &.fade-enter, &.fade-leave-to
+      opacity: 0
+      height: 0
+    &.fade-enter-to, &.fade-leave-to
+      transition: all .3s ease-in-out
 </style>

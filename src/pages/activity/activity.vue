@@ -24,7 +24,7 @@
           <div class="list-item list-text">{{item.rule_id === 1 ? '火爆拼图' : item.rule_id === 3 ? '疯狂砍价' : '---'}}</div>
           <div class="list-item list-text">{{item.activity_status_str || '---'}}</div>
           <div class="list-item list-text">
-            <router-link tag="a" target="_blank" :to="'/business-list?num='+ item.merchant_name" class="bule hand">{{item.merchant_name || '---'}}</router-link>
+            <router-link tag="a" target="_blank" :to="'/business-list?num='+ item.merchant_account" class="bule hand">{{item.merchant_name || '---'}}</router-link>
           </div>
           <div class="list-item list-text">{{item.created_at || '---'}}
           </div>
@@ -60,7 +60,7 @@
           children: [{content: '活动类型', data: [{title: '全部', status: ''}, {title: '火爆拼团', status: '1'}, {title: '疯狂砍价', status: '3'}]}]
         }],
         page: 1,
-        date: '',
+        date: 'today',
         keyWord: '',
         startTime: '',
         endTime: '',
