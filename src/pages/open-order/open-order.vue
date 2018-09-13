@@ -2,9 +2,9 @@
   <div class="activity">
     <div class="ac-tab">
       <date-select @checkTime="checkTime"></date-select>
-      <admin-select :select="activityType" role="activity" @setValue="setType"></admin-select>
+      <!--<admin-select :select="activityType" role="activity" @setValue="setType"></admin-select>-->
       <search @search="searchBtn"></search>
-      <div class="excel">导出Excel</div>
+      <a class="excel">导出Excel</a>
     </div>
     <div class="form-list">
       <div class="list-header">
@@ -16,6 +16,7 @@
         <div class="list-box" v-for="(item, index) in goodsList" :key="index">
           <div class="list-item list-text">{{item.order_sn}}</div>
           <div class="list-item list-text">{{item.good_name}}</div>
+          <div class="list-item list-text">{{item.total}}</div>
           <div class="list-item list-text">{{item.name}}</div>
           <div class="list-item list-text">{{item.created_at}}</div>
         </div>
@@ -34,7 +35,8 @@
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
   import {Order} from 'api'
-  import {ERR_OK} from 'common/js/config'
+  import {ERR_OK, BASE_URL} from 'common/js/config'
+  import storage from 'storage-controller'
   const TITLELIST = ['订单号', '商品名称', '实付金额', '用户 ', '支付时间']
 
   export default {
@@ -61,10 +63,18 @@
           per_page: 10, // 一页条数
           total_page: 1 // 总页数
         },
-        indexActive: 0
+        indexActive: 0,
+        downUrl: ''
       }
     },
+    async created() {
+      this._getUrl()
+      await this.getOpenOrdersData()
+    },
     methods: {
+      _getUrl() {
+        this.downUrl = BASE_URL.api + `/api/admin/store-index-excel?access_token=${storage.get('aiToken')}&limit=10&time=${this.rqData.time}&start_time=${this.rqData.start_time}&end_time=${this.rqData.end_time}&order_sn=${this.rqData.order_sn}`
+      },
       getOpenOrdersData() {
         Order.openOrder(this.rqData).then((res) => {
           if (res.error === ERR_OK) {

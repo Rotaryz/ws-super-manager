@@ -4,10 +4,12 @@
       <date-select @checkTime="checkTime"></date-select>
       <admin-select :select="activityType" role="activity" @setValue="setType"></admin-select>
       <search @search="searchBtn"></search>
-      <div class="excel">导出Excel</div>
+      <a class="excel">导出Excel</a>
     </div>
     <ul class="tab-list">
-      <li class="item" v-for="(item, index) in tabStatus" v-bind:key="index" :class="indexActive === index ? 'active' : ''" @click="checkTab(item, index)">{{item.text}}</li>
+      <li class="item" v-for="(item, index) in tabStatus" v-bind:key="index"
+          :class="indexActive === index ? 'active' : ''" @click="checkTab(item, index)">{{item.text}}
+      </li>
     </ul>
     <div class="form-list">
       <div class="list-header">
@@ -41,9 +43,12 @@
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
   import {Order} from 'api'
-  import {ERR_OK} from 'common/js/config'
+  import {ERR_OK, BASE_URL} from 'common/js/config'
+  import storage from 'storage-controller'
+
   const TITLELIST = ['订单号', '商品信息', '单价', '数量', '实付金额', '业务类型', '下单用户', '下单时间', '状态']
-  const ORDERSTATUS = [{text: '全部订单', status: 0}, {text: '待付款', status: 1}, {text: '待发货', status: 2}, {text: '待收货', status: 3}, {text: '已完成', status: 4}, {text: '已关闭', status: 4}]
+  const ORDERSTATUS = [{text: '全部订单', status: 0}, {text: '待付款', status: 1}, {text: '待发货', status: 2}, {text: '待收货', status: 3}, {text: '已完成', status: 4}, {text: '已关闭', status: 5}]
+  const GROUPONORDERSTATUS = [{text: '全部订单', status: 0}, {text: '待付款', status: 1}, {text: '待发货', status: 2}, {text: '待收货', status: 3}, {text: '已完成', status: 4}, {text: '已关闭', status: 5}, {text: '待成团', status: 6}, {text: '已退款', status: 7}]
 
   export default {
     name: 'goods-order',
@@ -53,7 +58,7 @@
         activityType: [{
           select: false,
           show: false,
-          children: [{content: '活动类型', data: []}]
+          children: [{content: '业务类型', data: [{title: '全部', status: ''}, {title: '商品', status: 'c_common'}, {title: '团购', status: 'c_groupon'}, {title: '砍价', status: 'c_bargain'}]}]
         }],
         tabStatus: ORDERSTATUS,
         rqData: {
@@ -72,10 +77,18 @@
           per_page: 10, // 一页条数
           total_page: 1 // 总页数
         },
-        indexActive: 0
+        indexActive: 0,
+        downUrl: ''
       }
     },
+    async created() {
+      this._getUrl()
+      await this.getGoodsOrdersData()
+    },
     methods: {
+      _getUrl() {
+        this.downUrl = BASE_URL.api + `/api/admin/order-index-excel?access_token=${storage.get('aiToken')}&limit=10&time=${this.rqData.time}&start_time=${this.rqData.start_time}&end_time=${this.rqData.end_time}&order_sn=${this.rqData.order_sn}&source=${this.rqData.source}&status=${this.rqData.status}`
+      },
       getGoodsOrdersData() {
         Order.shopOrder(this.rqData).then((res) => {
           if (res.error === ERR_OK) {
@@ -106,6 +119,15 @@
       },
       setType(type) {
         this.rqData.trade_type = type.status
+        if (type.status === 'c_groupon') {
+          this.tabStatus = GROUPONORDERSTATUS
+          this.indexActive = 0
+          this.rqData.status = 0
+        } else {
+          this.tabStatus = ORDERSTATUS
+          this.indexActive = 0
+          this.rqData.status = 0
+        }
         this.rqData.page = 1
         this.$refs.page.beginPage()
         this.getGoodsOrdersData()
@@ -237,6 +259,7 @@
 
   .list-box-active
     background: $color-background
+
   .tab-list
     layout(row)
     margin-bottom: 20px

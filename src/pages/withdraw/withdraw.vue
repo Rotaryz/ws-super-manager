@@ -4,7 +4,7 @@
       <date-select @checkTime="checkTime"></date-select>
       <admin-select :select="activityType" role="activity" @setValue="setType"></admin-select>
       <search @search="searchBtn"></search>
-      <div class="excel">导出Excel</div>
+      <a class="excel">导出Excel</a>
     </div>
     <div class="form-list">
       <div class="list-header">
@@ -69,7 +69,8 @@
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
   import { Exchange } from 'api'
-  import {ERR_OK} from 'common/js/config'
+  import {ERR_OK, BASE_URL} from 'common/js/config'
+  import storage from 'storage-controller'
 
   const TITLELIST = ['订单号', '提交时间', '账号', '可提现金额 ', '冻结金额', '提现金额', '真实姓名', '银行类型', '银行卡号', '提现状态', '操作']
   export default {
@@ -101,13 +102,18 @@
         text: false,
         showModels: false,
         withId: '',
-        noteText: ''
+        noteText: '',
+        downUrl: ''
       }
     },
-    created() {
-      this.getAuditData()
+    async created() {
+      this._getUrl()
+      await this.getAuditData()
     },
     methods: {
+      _getUrl() {
+        this.downUrl = BASE_URL.api + `/api/admin/withdraw-index-excel?access_token=${storage.get('aiToken')}&limit=10&time=${this.rqData.time}&start_time=${this.rqData.start_time}&end_time=${this.rqData.end_time}&withdraw_sn=${this.rqData.withdraw_sn}&status=${this.rqData.status}`
+      },
       showModel(item) {
         this.$emit('showShade')
         this.showModels = true

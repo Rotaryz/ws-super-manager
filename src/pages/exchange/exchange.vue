@@ -4,7 +4,7 @@
       <date-select @checkTime="checkTime"></date-select>
       <admin-select :select="activityType" role="activity" @setValue="setType"></admin-select>
       <search @search="searchBtn"></search>
-      <div class="excel">导出Excel</div>
+      <a class="excel">导出Excel</a>
     </div>
     <div class="form-list">
       <div class="list-header">
@@ -37,7 +37,8 @@
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
   import {Exchange} from 'api'
-  import {ERR_OK} from 'common/js/config'
+  import {ERR_OK, BASE_URL} from 'common/js/config'
+  import storage from 'storage-controller'
 
   const TITLELIST = ['订单号', '交易号', '交易金额', '业务类型 ', '交易类型', '付款人', '支付时间']
   export default {
@@ -67,13 +68,18 @@
           total: 0, // 总数量
           per_page: 10, // 一页条数
           total_page: 1 // 总页数
-        }
+        },
+        downUrl: ''
       }
     },
-    created() {
-      this.getExchangeData()
+    async created() {
+      this._getUrl()
+      await this.getExchangeData()
     },
     methods: {
+      _getUrl() {
+        this.downUrl = BASE_URL.api + `/api/admin/trade-index-excel?access_token=${storage.get('aiToken')}&limit=10&time=${this.rqData.time}&start_time=${this.rqData.start_time}&end_time=${this.rqData.end_time}&order_sn=${this.rqData.order_sn}&trade_type=${this.rqData.trade_type}`
+      },
       getExchangeData() {
         Exchange.exchangeList(this.rqData).then((res) => {
           if (res.error === ERR_OK) {
