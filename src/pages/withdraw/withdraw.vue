@@ -4,7 +4,7 @@
       <date-select @checkTime="checkTime"></date-select>
       <admin-select :select="activityType" role="activity" @setValue="setType"></admin-select>
       <search @search="searchBtn"></search>
-      <a class="excel">导出Excel</a>
+      <a :href="downUrl" class="excel">导出Excel</a>
     </div>
     <div class="form-list">
       <div class="list-header">
@@ -157,6 +157,7 @@
         this.text = false
       },
       getAuditData() {
+        this._getUrl()
         Exchange.withdrawList(this.rqData).then((res) => {
           if (res.error === ERR_OK) {
             this.withdrawList = res.data

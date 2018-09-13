@@ -84,6 +84,7 @@
       this.getExchangeData()
       this.getTotalMode()
       this.totalChart()
+      this.$emit('setNull', false)
     },
     mounted() {
       this.$emit('setTab', false)

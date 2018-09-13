@@ -4,7 +4,7 @@
       <date-select @checkTime="checkTime"></date-select>
       <admin-select :select="activityType" role="activity" @setValue="setType"></admin-select>
       <search @search="searchBtn"></search>
-      <a class="excel">导出Excel</a>
+      <a :href="downUrl" class="excel">导出Excel</a>
     </div>
     <ul class="tab-list">
       <li class="item" v-for="(item, index) in tabStatus" v-bind:key="index"
@@ -58,7 +58,7 @@
         activityType: [{
           select: false,
           show: false,
-          children: [{content: '业务类型', data: [{title: '全部', status: ''}, {title: '商品', status: 'c_common'}, {title: '团购', status: 'c_groupon'}, {title: '砍价', status: 'c_bargain'}]}]
+          children: [{content: '业务类型', data: [{title: '全部', status: '0'}, {title: '商品', status: 'c_common'}, {title: '团购', status: 'c_groupon'}, {title: '砍价', status: 'c_bargain'}]}]
         }],
         tabStatus: ORDERSTATUS,
         rqData: {
@@ -66,8 +66,8 @@
           start_time: 0,
           end_time: 0,
           order_sn: '',
-          trade_type: 0,
           page: 1,
+          source: 0,
           status: 1,
           limit: 10
         },
@@ -90,6 +90,7 @@
         this.downUrl = BASE_URL.api + `/api/admin/order-index-excel?access_token=${storage.get('aiToken')}&limit=10&time=${this.rqData.time}&start_time=${this.rqData.start_time}&end_time=${this.rqData.end_time}&order_sn=${this.rqData.order_sn}&source=${this.rqData.source}&status=${this.rqData.status}`
       },
       getGoodsOrdersData() {
+        this._getUrl()
         Order.shopOrder(this.rqData).then((res) => {
           if (res.error === ERR_OK) {
             this.goodsList = res.data
@@ -118,7 +119,7 @@
         this.getGoodsOrdersData()
       },
       setType(type) {
-        this.rqData.trade_type = type.status
+        this.rqData.source = type.status
         if (type.status === 'c_groupon') {
           this.tabStatus = GROUPONORDERSTATUS
           this.indexActive = 0

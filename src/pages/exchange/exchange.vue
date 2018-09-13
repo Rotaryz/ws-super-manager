@@ -4,7 +4,7 @@
       <date-select @checkTime="checkTime"></date-select>
       <admin-select :select="activityType" role="activity" @setValue="setType"></admin-select>
       <search @search="searchBtn"></search>
-      <a class="excel">导出Excel</a>
+      <a :href="downUrl" class="excel">导出Excel</a>
     </div>
     <div class="form-list">
       <div class="list-header">
@@ -81,6 +81,7 @@
         this.downUrl = BASE_URL.api + `/api/admin/trade-index-excel?access_token=${storage.get('aiToken')}&limit=10&time=${this.rqData.time}&start_time=${this.rqData.start_time}&end_time=${this.rqData.end_time}&order_sn=${this.rqData.order_sn}&trade_type=${this.rqData.trade_type}`
       },
       getExchangeData() {
+        this._getUrl()
         Exchange.exchangeList(this.rqData).then((res) => {
           if (res.error === ERR_OK) {
             this.exchangeList = res.data
