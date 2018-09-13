@@ -2,18 +2,25 @@
   <div class="navigation">
     <div class="big-show" :class="{'big-hide': showAnimation}">
       <div class="herder" @click.stop>
-        <img src="./icon-logo@2x.png" class="icon">
+        <img src="./pic-logo@2x.png" class="icon">
         <p class="header-name hand" @click="_checkRole">{{roleName}}</p>
       </div>
       <ul class="nav-big">
         <li class="nav-item" v-for="(item , index) in navList" :key="index" @click="showChild(index)" :style="{'height':item.showHeight+'px'}">
-          <router-link :to="{path: item.url}" class="nav-tap" :class="{'nav-tap-active':bigChild === index,'nav-item-no-border':item.children.length > 1}">
+          <router-link :to="{path: item.url}" v-if="item.children.length === 1" class="nav-tap" :class="{'nav-tap-active':bigChild === index,'nav-item-no-border':item.children.length > 1}">
             <span class="nav-icon"><img :src="item.icon" class="nav-pic"></span>
             <div class="nav-title" v-show="!showAnimation">
               <span>{{item.title}}</span>
             </div>
             <i class="nav" :class="{'nav-active': item.showHeight !== 58}" v-show="!showAnimation"></i>
           </router-link>
+          <div v-if="item.children.length > 1" class="nav-tap" :class="{'nav-tap-active':bigChild === index,'nav-item-no-border':item.children.length > 1}">
+            <span class="nav-icon"><img :src="item.icon" class="nav-pic"></span>
+            <div class="nav-title" v-show="!showAnimation">
+              <span>{{item.title}}</span>
+            </div>
+            <i class="nav" :class="{'nav-active': item.showHeight !== 58}" v-show="!showAnimation"></i>
+          </div>
           <ul class="nav-big-child" v-if="item.children">
             <li class="nav-item" v-for="(items , idx) in item.children" :key="idx" @click.stop="bigChildren(idx)">
               <router-link :to="{path: items.url}" class="nav-tap-small">
@@ -73,11 +80,11 @@
     }, {
       title: '商品管理',
       icon: require('./icon-goods_select@2x.png'),
-      url: '/financial-management/platform-income',
+      url: '/commodity',
       childrenIndex: -1,
       children: [{
         title: '商品管理',
-        url: '/financial-management/platform-income'
+        url: '/commodity'
       }],
       showHeight: HEIGHT
     }, {
@@ -136,7 +143,8 @@
     },
     created() {
       let path = this.$route.fullPath
-      this.info(path)
+      path = path.split('?')
+      this.info(path[0])
     },
     methods: {
       hideRole() {
@@ -151,7 +159,8 @@
           if (item.children.length > 1) {
             item.children.forEach((items, index) => {
               if (items.url.includes(type)) {
-                this.showChild(idx, false)
+                this.navList[idx].childrenIndex = index
+                this.showChild(idx, false, false)
                 this.bigChildren(index)
               } else {
                 item.showHeight = HEIGHT
@@ -165,7 +174,7 @@
           }
         })
       },
-      showChild(index, status = true) {
+      showChild(index, status = true, go = true) {
         this.smallIndex = index
         clearInterval(this.timer)
         if (this.navList[index].children.length === 1) {
@@ -180,13 +189,15 @@
             }, 30)
           }
           this.bigChild = index
-          sessionStorage.setItem('title', [this.navList[index].title])
         } else if (this.navList[index].children.length > 1) {
           clearInterval(this.timer)
           let childCode = this.navList[index].childrenIndex === -1 ? 0 : this.navList[index].childrenIndex
+          if (go) {
+            this.navList[index].url = this.navList[index].children[childCode].url
+            this.$router.push(this.navList[index].url)
+          }
           this.recodIndex = index
           this.navList[this.recodIndex].childrenIndex = childCode
-          sessionStorage.setItem('title', [this.navList[index].title, this.navList[index].children[childCode].title])
           this.bigChild = -1
           clearInterval(this.timer)
           for (let i = 0; i < this.navList.length; i++) {
@@ -234,15 +245,6 @@
         let num = this.recodIndex
         this.navList[num].url = this.navList[num].children[this.navList[num].childrenIndex].url
       }
-    },
-    watch: {
-      '$route'(to, from) {
-        if (to.path === '/agent-management/agent-list/agent-detail' && from.path === '/financial-management/platform-income') {
-          this.showChild(1)
-        } else if (from.path === '/agent-management/agent-list/agent-detail' && to.path === '/financial-management/platform-income') {
-          this.showChild(3)
-        }
-      }
     }
   }
 </script>
@@ -274,8 +276,7 @@
         .icon
           margin-right: 4.4px
           overflow: hidden
-          height: 20px
-          border-radius: 50%
+          height: 24px
       .nav-big
         .nav-item
           overflow: hidden
@@ -322,7 +323,7 @@
               background: rgba(255, 255, 255, 0.1)
               border-color: transparent
               transition: all 0.2s
-          .nav-tap-active
+          .router-link-active
             background: rgba(255, 255, 255, .1)
             border-left: 6px solid $color-4985FC !important
         .nav-big-child
