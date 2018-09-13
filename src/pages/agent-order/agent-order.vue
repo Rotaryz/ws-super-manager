@@ -3,35 +3,36 @@
     <div class="content-top">
       <div class="left">
         <DateSelect @checkTime="checkTime"></DateSelect>
-        <Search></Search>
+        <Search @search="search"></Search>
       </div>
-      <div class="excel">导出Excel</div>
+      <a :href="excelUrl" class="excel">导出Excel</a>
     </div>
     <div class="content-list">
       <div class="list-header">
         <span class="header-key" v-for="item in headerList">{{item}}</span>
       </div>
       <div class="list-content">
-        <div class="list-item" v-for="val in arr">
+        <div class="list-item" v-for="val in data">
           <div class="item">
-            <img class="head-img" src="" alt="">
+            <img class="head-img" :src="val.avatar" alt="">
           </div>
-          <span class="item">啦啦啦</span>
-          <span class="item">男</span>
-          <span class="item">广东广州</span>
-          <span class="item">13584260103</span>
+          <span class="item">{{val.nickname}}</span>
+          <span class="item">{{val.sex && val.sex * 1 === 1 ? '男' : '女'}}</span>
+          <span class="item area">{{val.area}}</span>
+          <span class="item">{{val.mobile}}</span>
           <div class="long-item">
-            <span>收货人：市民老王</span>
-            <span>手机号：13584260103</span>
-            <p>收获地址：广东省广州市海珠区新港街道新港中路397号</p>
+            <span>收货人：{{val.receiver_name}}</span>
+            <span>手机号：{{val.receiver_mobile}}</span>
+            <p class="address">收货地址：{{val.receiver_address}}</p>
           </div>
-          <span class="item">100</span>
-          <span class="item">780.00</span>
-          <span class="item">2018-09-12</span>
+          <span class="item">{{val.order_count}}</span>
+          <span class="item">{{val.order_sum}}</span>
+          <span class="item">{{val.created_at}}</span>
         </div>
       </div>
     </div>
-    <PageDetail></PageDetail>
+    <PageDetail :pageDtail="pageDetail" @addPage="addPage"></PageDetail>
+    <toast ref="toast"></toast>
   </div>
 </template>
 
@@ -40,27 +41,78 @@
   import AdminSelect from 'components/admin-select/admin-select' // 下拉框
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
+  import {Customers} from 'api'
+  import {ERR_OK, BASE_URL} from 'common/js/config'
+  import Toast from 'components/toast/toast'
+  import storage from 'storage-controller'
 
   export default {
     name: 'agent-order',
     data() {
       return {
         headerList: ['客户头像', '客户昵称', '性别', '地区', '手机号', '收货地址', '完成订单', '消费金额', '加入时间'],
-        arr: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        data: [],
+        requestData: {
+          time: 'today',
+          start_time: '',
+          end_time: '',
+          name: '',
+          page: 1
+        },
+        pageDetail: {
+          total: 1,
+          per_page: 10,
+          total_page: 1
+        },
+        excelUrl: ''
       }
     },
     components: {
       Search,
       AdminSelect,
       DateSelect,
-      PageDetail
+      PageDetail,
+      Toast
     },
-    mounted() {
-      // this.$emit('showShade')
+    created() {
+      this.getCustomersList()
+      this.getExcelUrl()
     },
     methods: {
       checkTime(status) {
-        console.log(status)
+        if (status instanceof Array) {
+          this.requestData.start_time = status[0]
+          this.requestData.end_time = status[1]
+          this.requestData.time = ''
+        } else {
+          this.requestData.time = status
+          this.requestData.start_time = ''
+          this.requestData.end_time = ''
+        }
+        this.getCustomersList()
+      },
+      search(inputTxt) {
+        this.requestData.name = inputTxt
+        this.getCustomersList()
+      },
+      getCustomersList() {
+        Customers.getAgentOrderList(this.requestData)
+          .then((res) => {
+            if (res.error !== ERR_OK) {
+              this.$refs.toast.show(res.message)
+              return
+            }
+            this.data = res.data
+            this.pageDetail.total = res.meta.total
+            this.pageDetail.total_page = res.meta.last_page
+            this.getExcelUrl()
+          })
+      },
+      addPage(num) {
+        this.requestData.page = num
+      },
+      getExcelUrl() {
+        this.excelUrl = `${BASE_URL.api}/api/admin/consumption-index-excel?access_token=${storage.get('aiToken')}&time=${this.requestData.time}&start_time=${this.requestData.start_time}&end_time=${this.requestData.end_time}&name=${this.requestData.name}&page=${this.requestData.page}`
       }
     }
   }
@@ -105,6 +157,8 @@
         .header-key
           flex: 1
           text-align: left
+          &:nth-of-type(4)
+            flex: 1.4
           &:nth-of-type(6)
             flex: 3.8
       .list-content
@@ -120,9 +174,17 @@
           border-bottom: 1px solid $color-line
           .item
             flex: 1
+            &.area
+              flex: 1.4
+              no-wrap()
           .long-item
             flex: 3.8
             line-height: 18px
-
+            no-wrap()
+            .address
+              no-wrap()
+          .head-img
+            height: 40px
+            width: 40px
 
 </style>
