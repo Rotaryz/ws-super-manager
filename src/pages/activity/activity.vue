@@ -4,7 +4,7 @@
       <date-select @checkTime="_checkTime"></date-select>
       <admin-select :select="activityType" role="activity" @setValue="setValue"></admin-select>
       <search @search="_search" placeholerTxt="请输入商家名称、活动名称"></search>
-      <a class="excel">导出Excel</a>
+      <a :href="downUrl" class="excel">导出Excel</a>
     </div>
     <div class="form-list">
       <div class="list-header">
@@ -86,7 +86,7 @@
         await this._getGoodsList()
       },
       _getUrl() {
-        this.downUrl = BASE_URL.api + `/api/admin/goods-export?access_token=${storage.get('aiToken')}&limit=10&title=${this.keyWord}&time=${this.date}&sort_type=${this.sortType}&start_time=${this.startTime}&end_time=${this.endTime}`
+        this.downUrl = BASE_URL.api + `/api/admin/activity-export?access_token=${storage.get('aiToken')}&limit=10&activity_name=${this.keyWord}&time=${this.date}&rule_id=${this.status}&start_time=${this.startTime}&end_time=${this.endTime}`
       },
       async _search(word) {
         this.page = 1
