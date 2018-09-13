@@ -2,9 +2,9 @@
   <div class="home" @click="hideRole">
     <navigation ref="nav"></navigation>
     <div class="content">
-      <base-model ref="baseModel">
+      <base-model ref="baseModel" :showTag="showTag">
         <div slot="content" class="content-box">
-          <router-view ref="mina" @showToast="showToast" @showShade="showShade" @hideShade="hideShade" @showImage="showImage"></router-view>
+          <router-view ref="mina" @showToast="showToast" @showShade="showShade" @hideShade="hideShade" @showImage="showImage" @setTab="setTab"></router-view>
         </div>
       </base-model>
       <!--<router-view @showChild="showChild"/>-->
@@ -19,9 +19,15 @@
 
   export default {
     name: 'home',
-    created() {
+    data() {
+      return {
+        showTag: true
+      }
     },
     methods: {
+      setTab(status) {
+        this.showTag = status
+      },
       hideRole() {
         this.$refs.nav.hideRole()
       },

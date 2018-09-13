@@ -3,7 +3,7 @@
     <div class="ac-tab">
       <date-select></date-select>
       <search></search>
-      <div class="excel">导出Exce</div>
+      <div class="excel">导出Excel</div>
     </div>
     <div class="form-list">
       <div class="list-header">
