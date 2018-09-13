@@ -1,9 +1,9 @@
 <template>
   <div class="activity">
     <div class="ac-tab">
-      <date-select></date-select>
-      <admin-select :select="activityType" role="activity"></admin-select>
-      <search></search>
+      <date-select @checkTime="checkTime"></date-select>
+      <admin-select :select="activityType" role="activity" @setValue="setType"></admin-select>
+      <search @search="searchBtn"></search>
       <div class="excel">导出Excel</div>
     </div>
     <div class="form-list">
@@ -13,19 +13,19 @@
         </div>
       </div>
       <div class="list">
-        <div class="list-box">
-          <div class="list-item list-text">{{'---'}}</div>
-          <div class="list-item list-text">{{'---'}}</div>
-          <div class="list-item list-text">{{'---'}}</div>
-          <div class="list-item list-text">---</div>
-          <div class="list-item list-text">---</div>
-          <div class="list-item list-text">---</div>
-          <div class="list-item list-text">---</div>
+        <div class="list-box" v-for="(item, index) in exchangeList" v-bind:key="index">
+          <div class="list-item list-text">{{item.order_sn}}</div>
+          <div class="list-item list-text">{{item.out_trade_sn}}</div>
+          <div class="list-item list-text">{{item.total}}</div>
+          <div class="list-item list-text">{{item.source}}</div>
+          <div class="list-item list-text"><span v-if="item.trade_type * 1 === 1">支付</span><span v-if="item.trade_type * 1 === 2">退款</span></div>
+          <div class="list-item list-text">{{item.nickname}}</div>
+          <div class="list-item list-text">{{item.created_at}}</div>
         </div>
       </div>
       <div class="page">
         <!--:pageDtail="pageTotal" @addPage="_addPage"-->
-        <page-detail ref="page"></page-detail>
+        <page-detail ref="page" :pageDtail="exchagePage" @addPage="goPage"></page-detail>
       </div>
     </div>
   </div>
@@ -36,8 +36,10 @@
   import AdminSelect from 'components/admin-select/admin-select' // 下拉框
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
-  const TITLELIST = ['订单号', '交易号', '交易金额', '业务类型 ', '交易类型', '付款人', '支付时间']
+  import {Exchange} from 'api'
+  import {ERR_OK} from 'common/js/config'
 
+  const TITLELIST = ['订单号', '交易号', '交易金额', '业务类型 ', '交易类型', '付款人', '支付时间']
   export default {
     name: 'exchange',
     data() {
@@ -46,8 +48,67 @@
         activityType: [{
           select: false,
           show: false,
-          children: [{content: '活动类型', data: []}]
-        }]
+          children: [{
+            content: '活动类型',
+            data: [{title: '全部', status: 0}, {title: '支付', status: 1}, {title: '退款', status: 2}]
+          }]
+        }],
+        rqData: {
+          time: 'today',
+          start_time: 0,
+          end_time: 0,
+          order_sn: '',
+          trade_type: 0,
+          page: 1,
+          limit: 10
+        },
+        exchangeList: [],
+        exchagePage: {
+          total: 0, // 总数量
+          per_page: 10, // 一页条数
+          total_page: 1 // 总页数
+        }
+      }
+    },
+    created() {
+      this.getExchangeData()
+    },
+    methods: {
+      getExchangeData() {
+        Exchange.exchangeList(this.rqData).then((res) => {
+          if (res.error === ERR_OK) {
+            this.exchangeList = res.data
+            this.exchagePage.total = res.meta.total
+            this.exchagePage.per_page = res.meta.per_page
+            this.exchagePage.total_page = res.meta.last_page
+          } else {
+            this.$emit('showToast', res.message)
+          }
+        })
+      },
+      checkTime(index) {
+        if (index.constructor === Array) {
+          this.rqData.start_time = index[0]
+          this.rqData.end_time = index[1]
+          this.rqData.time = ''
+        } else {
+          this.rqData.start_time = ''
+          this.rqData.end_time = ''
+          this.rqData.time = index
+        }
+      },
+      setType(type) {
+        this.rqData.trade_type = type.status
+      },
+      searchBtn(text) {
+        this.rqData.order_sn = text
+        this.rqData.page = 1
+        this.$refs.page.beginPage()
+        this.getExchangeData()
+      },
+      goPage(page) {
+        this.rqData.page = page
+        this.getExchangeData()
       }
     },
     components: {

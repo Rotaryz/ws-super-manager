@@ -2,6 +2,7 @@
 import login from './login'
 import goods from './goods'
 import data from './data'
+import exchange from './exchange'
 
 // 登录
 export const Login = login
@@ -9,3 +10,5 @@ export const Login = login
 export const Goods = goods
 // 图表数据
 export const Data = data
+// 财务交易
+export const Exchange = exchange
