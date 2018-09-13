@@ -8,11 +8,11 @@
             <div class="data-number">
               <div class="number-left">
                 <div class="text">交易金额(元)</div>
-                <div class="number">123,400</div>
+                <div class="number">{{totalMoeny}}</div>
               </div>
               <div class="number-right">
                 <div class="text">昨天全天(元)</div>
-                <div class="number">123,400</div>
+                <div class="number">{{yesterMoney}}</div>
               </div>
             </div>
             <div id="myLine"></div>
@@ -52,6 +52,8 @@
   import AdminSelect from 'components/admin-select/admin-select' // 下拉框
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
+  import { Data } from 'api'
+  import { ERR_OK } from 'common/js/config'
 
   const OVERVIEW = [{icon: 'shop', number: 0, title: '商家数量', allNumber: 0}, {icon: 'pay', number: 0, title: '付费店铺数', allNumber: 0}, {icon: 'order', number: 0, title: '交易订单数量', allNumber: 0}, {icon: 'amount', number: 0, title: '交易金额(元)', allNumber: 0}]
   const NAVLIST = [{title: '今天', status: '1'}, {title: '昨天', status: '2'}, {title: '7天', status: '3'}, {title: '30天', status: '4'}]
@@ -63,7 +65,13 @@
         dataOverview: OVERVIEW,
         navList: NAVLIST,
         typeList: TYPELIST,
-        number: 0
+        number: 0,
+        totalMoeny: 0,
+        yesterMoney: 0,
+        yesDay: {},
+        totalDay: {},
+        navIndex: 1,
+        typeIndex: 1
       }
     },
     components: {
@@ -72,19 +80,74 @@
       DateSelect,
       PageDetail
     },
+    created() {
+      this.getExchangeData()
+      this.getTotalMode()
+      this.totalChart()
+    },
     mounted() {
       this.$emit('setTab', false)
-      this.drawLine()
-      this.drawtwoLine()
       let that = this
       window.onresize = () => {
         return (() => {
           that.drawLine()
-          that.drawtwoLine()
+          that.drawTotalLine()
         })()
       }
     },
+    destroyed() {
+      this.$emit('setTab', true)
+    },
     methods: {
+      getExchangeData() {
+        Data.exchangeMoney().then(res => {
+          if (res.error === ERR_OK) {
+            this.totalMoeny = res.data.totalPayment
+            this.yesterMoney = res.data.yesterdayPayment
+            this.yesDay = res.data
+            this.drawLine()
+          } else {
+            this.$emit('showToast', res.message)
+          }
+        })
+      },
+      getTotalMode() {
+        Data.totalMode().then(res => {
+          if (res.error === ERR_OK) {
+            let data = OVERVIEW
+            data.forEach((item) => {
+              if (item.icon === 'shop') {
+                item.number = res.data.Merchant[0]
+                item.allNumber = res.data.Merchant[1]
+              }
+              if (item.icon === 'pay') {
+                item.number = res.data.shop[0]
+                item.allNumber = res.data.shop[1]
+              }
+              if (item.icon === 'order') {
+                item.number = res.data.orderNUM[0]
+                item.allNumber = res.data.orderNUM[1]
+              }
+              if (item.icon === 'amount') {
+                item.number = res.data.orderToatal[0]
+                item.allNumber = res.data.orderToatal[1]
+              }
+            })
+          } else {
+            this.$emit('showToast', res.message)
+          }
+        })
+      },
+      totalChart() {
+        Data.totalChart(this.typeIndex, this.navIndex).then(res => {
+          if (res.error === ERR_OK) {
+            this.totalDay = res.data
+            this.drawTotalLine()
+          } else {
+            this.$emit('showToast', res.message)
+          }
+        })
+      },
       drawLine() {
         let myChart = this.$echarts.init(document.getElementById('myLine'))
         myChart.setOption({
@@ -98,7 +161,7 @@
           xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: [10, 20, 30, 40],
+            data: this.yesDay.line,
             splitLine: {
               show: false,
               lineStyle: {
@@ -168,7 +231,7 @@
           },
           series: [{
             name: '昨天',
-            data: [10, 20, 30, 40],
+            data: this.yesDay.yesterday,
             type: 'line',
             smooth: true,
             showSymbol: false,
@@ -208,7 +271,7 @@
             }
           }, {
             name: '今天',
-            data: [21, 23, 23, 10],
+            data: this.yesDay.today,
             type: 'line',
             smooth: true,
             showSymbol: false,
@@ -249,7 +312,7 @@
         })
         myChart.resize()
       },
-      drawtwoLine() {
+      drawTotalLine() {
         let myChart = this.$echarts.init(document.getElementById('echartLine'))
         myChart.setOption({
           grid: {
@@ -262,7 +325,7 @@
           xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: [10, 20, 30, 40],
+            data: this.totalDay.line,
             splitLine: {
               show: false,
               lineStyle: {
@@ -332,7 +395,7 @@
           },
           series: [{
             name: '',
-            data: [21, 23, 23, 10],
+            data: this.totalDay.today,
             type: 'line',
             smooth: true,
             showSymbol: false,
@@ -374,10 +437,12 @@
         myChart.resize()
       },
       checkTime(index) {
-        console.log(index)
+        this.navIndex = index
+        this.totalChart()
       },
       checkType(index) {
-        console.log(index)
+        this.typeIndex = index
+        this.totalChart()
       }
     }
   }
