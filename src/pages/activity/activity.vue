@@ -79,9 +79,6 @@
       this._getUrl()
       await this._getGoodsList()
     },
-    destroyed() {
-      this.$emit('setNull', false)
-    },
     methods: {
       async setValue(item) {
         this.activityType[0].children[0].content = item.title

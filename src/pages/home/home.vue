@@ -59,6 +59,11 @@
     components: {
       Navigation,
       BaseModel
+    },
+    watch: {
+      '$route'(to) {
+        this.setNull(false)
+      }
     }
   }
 </script>
