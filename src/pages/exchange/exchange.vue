@@ -50,7 +50,7 @@
           select: false,
           show: false,
           children: [{
-            content: '活动类型',
+            content: '交易类型',
             data: [{title: '全部', status: 0}, {title: '支付', status: 1}, {title: '退款', status: 2}]
           }]
         }],

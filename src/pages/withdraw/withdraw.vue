@@ -86,7 +86,7 @@
         activityType: [{
           select: false,
           show: false,
-          children: [{content: '处理状态', data: [{title: '待处理', status: 1}, {title: '已处理', status: 2}]}]
+          children: [{content: '处理状态', data: [{title: '全部', status: 0}, {title: '待处理', status: 1}, {title: '已处理', status: 2}]}]
         }],
         inputType: [{
           select: false,
@@ -99,7 +99,7 @@
           end_time: 0,
           withdraw_sn: '',
           mobile: '',
-          status: 1,
+          status: 0,
           page: 1,
           limit: 10
         },
