@@ -102,7 +102,7 @@
         this.getCustomersList()
       },
       getExcelUrl() {
-        this.excelUrl = `${BASE_URL.api}/api/admin/potential-index-excel?access_token=${storage.get('aiToken')}&time=${this.requestData.time}&start_time=${this.requestData.start_time}&end_time=${this.requestData.end_time}&name=${this.requestData.name}&page=${this.requestData.page}`
+        this.excelUrl = `${BASE_URL.api}/api/admin/potential-index-excel?access_token=${storage.get('aiToken')}&time=${this.requestData.time}&start_time=${this.requestData.start_time}&end_time=${this.requestData.end_time}&name=${this.requestData.name}`
       }
     },
     components: {
@@ -119,12 +119,12 @@
   @import '~common/stylus/mixin'
   .retail-order
     display: flex
+    flex: 1
     flex-direction: column
     background: $color-white
     border-radius: 5px
     box-shadow: 0 1px 6px 0 rgba(0,8,39,0.10)
     padding: 30px
-    height: 100%
     padding-top: 0
     box-sizing: border-box
     .content-top

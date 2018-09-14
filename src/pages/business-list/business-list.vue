@@ -17,16 +17,25 @@
         </div>
       </div>
       <div class="list-content">
-        <div class="list-item">
-          <div class="item" v-for="(item, index) in headerList">
-            <span v-if="index !== 12">数据</span>
-            <div v-if="index === 12" class="list-handle">
-              <span class="handle-item" @click="openPop('open')">开通</span>
-              <span class="handle-item" @click="openPop('freeze')">冻结</span>
-              <span class="handle-item" @click="openPop('authority')">越权</span>
-              <span class="handle-item" @click="openPop('shop')">店铺</span>
+        <div class="list-item" v-for="(item, index) in data">
+            <span class="item">{{item.name || '---'}}</span>
+            <span class="item">{{item.mobile || '---'}}</span>
+            <span class="item">{{item.role_name || '---'}}</span>
+            <span class="item">{{item.is_freeze_str || '---'}}</span>
+            <span class="item">{{item.status_str || '---'}}</span>
+            <span class="item">{{item.service_version || '---'}}</span>
+            <span class="item">{{item.open_type_str || '---'}}</span>
+            <span class="item">{{item.latent_customer_count || '---'}}</span>
+            <span class="item">{{item.customer_count || '---'}}</span>
+            <span class="item">{{item.order_count || '---'}}</span>
+            <span class="item">{{item.created_at || '---'}}</span>
+            <span class="item">{{item.expiration_time || '---'}}</span>
+            <div class="list-handle item">
+              <span class="handle-item" @click="openPop('open', item.name, item.id)">开通</span>
+              <span class="handle-item" @click="openPop('freeze', item.name, item.id, item.is_freeze_str)">{{item.is_freeze_str === '正常' ? '冻结' : '解冻'}}</span>
+              <span class="handle-item" @click="openPop('authority', item.name, item.id)">越权</span>
+              <span class="handle-item" @click="openPop('shop', item.name, item.id,)">店铺</span>
             </div>
-          </div>
         </div>
       </div>
     </div>
@@ -35,7 +44,7 @@
     <div class="pop-box" v-if="showPop">
       <div class="pop-content">
         <header class="title">
-          <span>冻结“XXX”商家</span>
+          <span>{{popTile[showPopContent]}}“{{popName}}”商家</span>
           <span class="closePop" @click="closePop"></span>
         </header>
         <div class="pop-main" v-if="showPopContent === 0">
@@ -59,13 +68,13 @@
           </div>
         </div>
         <div class="pop-main" v-if="showPopContent === 1">
-          <textarea v-model="popTxt" class="popTxt" placeholder="备注原因"></textarea>
+          <textarea v-model="popTxt" class="popTxt" :placeholder="showPopContent === 1?'备注原因':'冻结原因'"></textarea>
           <div class="content-btn">
-            <a class="btn" href="javascript:;">取消</a>
-            <a class="btn active" href="javascript:;">冻结</a>
+            <a class="btn" href="javascript:;"  @click="closePop">取消</a>
+            <a class="btn active" href="javascript:;">{{showPopContent === 1 ? '冻结' : '解冻'}}</a>
           </div>
         </div>
-        <div class="pop-main" v-if="showPopContent === 2">
+        <div class="pop-main" v-if="showPopContent === 3">
           <div class="add-call">
             操作人手机号：
             <input class="phone-num" type="number" v-model="authorityNum">
@@ -74,7 +83,7 @@
             <a class="btn active" href="javascript:;">确定</a>
           </div>
         </div>
-        <div class="pop-main" v-if="showPopContent === 3">
+        <div class="pop-main" v-if="showPopContent === 4">
           <img src="" alt="" class="xcx-img">
         </div>
       </div>
@@ -87,40 +96,44 @@
   import AdminSelect from 'components/admin-select/admin-select'
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
-  import {Customers} from 'api'
+  import {Business} from 'api'
   import {ERR_OK, BASE_URL} from 'common/js/config'
   import Toast from 'components/toast/toast'
   import storage from 'storage-controller'
 
-  const headerList = ['商家名称', '商家帐号', '商家身份', '帐号状态', '商家状态', '商家版本', '开通方式', '用户数', '客户数', '订单数', '注册时间', '到期时间', '操作']
+  const headerList = ['商家名称', '商家帐号', '商家身份', '帐号状态', '商家状态', '商家版本', '开通方式', '潜在客户数', '消费客户数', '订单数', '注册时间', '到期时间', '操作']
   export default {
     name: 'business-list',
     data() {
       return {
         headerList,
-        arr: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
         activityType1: [{
           select: false,
           show: false,
-          children: [{content: '账号状态', data: [{title: '全部', status: ''}]}]
+          children: [{content: '账号状态', data: [{title: '正常', status: '0'}, {title: '冻结', status: '1'}]}]
         }],
         activityType2: [{
           select: false,
           show: false,
-          children: [{content: '商家版本', data: [{title: '全部', status: ''}]}]
+          children: [{content: '商家版本', data: [{title: '试用版', status: '0'}, {title: '付费版', status: '1'}]}]
         }],
         activityType3: [{
           select: false,
           show: false,
-          children: [{content: '开通方式', data: [{title: '全部', status: ''}]}]
+          children: [{content: '开通方式', data: [{title: '自费开通', status: '0'}, {title: '激活码开通', status: '1'}]}]
         }],
         data: [],
         requestData: {
+          keyword: '',
           time: 'today',
+          sort_type: '',
           start_time: '',
           end_time: '',
-          name: '',
-          page: 1
+          is_freeze: '',
+          service_version: '',
+          open_type: '',
+          page: 1,
+          limit: 10
         },
         pageDetail: {
           total: 1,
@@ -140,7 +153,9 @@
         showPopContent: false,
         addTime: '',
         authorityNum: '',
-        popTile: ['开通', '冻结', '解冻', '越权', '浏览']
+        popTile: ['开通', '冻结', '解冻', '越权', '浏览'],
+        popType: 'open',
+        popName: ''
       }
     },
     created() {
@@ -149,16 +164,19 @@
     },
     methods: {
       setValue1(item) {
-        this.activityType[0].children[0].content = item.title
-        this.statusEnd = item.status
+        this.activityType1[0].children[0].content = item.title
+        this.requestData.is_freeze = item.status
+        this.getBusinessList()
       },
       setValue2(item) {
-        this.activityType[0].children[0].content = item.title
-        this.statusEnd = item.status
+        this.activityType2[0].children[0].content = item.title
+        this.requestData.service_version = item.status
+        this.getBusinessList()
       },
       setValue3(item) {
-        this.activityType[0].children[0].content = item.title
-        this.statusEnd = item.status
+        this.activityType3[0].children[0].content = item.title
+        this.requestData.open_type = item.status
+        this.getBusinessList()
       },
       checkTime(status) {
         if (status instanceof Array) {
@@ -173,15 +191,37 @@
         this.getBusinessList()
       },
       search(inputTxt) {
-        this.requestData.name = inputTxt
+        this.requestData.keyword = inputTxt
         this.getBusinessList()
       },
       handleClick(num) {
         if (this.handleIndex === num) {
           if (this.headClass[`class${num}`] === 'down') {
             this.headClass[`class${num}`] = 'up'
+            switch (num) {
+              case 7:
+                this.requestData.sort_type = 2
+                break
+              case 8:
+                this.requestData.sort_type = 4
+                break
+              case 9:
+                this.requestData.sort_type = 6
+                break
+            }
           } else {
             this.headClass[`class${num}`] = 'down'
+            switch (num) {
+              case 7:
+                this.requestData.sort_type = 1
+                break
+              case 8:
+                this.requestData.sort_type = 3
+                break
+              case 9:
+                this.requestData.sort_type = 5
+                break
+            }
           }
         } else {
           this.handleIndex = num
@@ -189,10 +229,22 @@
             this.headClass[val] = ''
           }
           this.headClass[`class${num}`] = 'down'
+          switch (num) {
+            case 7:
+              this.requestData.sort_type = 1
+              break
+            case 8:
+              this.requestData.sort_type = 3
+              break
+            case 9:
+              this.requestData.sort_type = 5
+              break
+          }
         }
+        this.getBusinessList()
       },
       getBusinessList() {
-        Customers.getRetailOrderList(this.requestData)
+        Business.getBusinessList(this.requestData)
           .then((res) => {
             if (res.error !== ERR_OK) {
               this.$emit('setNull', true)
@@ -211,22 +263,34 @@
         this.getBusinessList()
       },
       getExcelUrl() {
-        this.excelUrl = `${BASE_URL.api}/api/admin/potential-index-excel?access_token=${storage.get('aiToken')}&time=${this.requestData.time}&start_time=${this.requestData.start_time}&end_time=${this.requestData.end_time}&name=${this.requestData.name}&page=${this.requestData.page}`
+        let query = ''
+        for (let item in this.requestData) {
+          if (item !== 'limit' && item !== 'page') {
+            query += `&${item}=${this.requestData[item]}`
+          }
+        }
+        let accessToken = `access_token=${storage.get('aiToken')}`
+        this.excelUrl = `${BASE_URL.api}/api/admin/potential-index-excel?${accessToken}&${query}`
       },
-      openPop(type) { // 打开弹窗
+      openPop(type, name, status) { // 打开弹窗
         this.showPop = true
+        this.popName = name
         switch (type) {
           case 'open':
             this.showPopContent = 0
             break
           case 'freeze':
-            this.showPopContent = 1
+            if (status === '正常') {
+              this.showPopContent = 1
+            } else {
+              this.showPopContent = 2
+            }
             break
           case 'authority':
-            this.showPopContent = 2
+            this.showPopContent = 3
             break
           case 'shop':
-            this.showPopContent = 3
+            this.showPopContent = 4
             break
         }
       },
@@ -263,12 +327,12 @@
 
   .business-list
     display: flex
+    flex: 1
     flex-direction: column
     background: $color-white
     border-radius: 5px
     box-shadow: 0 1px 6px 0 rgba(0,8,39,0.10)
     padding: 30px
-    height: 100%
     padding-top: 0
     box-sizing: border-box
     .content-top
@@ -285,7 +349,7 @@
       .list-header
         flex: 1
         background: $color-FAFAFA
-        height: 7.6%
+        height: 50px
         line-height: 50px
         font-family: $fontFamilyMeddle
         display: flex
@@ -325,9 +389,8 @@
           .up:before
             border-left-color: $color-4985FC
       .list-content
-        height: 92.4%
         .list-item
-          height: 10%
+          height: 60px
           flex: 1
           display: flex
           align-items: center
@@ -338,17 +401,20 @@
           text-align: left
           .item
             flex: 1
-            &:last-child
-              flex: 2.2
-            .list-handle
-              color: $color-4985FC
-              white-space: nowrap
-              .handle-item
-                padding: 0 7px
-                border-left: 1px solid $color-line
-                cursor: pointer
-                &:first-child
-                  border-left: 0
+            no-wrap()
+            &:nth-of-type(2)
+              flex: 1.2
+          .list-handle
+            flex: 2.2
+            color: $color-4985FC
+            white-space: nowrap
+            .handle-item
+              padding: 0 7px
+              border-left: 1px solid $color-line
+              cursor: pointer
+              &:first-child
+                border-left: 0
+                padding-left: 0
           .head-img
             width: 40px
             heihgt: 40px
@@ -412,9 +478,6 @@
                 background: $color-4985FC
                 color: $color-white
                 margin-left: 20px
-
-
-
           .type
             display: inline-block
             width: 70px

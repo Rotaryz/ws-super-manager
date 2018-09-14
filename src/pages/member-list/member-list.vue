@@ -8,24 +8,18 @@
     </div>
     <div class="content-list">
       <div class="list-header">
-        <!--<span class="header-key">团长</span>-->
-        <!--<span class="header-key">激活码</span>-->
-        <!--<div class="header-key" @click="handleClick(0)"><span class="contxt" :class="headClass.class0" >成员数</span></div>-->
-        <!--<div class="header-key" @click="handleClick(1)"><span class="contxt" :class="headClass.class1" >潜在客户数</span></div>-->
-        <!--<div class="header-key" @click="handleClick(2)"><span class="contxt" :class="headClass.class2" >消费客户数</span></div>-->
-        <!--<div class="header-key" @click="handleClick(3)"><span class="contxt" :class="headClass.class3" >订单数</span></div>-->
         <div class="header-key" v-for="(item, index) in headerList" @click="handleClick(index)" :class="{'handle': index === 2 || index === 3 || index === 4 || index === 5}">
           <span class="contxt" :class="`${headClass[`class${index}`]}`">{{item}}</span>
         </div>
       </div>
       <div class="list-content">
-        <div class="list-item" v-for="val in arr">
-          <span class="item">某某某</span>
-          <span class="item">100</span>
-          <span class="item">100</span>
-          <span class="item">100</span>
-          <span class="item">100</span>
-          <span class="item">100</span>
+        <div class="list-item" v-for="item in data">
+          <span class="item">{{item.name}}</span>
+          <span class="item">{{item.active_code}}</span>
+          <span class="item">{{item.groups_num}}</span>
+          <span class="item">{{item.potential_num}}</span>
+          <span class="item">{{item.consume_num}}</span>
+          <span class="item">{{item.order_num}}</span>
         </div>
       </div>
     </div>
@@ -38,18 +32,15 @@
   import Search from 'components/search/search' // 搜索框
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
-  import Business from 'api'
-  import {ERR_OK, BASE_URL} from 'common/js/config'
+  import {Business} from 'api'
+  import {ERR_OK} from 'common/js/config'
   import Toast from 'components/toast/toast'
-  import storage from 'storage-controller'
 
   export default {
     name: 'member-list',
     data() {
       return {
-        arr: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
         headerList: ['团长', '激活码', '成员数', '潜在客户数', '消费客户数', '订单数'],
-        // headClass: ['on', 'on', 'on', 'on'],
         data: [],
         handleIndex: 0,
         headClass: {
@@ -58,18 +49,14 @@
           class4: '',
           class5: ''
         },
-        handleType: {
-          type2: 1,
-          type3: 1,
-          type4: 1,
-          type5: 1
-        },
         requestData: {
           time: 'today',
+          keyword: '',
+          sort_type: '',
           start_time: '',
           end_time: '',
-          name: '',
-          page: 1
+          page: 1,
+          limit: 10
         },
         pageDetail: {
           total: 1,
@@ -78,12 +65,24 @@
         }
       }
     },
+    created() {
+      this.getMemberList()
+    },
     methods: {
       checkTime(status) {
-        console.log(status)
+        if (status instanceof Array) {
+          this.requestData.start_time = status[0]
+          this.requestData.end_time = status[1]
+          this.requestData.time = ''
+        } else {
+          this.requestData.time = status
+          this.requestData.start_time = ''
+          this.requestData.end_time = ''
+        }
+        this.getMemberList()
       },
       getMemberList() {
-        Business.getMemberList()
+        Business.getMemberList(this.requestData)
           .then((res) => {
             if (res.error !== ERR_OK) {
               this.$emit('setNull', true)
@@ -95,15 +94,43 @@
           })
       },
       search(inputTxt) {
-        this.requestData.name = inputTxt
+        this.requestData.keyword = inputTxt
         this.getMemberList()
       },
       handleClick(num) {
         if (this.handleIndex === num) {
           if (this.headClass[`class${num}`] === 'down') {
             this.headClass[`class${num}`] = 'up'
+            switch (num) {
+              case 2:
+                this.requestData.sort_type = 8
+                break
+              case 3:
+                this.requestData.sort_type = 2
+                break
+              case 4:
+                this.requestData.sort_type = 4
+                break
+              case 5:
+                this.requestData.sort_type = 6
+                break
+            }
           } else {
             this.headClass[`class${num}`] = 'down'
+            switch (num) {
+              case 2:
+                this.requestData.sort_type = 7
+                break
+              case 3:
+                this.requestData.sort_type = 1
+                break
+              case 4:
+                this.requestData.sort_type = 3
+                break
+              case 5:
+                this.requestData.sort_type = 5
+                break
+            }
           }
         } else {
           this.handleIndex = num
@@ -111,7 +138,22 @@
             this.headClass[val] = ''
           }
           this.headClass[`class${num}`] = 'down'
+          switch (num) {
+            case 2:
+              this.requestData.sort_type = 7
+              break
+            case 3:
+              this.requestData.sort_type = 1
+              break
+            case 4:
+              this.requestData.sort_type = 3
+              break
+            case 5:
+              this.requestData.sort_type = 5
+              break
+          }
         }
+        this.getMemberList()
       },
       addPage(num) {
         this.requestData.page = num
@@ -123,9 +165,6 @@
       DateSelect,
       PageDetail,
       Toast
-    },
-    mounted() {
-      // this.$emit('showShade')
     }
   }
 </script>
@@ -135,12 +174,12 @@
   @import '~common/stylus/mixin'
   .member-list
     display: flex
+    flex: 1
     flex-direction: column
     background: $color-white
     border-radius: 5px
     box-shadow: 0 1px 6px 0 rgba(0,8,39,0.10)
     padding: 30px
-    height: 100%
     padding-top: 0
     box-sizing: border-box
     .content-top
@@ -158,7 +197,7 @@
       .list-header
         flex: 1
         background: $color-FAFAFA
-        height: 7.6%
+        height: 50px
         line-height: 50px
         font-family: $fontFamilyMeddle
         display: flex
@@ -195,9 +234,8 @@
           .up:before
             border-left-color: $color-4985FC
       .list-content
-        height: 92.4%
         .list-item
-          height: 10%
+          height: 60px
           flex: 1
           display: flex
           align-items: center
