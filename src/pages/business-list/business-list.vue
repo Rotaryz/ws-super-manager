@@ -84,7 +84,7 @@
             <a class="btn active" href="javascript:;" @click="overPower">确定</a>
           </div>
         </div>
-        <div class="pop-main" v-if="showPopContent === 4">
+        <div class="pop-main code" v-if="showPopContent === 4">
           <img v-if="!loadImg" :src="codeUrl" alt="" class="xcx-img">
           <img v-if="loadImg" src="./loading.gif" alt="" class="load-img">
         </div>
@@ -587,16 +587,9 @@
           .xcx-img
             width: 238px
             height: 216px
-            margin: 0 auto
-            display: block
-            margin-top: 20px
-            margin-bottom: 20px
           .load-img
             width: 40px
             height: 40px
-            margin: 0 auto
-            display: block
-            margin-top: 20px
           .add-call
             margin-top: 20px
             display: flex
@@ -611,4 +604,9 @@
               border-radius: 3px
               padding: 0 5px
               box-sizing: border-box
+        .code
+          display: flex
+          height: 260px
+          justify-content: center
+          align-items: center
 </style>
