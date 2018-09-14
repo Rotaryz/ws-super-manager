@@ -3,7 +3,12 @@
     <div class="ac-tab">
       <date-select @checkTime="checkTime"></date-select>
       <admin-select :select="activityType" role="activity" @setValue="setType"></admin-select>
-      <search @search="searchBtn"></search>
+      <div class="admin-input">
+        <admin-select :select="inputType" role="activity" @setValue="setInput"></admin-select>
+      </div>
+      <div class="admin-search">
+        <search @search="searchBtn" :placeholerTxt="inputText"></search>
+      </div>
       <a :href="downUrl" class="excel">导出Excel</a>
     </div>
     <div class="form-list">
@@ -37,7 +42,7 @@
             <div class="text" v-if="item.status * 1 === 3">微信打款成功</div>
             <div class="text" v-if="item.status * 1 === 4">微信打款失败</div>
             <div class="text" v-if="item.status * 1 === 5">微信受理失败</div>
-            <div class="icon" v-if="item.status * 1 === 2 || item.status * 1 === 5 || item.status * 1 === 4"><transition name="fade"><div class="hidden-number" v-show="text" @mouseenter="showText">{{item.note}}</div></transition></div>
+            <div class="icon" v-if="item.status * 1 === 2 || item.status * 1 === 5 || item.status * 1 === 4"><transition name="fade"><div class="hidden-number" v-show="text && item.note" @mouseenter="showText">{{item.note}}</div></transition></div>
           </div>
           <div class="list-item list-text">{{item.status}}
             <div class="item-text" v-if="item.status * 1 === 0 || item.status * 1 === 5 || item.status * 1 === 4" @click="showModel(item)">审核</div>
@@ -83,11 +88,17 @@
           show: false,
           children: [{content: '处理状态', data: [{title: '待处理', status: 1}, {title: '已处理', status: 2}]}]
         }],
+        inputType: [{
+          select: false,
+          show: false,
+          children: [{content: '订单查询', data: [{title: '订单查询', status: 1}, {title: '账号查询', status: 2}]}]
+        }],
         rqData: {
           time: 'today',
           start_time: 0,
           end_time: 0,
           withdraw_sn: '',
+          mobile: '',
           status: 1,
           page: 1,
           limit: 10
@@ -103,7 +114,9 @@
         showModels: false,
         withId: '',
         noteText: '',
-        downUrl: ''
+        downUrl: '',
+        inputText: '请输入订单编号',
+        inputIndex: 1
       }
     },
     async created() {
@@ -191,8 +204,23 @@
         this.$refs.page.beginPage()
         this.getAuditData()
       },
+      setInput(type) {
+        this.inputIndex = type.status
+        if (type.status * 1 === 1) {
+          this.inputText = '请输入订单编号'
+        } else {
+          this.inputText = '请输入账号编号'
+        }
+      },
       searchBtn(text) {
-        this.rqData.withdraw_sn = text
+        console.log(text)
+        if (this.inputIndex * 1 === 1) {
+          this.rqData.mobile = ''
+          this.rqData.withdraw_sn = text
+        } else {
+          this.rqData.mobile = text
+          this.rqData.withdraw_sn = ''
+        }
         this.rqData.page = 1
         this.$refs.page.beginPage()
         this.getAuditData()
@@ -446,6 +474,10 @@
         cursor: pointer
         &:nth-child(2)
           background: #EF705D
+  .admin-input
+    padding-left: 10px
+  .admin-search
+    margin-left: -5px
   .page
     height: 9.1%
 </style>
