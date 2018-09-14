@@ -148,7 +148,7 @@
         }, 200)
       },
       upWithdrawAudit(index) {
-        if (this.noteText.length === 0) {
+        if (this.noteText.length === 0 && index * 1 === 2) {
           this.$emit('showToast', '请填写审核原因')
           return
         }
