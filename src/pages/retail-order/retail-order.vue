@@ -17,7 +17,7 @@
             <img class="head-img" :src="val.avatar" alt="">
           </div>
           <span class="item">{{val.nickname || '---'}}</span>
-          <span class="item">{{(val.sex && val.sex * 1 === 1 ? '男' : '女') || '---'}}</span>
+          <span class="item">{{(val.sex !== 0 && val.sex * 1 === 1 ? '男' : '女') || '---'}}</span>
           <span class="item">{{val.area || '---'}}</span>
           <span class="item">{{val.created_at || '---'}}</span>
         </div>
@@ -42,7 +42,6 @@
     data() {
       return {
         headerList: ['客户头像', '客户昵称', '性别', '地区', '加入时间'],
-        arr: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
         data: [],
         requestData: {
           time: 'today',

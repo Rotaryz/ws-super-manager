@@ -26,7 +26,7 @@ export default {
    */
   openBusiness(data) {
     let url = 'api/admin/merchant-open'
-    return request.get(url, data)
+    return request.post(url, data)
   },
   /**
    * 冻结商家
@@ -35,7 +35,7 @@ export default {
    */
   frozenBusiness(data) {
     let url = 'api/admin/merchant-frozen'
-    return request.get(url, data)
+    return request.post(url, data)
   },
   /**
    * 解冻商家
@@ -44,7 +44,7 @@ export default {
    */
   unfreezeBusiness(data) {
     let url = 'api/admin/merchant-unfreeze'
-    return request.get(url, data)
+    return request.post(url, data)
   },
   /**
    * 越权

@@ -31,10 +31,10 @@
             <span class="item">{{item.created_at || '---'}}</span>
             <span class="item">{{item.expiration_time || '---'}}</span>
             <div class="list-handle item">
-              <span class="handle-item" @click="openPop('open', item.name, item.id)">开通</span>
+              <span class="handle-item" @click="openPop('open', item.name, item.id, item.is_freeze_str, item.expiration_time)">开通</span>
               <span class="handle-item" @click="openPop('freeze', item.name, item.id, item.is_freeze_str)">{{item.is_freeze_str === '正常' ? '冻结' : '解冻'}}</span>
-              <span class="handle-item" @click="openPop('authority', item.name, item.id)">越权</span>
-              <span class="handle-item" @click="openPop('shop', item.name, item.id,)">店铺</span>
+              <span class="handle-item" @click="openPop('authority', item.name, item.id, item.is_freeze_str)">越权</span>
+              <span class="handle-item" @click="openPop('shop', item.name, item.id, item.is_freeze_str)">店铺</span>
             </div>
         </div>
       </div>
@@ -50,7 +50,7 @@
         <div class="pop-main" v-if="showPopContent === 0">
           <p class="end-time">
             <span class="type">到期时间: </span>
-            2018-09-31
+            {{endTime}}
           </p>
           <p class="add-time">
             <span class="type">延迟至</span>
@@ -59,19 +59,20 @@
               type="date"
               placeholder="选择日期"
               size="mini"
+              style="width:180px"
             >
             </el-date-picker>
           </p>
           <div class="content-btn">
             <a class="btn" href="javascript:;">取消</a>
-            <a class="btn active" href="javascript:;">确定</a>
+            <a class="btn active" href="javascript:;" @click="openBusiness">确定</a>
           </div>
         </div>
-        <div class="pop-main" v-if="showPopContent === 1">
+        <div class="pop-main" v-if="showPopContent === 1 || showPopContent === 2">
           <textarea v-model="popTxt" class="popTxt" :placeholder="showPopContent === 1?'备注原因':'冻结原因'"></textarea>
           <div class="content-btn">
             <a class="btn" href="javascript:;"  @click="closePop">取消</a>
-            <a class="btn active" href="javascript:;">{{showPopContent === 1 ? '冻结' : '解冻'}}</a>
+            <a class="btn active" href="javascript:;" @click="operate">{{showPopContent === 1 ? '冻结' : '解冻'}}</a>
           </div>
         </div>
         <div class="pop-main" v-if="showPopContent === 3">
@@ -80,11 +81,12 @@
             <input class="phone-num" type="number" v-model="authorityNum">
           </div>
           <div class="content-btn">
-            <a class="btn active" href="javascript:;">确定</a>
+            <a class="btn active" href="javascript:;" @click="overPower">确定</a>
           </div>
         </div>
         <div class="pop-main" v-if="showPopContent === 4">
-          <img src="" alt="" class="xcx-img">
+          <img v-if="!loadImg" :src="codeUrl" alt="" class="xcx-img">
+          <img v-if="loadImg" src="./loading.gif" alt="" class="load-img">
         </div>
       </div>
     </div>
@@ -155,7 +157,12 @@
         authorityNum: '',
         popTile: ['开通', '冻结', '解冻', '越权', '浏览'],
         popType: 'open',
-        popName: ''
+        popName: '',
+        merchant_id: '',
+        expire_time: '',
+        codeUrl: '',
+        endTime: '',
+        loadImg: false
       }
     },
     created() {
@@ -243,6 +250,63 @@
         }
         this.getBusinessList()
       },
+      addPage(num) {
+        this.requestData.page = num
+        this.getBusinessList()
+      },
+      getExcelUrl() {
+        let query = ''
+        for (let item in this.requestData) {
+          if (item !== 'limit' && item !== 'page') {
+            query += `&${item}=${this.requestData[item]}`
+          }
+        }
+        let accessToken = `access_token=${storage.get('aiToken')}`
+        this.excelUrl = `${BASE_URL.api}/api/admin/potential-index-excel?${accessToken}&${query}`
+      },
+      openPop(type, name, id, status, endTime) { // 打开弹窗
+        this.showPop = true
+        this.popName = name
+        this.merchant_id = id
+        switch (type) {
+          case 'open':
+            this.endTime = endTime
+            this.showPopContent = 0
+            break
+          case 'freeze':
+            if (status === '正常') {
+              this.showPopContent = 1
+            } else {
+              this.showPopContent = 2
+            }
+            break
+          case 'authority':
+            this.showPopContent = 3
+            break
+          case 'shop':
+            this.previewMerchant()
+            this.showPopContent = 4
+            break
+        }
+      },
+      closePop() { // 关闭弹窗
+        this.showPop = false
+        this.popTxt = ''
+        this.authorityNum = ''
+      },
+      addDate() {
+        console.log(this.addTime)
+        this.expire_time = this.addTime.toLocaleDateString().replace(/\//g, '-').replace(/\b\d\b/g, '0$&')
+        // this.addTime.toLocaleDateString().replace(/\//g, '-')
+      },
+      operate() {
+        if (this.showPopContent === 1) {
+          this.frozenBusiness()
+        } else {
+          this.unfreezeBusiness()
+        }
+        this.closePop()
+      },
       getBusinessList() {
         Business.getBusinessList(this.requestData)
           .then((res) => {
@@ -258,47 +322,75 @@
             this.getExcelUrl()
           })
       },
-      addPage(num) {
-        this.requestData.page = num
-        this.getBusinessList()
-      },
-      getExcelUrl() {
-        let query = ''
-        for (let item in this.requestData) {
-          if (item !== 'limit' && item !== 'page') {
-            query += `&${item}=${this.requestData[item]}`
-          }
+      openBusiness() {
+        if (!this.expire_time) {
+          this.$refs.toast.show('请选择延迟日期')
+          return
         }
-        let accessToken = `access_token=${storage.get('aiToken')}`
-        this.excelUrl = `${BASE_URL.api}/api/admin/potential-index-excel?${accessToken}&${query}`
-      },
-      openPop(type, name, status) { // 打开弹窗
-        this.showPop = true
-        this.popName = name
-        switch (type) {
-          case 'open':
-            this.showPopContent = 0
-            break
-          case 'freeze':
-            if (status === '正常') {
-              this.showPopContent = 1
-            } else {
-              this.showPopContent = 2
+        Business.openBusiness({merchant_id: this.merchant_id, expire_time: this.expire_time})
+          .then((res) => {
+            if (res.error !== ERR_OK) {
+              this.$refs.toast.show(res.message)
+              return
             }
-            break
-          case 'authority':
-            this.showPopContent = 3
-            break
-          case 'shop':
-            this.showPopContent = 4
-            break
+            this.$refs.toast.show(res.message)
+          })
+        this.closePop()
+      },
+      frozenBusiness() {
+        if (!this.popTxt || this.popTxt.replace(/^\s+|\s+$/g, '') === '') {
+          this.$refs.toast.show('请填写冻结原因')
+          return
         }
+        Business.frozenBusiness({merchant_id: this.merchant_id, remark: this.popTxt})
+          .then((res) => {
+            if (res.error !== ERR_OK) {
+              this.$refs.toast.show(res.message)
+              return
+            }
+            this.$refs.toast.show(res.message)
+            this.getBusinessList()
+          })
       },
-      closePop() { // 关闭弹窗
-        this.showPop = false
+      unfreezeBusiness() {
+        Business.unfreezeBusiness({merchant_id: this.merchant_id, remark: this.popTxt})
+          .then((res) => {
+            if (res.error !== ERR_OK) {
+              this.$refs.toast.show(res.message)
+              return
+            }
+            this.$refs.toast.show(res.message)
+            this.getBusinessList()
+          })
       },
-      addDate() {
-        console.log(this.addTime, this.addTime.toLocaleDateString().replace(/\//g, '-'))
+      overPower() {
+        if (!this.authorityNum) {
+          this.$refs.toast.show('输入手机号')
+        }
+        if (!/^1[3|4|5|6|7|8][0-9]{9}$/.test(this.authorityNum)) {
+          this.$refs.toast.show('请正确输入手机号')
+        }
+        Business.overPower({merchant_id: this.merchant_id, mobile: this.authorityNum})
+          .then((res) => {
+            if (res.error !== ERR_OK) {
+              this.$refs.toast.show(res.message)
+              return
+            }
+            this.$refs.toast.show(res.message)
+          })
+        this.closePop()
+      },
+      previewMerchant() {
+        this.loadImg = true
+        Business.previewMerchant({merchant_id: this.merchant_id})
+          .then((res) => {
+            if (res.error !== ERR_OK) {
+              this.$refs.toast.show(res.message)
+              return
+            }
+            this.loadImg = false
+            this.codeUrl = res.message.qrcode_url
+          })
       }
     },
     computed: {
@@ -309,6 +401,10 @@
     watch: {
       addTime(date, oldDate) {
         this.addDate()
+      },
+      authorityNum(val, oldVal) { // 防止输入超过11位
+        val = val.match(/\d{0,11}/) ? val.match(/\d{0,11}/)[0] : ''
+        this.authorityNum = val
       }
     },
     components: {
@@ -457,6 +553,7 @@
             font-size: 14px
             width: 100%
             height: 90px
+            outline: none
             box-sizing: border-box
             border: 1px solid $color-line
             &::-webkit-input-placeholder
@@ -491,6 +588,14 @@
             width: 238px
             height: 216px
             margin: 0 auto
+            display: block
+            margin-top: 20px
+            margin-bottom: 20px
+          .load-img
+            width: 40px
+            height: 40px
+            margin: 0 auto
+            display: block
             margin-top: 20px
           .add-call
             margin-top: 20px
@@ -500,6 +605,7 @@
               margin-left: 10px
               width: 180px
               height: 30px
+              outline: none
               line-height: 30px
               border: 1px solid $color-line
               border-radius: 3px
