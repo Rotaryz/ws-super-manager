@@ -334,6 +334,8 @@
             .nav-tap-small
               width: 100%
               height: 58px
+              display: flex
+              align-items: center
               border-left: 6px solid $color-menu-background
               &:hover
                 background: rgba(255, 255, 255, 0.1)
@@ -346,7 +348,6 @@
               border-left: 6px solid $color-4985FC !important
           .nav-title
             color: $color-white
-            margin-left: -13px
 
       .big-hide
         width: 79px

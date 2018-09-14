@@ -2,9 +2,9 @@
   <div class="activity">
     <div class="ac-tab">
       <date-select @checkTime="_checkTime"></date-select>
-      <admin-select :select="activityType" role="activity"  @setValue="setValue"></admin-select>
-      <search @search="_search" placeholerTxt="请输入商品名称"></search>
-      <a class="excel">导出Excel</a>
+      <admin-select :select="activityType" role="activity" @setValue="setValue"></admin-select>
+      <search @search="_search" placeholerTxt="请输入商家名称、活动名称"></search>
+      <a :href="downUrl" class="excel">导出Excel</a>
     </div>
     <div class="form-list">
       <div class="list-header">
@@ -13,24 +13,26 @@
         </div>
       </div>
       <div class="list">
-        <div class="list-box">
+        <div class="list-box" v-for="(item, index) in goodsList" :key="index">
           <div class="list-item list-text">
             <div class="pic-box">
-              <img src="" class="pic">
+              <img :src="item.goods_image_url" class="pic">
             </div>
           </div>
-          <div class="list-item list-text">{{'---'}}</div>
-          <div class="list-item list-text">{{'---'}}</div>
-          <div class="list-item list-text">---</div>
-          <div class="list-item list-text">---</div>
-          <div class="list-item list-text">{{'---'}}</div>
-          <div class="list-item list-text">{{'---'}}
+          <div class="list-item list-text">{{item.activity_name || '---'}}</div>
+          <div class="list-item list-text">{{item.price || '---'}}</div>
+          <div class="list-item list-text">{{item.rule_id === 1 ? '火爆拼图' : item.rule_id === 3 ? '疯狂砍价' : '---'}}</div>
+          <div class="list-item list-text">{{item.activity_status_str || '---'}}</div>
+          <div class="list-item list-text">
+            <router-link tag="a" target="_blank" :to="'/business-list?num='+ item.merchant_account" class="bule hand">{{item.merchant_name || '---'}}</router-link>
+          </div>
+          <div class="list-item list-text">{{item.created_at || '---'}}
           </div>
         </div>
       </div>
       <div class="page">
-        <!--:pageDtail="pageTotal" @addPage="_addPage"-->
-        <page-detail ref="page"></page-detail>
+        <!---->
+        <page-detail ref="page" :pageDtail="pageTotal" @addPage="_addPage"></page-detail>
       </div>
     </div>
   </div>
@@ -62,11 +64,7 @@
         keyWord: '',
         startTime: '',
         endTime: '',
-        fiDate: 'today',
-        fiStart: '',
-        fiEnd: '',
         status: '',
-        statusEnd: '',
         showIndex: 0,
         goodsList: [],
         pageTotal: {
@@ -82,33 +80,33 @@
       await this._getGoodsList()
     },
     methods: {
-      setValue(item) {
+      async setValue(item) {
         this.activityType[0].children[0].content = item.title
-        this.statusEnd = item.status
+        this.status = item.status
+        await this._getGoodsList()
       },
       _getUrl() {
-        this.downUrl = BASE_URL.api + `/api/admin/goods-export?access_token=${storage.get('aiToken')}&limit=10&title=${this.keyWord}&time=${this.date}&sort_type=${this.sortType}&start_time=${this.startTime}&end_time=${this.endTime}`
+        this.downUrl = BASE_URL.api + `/api/admin/activity-export?access_token=${storage.get('aiToken')}&limit=10&activity_name=${this.keyWord}&time=${this.date}&rule_id=${this.status}&start_time=${this.startTime}&end_time=${this.endTime}`
       },
       async _search(word) {
         this.page = 1
         this.keyWord = word
-        this.date = this.fiDate
-        this.startTime = this.fiStart
-        this.endTime = this.fiEnd
-        this.status = this.statusEnd
         this.$refs.page.beginPage()
         await this._getGoodsList()
       },
-      _checkTime(time) {
+      async _checkTime(time) {
         if (typeof time === 'string') {
-          this.fiDate = time
-          this.fiStart = ''
-          this.fiEnd = ''
-          return
+          this.date = time
+          this.startTime = ''
+          this.endTime = ''
+        } else {
+          this.date = ''
+          this.startTime = time[0]
+          this.endTime = time[1]
         }
-        this.fiDate = ''
-        this.fiStart = time[0]
-        this.fiEnd = time[1]
+        this.page = 1
+        this.$refs.page.beginPage()
+        await this._getGoodsList()
       },
       async _getGoodsList() {
         let data = {limit: 10, page: this.page, time: this.date, activity_name: this.keyWord, start_time: this.startTime, end_time: this.endTime, rule_id: this.status}
@@ -118,6 +116,7 @@
           this.$emit('showToast', res.message)
           return
         }
+        this._getUrl()
         let pages = res.meta
         this.pageTotal = Object.assign({}, {
           total: pages.total,
@@ -126,7 +125,6 @@
         })
         this.goodsList = res.data
         this.$emit('setNull', !this.goodsList.length)
-        console.log(this.goodsList)
       },
       async _addPage(page) {
         this.page = page
@@ -146,10 +144,13 @@
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
   .activity
-    height: 100%
+    flex: 1
     background: $color-white
     padding: 0 1.5vw
     display: flex
+    overflow: hidden
+    border-radius: 6px
+    box-shadow: 0 1px 6px 0 rgba(0, 8, 39, 0.10)
     flex-direction: column
 
   .ac-tab
@@ -163,6 +164,7 @@
       col-center()
 
   .form-list
+    position: relative
     font-size: $font-size-medium14
     font-family: $fontFamilyRegular
     flex: 1
@@ -176,22 +178,26 @@
 
   .list-header
     width: 100%
-    height: 9.1%
+    height: 50px
     white-space: nowrap
     border-bottom: 1px solid $color-line
     background: $color-big-background
     .list-item
+      display: flex
+      align-items: center
       font-family: $fontFamilyMeddle
       color: $color-text33
 
   .list
-    height: 81.8%
     display: flex
     flex-direction: column
     .list-box
-      height: 10%
+      background: $color-white
+      height: 60px
       overflow: hidden
       border-bottom: 1px solid $color-line
+      &:last-child
+        margin-bottom: 60px
       .list-item
         line-height: 16px
         color: $color-text33
@@ -200,7 +206,6 @@
           height: 40px
           width: 40px
           overflow: hidden
-          background: $color-text33
           .pic
             width: 40px
       .list-item-tap
@@ -210,7 +215,8 @@
         no-wrap()
         width: 90%
         color: $color-text-66
-    no-wrap()
+        .bule
+          color: $color-4985FC
 
   .list-item-img
     width: 60px
@@ -224,6 +230,35 @@
     position: relative
     text-align: left
     overflow: hidden
+    .sort
+      display: flex
+      flex-direction: column
+      justify-content: space-between
+      height: 19px
+      margin-left: 10px
+      .sort-item
+        border: 4px solid $color-text99
+        transition: all 0.4s
+      .sort-top
+        border-top: 4px solid transparent
+        border-left: 4px solid transparent
+        border-right: 4px solid transparent
+      .sort-end
+        border-bottom: 4px solid transparent
+        border-left: 4px solid transparent
+        border-right: 4px solid transparent
+      .sort-top-active
+        border: 4px solid $color-4985FC
+        border-top: 4px solid transparent
+        border-left: 4px solid transparent
+        border-right: 4px solid transparent
+        transition: all 0.4s
+      .sort-end-active
+        border: 4px solid $color-4985FC
+        border-bottom: 4px solid transparent
+        border-left: 4px solid transparent
+        border-right: 4px solid transparent
+        transition: all 0.4s
     .showDetail
       cursor: pointer
       font-size: $font-size-small
@@ -240,5 +275,9 @@
     background: $color-background
 
   .page
-    height: 9.1%
+    width: 100%
+    position: absolute
+    bottom: 0
+    color: $color-white
+    height: 60px
 </style>
