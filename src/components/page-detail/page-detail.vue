@@ -391,7 +391,7 @@
           height: 27px
           width: 0
           right: 0
-          top: -0.5px
+          top: -1px
           box-sizing: content-box
           border-radius 4px
           transition: all 0.4s ease-out
@@ -403,7 +403,7 @@
           height: 0
           width: 41px
           bottom: 0
-          left: -0.5px
+          left: -1px
           box-sizing: content-box
           border-radius 4px
           transition: all 0.4s ease-out

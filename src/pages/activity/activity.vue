@@ -86,7 +86,7 @@
         await this._getGoodsList()
       },
       _getUrl() {
-        this.downUrl = BASE_URL.api + `/api/admin/activity-export?access_token=${storage.get('aiToken')}&limit=10&activity_name=${this.keyWord}&time=${this.date}&rule_id=${this.status}&start_time=${this.startTime}&end_time=${this.endTime}`
+        this.downUrl = BASE_URL.api + `/api/admin/activity-export?access_token=${storage.get('aiToken')}&activity_name=${this.keyWord}&time=${this.date}&rule_id=${this.status}&start_time=${this.startTime}&end_time=${this.endTime}`
       },
       async _search(word) {
         this.page = 1
