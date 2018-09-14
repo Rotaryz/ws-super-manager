@@ -91,8 +91,10 @@
       let that = this
       window.onresize = () => {
         return (() => {
-          that.drawLine()
-          that.drawTotalLine()
+          if (that.$route.path === '/data-overview') {
+            that.drawLine()
+            that.drawTotalLine()
+          }
         })()
       }
     },
