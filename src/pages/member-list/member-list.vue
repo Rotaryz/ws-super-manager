@@ -92,6 +92,8 @@
               return
             }
             this.data = res.data
+            this.pageDetail.total = res.meta.total
+            this.pageDetail.total_page = res.meta.last_page
             this.$emit('setNull', !this.data.length)
           })
       },
@@ -99,6 +101,10 @@
         this.requestData.keyword = inputTxt
         this.requestData.page = 1
         this.$refs.pageDetail.beginPage()
+        for (let val in this.headClass) {
+          this.headClass[val] = ''
+        }
+        this.requestData.sort_type = ''
         this.getMemberList()
       },
       handleClick(num) {
@@ -211,8 +217,9 @@
         border-bottom: 1px solid $color-line
         .header-key
           flex: 1
-          cursor: pointer
+          overflow: hidden
         .handle
+          cursor: pointer
           .contxt
             position: relative
             &:before
@@ -250,5 +257,6 @@
           text-align: left
           .item
             flex: 1
+            line-height: 18px
             no-wrap()
 </style>

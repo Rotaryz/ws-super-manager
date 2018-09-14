@@ -153,6 +153,7 @@
         border-bottom: 1px solid $color-line
         .header-key
           flex: 1.8
+          overflow: hidden
           text-align: left
           &:last-child
             flex: 1
@@ -169,6 +170,7 @@
           text-align: left
           .item
             flex: 1.8
+            line-height: 18px
             no-wrap()
             &:last-child
               flex: 1

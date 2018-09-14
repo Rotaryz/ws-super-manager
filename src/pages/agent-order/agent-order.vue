@@ -167,6 +167,7 @@
         border-bottom: 1px solid $color-line
         .header-key
           flex: 1
+          overflow: hidden
           text-align: left
           &:nth-of-type(4)
             flex: 1.4
@@ -185,6 +186,7 @@
           .item
             flex: 1
             no-wrap()
+            line-height: 18px
             &.area
               flex: 1.4
               no-wrap()

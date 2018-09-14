@@ -206,6 +206,10 @@
         this.requestData.keyword = inputTxt
         this.requestData.page = 1
         this.$refs.pageDetail.beginPage()
+        for (let val in this.headClass) {
+          this.headClass[val] = ''
+        }
+        this.requestData.sort_type = ''
         this.getBusinessList()
       },
       handleClick(num) {
@@ -469,10 +473,13 @@
         border-bottom-1px($color-line)
         .header-key
           flex: 1
-          cursor: pointer
+          overflow: hidden
+          &:nth-of-type(2)
+            flex: 1.2
           &:last-child
             flex: 2.2
         .handle
+          cursor: pointer
           .contxt
             position: relative
             &:before
@@ -511,6 +518,7 @@
           .item
             flex: 1
             no-wrap()
+            line-height: 18px
             &:nth-of-type(2)
               flex: 1.2
           .list-handle
@@ -557,6 +565,7 @@
             bg-image('./icon-del2')
             width: 16px
             height: 16px
+            cursor: pointer
             background-size: 100% 100%
         .pop-main
           padding: 20px 30px
@@ -588,6 +597,7 @@
               &.active
                 background: $color-4985FC
                 color: $color-white
+                border: 0
                 margin-left: 20px
           .type
             display: inline-block
