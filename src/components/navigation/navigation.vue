@@ -281,6 +281,7 @@
         .nav-item
           overflow: hidden
           border-bottom: 1px solid #3B3B43
+          transition: all 0.3s
           .nav-tap
             height: 58px
             margin: 5.5px 0
@@ -324,6 +325,7 @@
               border-color: transparent
               transition: all 0.2s
           .router-link-active
+            transition: all 0.3s
             background: rgba(255, 255, 255, .1)
             border-left: 6px solid $color-4985FC !important
         .nav-big-child
@@ -332,6 +334,7 @@
             border-bottom: none
             display: flex
             .nav-tap-small
+              transition: all 0.3s
               width: 100%
               height: 58px
               display: flex
@@ -344,6 +347,7 @@
               .nav-icon
                 width: 46px
             .router-link-active
+              transition: all 0.3s
               background: rgba(255, 255, 255, 0.1)
               border-left: 6px solid $color-4985FC !important
           .nav-title

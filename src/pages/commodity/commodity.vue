@@ -208,7 +208,7 @@
     flex-direction: column
     .list-box
       background: $color-white
-      height: 60px
+      min-height: 60px
       overflow: hidden
       border-bottom: 1px solid $color-line
       &:last-child
@@ -290,6 +290,8 @@
     background: $color-background
 
   .page
+    display: flex
+    align-items: center
     width: 100%
     position: absolute
     bottom: 0

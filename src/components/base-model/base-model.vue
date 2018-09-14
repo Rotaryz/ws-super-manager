@@ -37,12 +37,10 @@
     </transition>
     <div class="content-base">
       <slot name="content"></slot>
-      <transition name="fade">
-        <div class="blank" v-if="showNull">
-          <div class="blank-icon"></div>
-          <div class="blank-title">暂无相关数据</div>
-        </div>
-      </transition>
+      <div class="blank" v-if="showNull">
+        <div class="blank-icon"></div>
+        <div class="blank-title">暂无相关数据</div>
+      </div>
     </div>
     <toast ref="toast"></toast>
   </div>
@@ -320,7 +318,7 @@
     box-sizing: border-box
     .blank
       row-center()
-      top: 50%
+      top: 55%
       text-align: center
       &.fade-enter, &.fade-leave-to
         opacity: 0
