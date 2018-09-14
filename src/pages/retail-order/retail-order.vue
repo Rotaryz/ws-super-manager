@@ -2,8 +2,8 @@
   <div class="retail-order">
     <div class="content-top">
       <div class="left">
-        <DateSelect @checkTime="checkTime"></DateSelect>
-        <Search @search="search"></Search>
+        <date-select @checkTime="checkTime"></date-select>
+        <search @search="search" placeholerTxt="请输入昵称"></search>
       </div>
       <a :href="excelUrl" class="excel">导出Excel</a>
     </div>
@@ -16,21 +16,20 @@
           <div class="item">
             <img class="head-img" :src="val.avatar" alt="">
           </div>
-          <span class="item">{{val.nickname}}</span>
-          <span class="item">{{val.sex && val.sex * 1 === 1 ? '男' : '女'}}</span>
-          <span class="item">{{val.area}}</span>
-          <span class="item">{{val.created_at}}</span>
+          <span class="item">{{val.nickname || '---'}}</span>
+          <span class="item">{{(val.sex && val.sex * 1 === 1 ? '男' : '女') || '---'}}</span>
+          <span class="item">{{val.area || '---'}}</span>
+          <span class="item">{{val.created_at || '---'}}</span>
         </div>
       </div>
     </div>
-    <PageDetail :pageDtail="pageDetail" @addPage="addPage"></PageDetail>
+    <page-detail :pageDtail="pageDetail" @addPage="addPage"></page-detail>
     <toast ref="toast"></toast>
   </div>
 </template>
 
 <script>
   import Search from 'components/search/search' // 搜索框
-  import AdminSelect from 'components/admin-select/admin-select' // 下拉框
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
   import {Customers} from 'api'
@@ -57,7 +56,8 @@
           per_page: 10,
           total_page: 1
         },
-        excelUrl: ''
+        excelUrl: '',
+        showList: true
       }
     },
     created() {
@@ -86,10 +86,12 @@
         Customers.getRetailOrderList(this.requestData)
           .then((res) => {
             if (res.error !== ERR_OK) {
+              this.$emit('setNull', true)
               this.$refs.toast.show(res.message)
               return
             }
             this.data = res.data
+            this.$emit('setNull', !this.data.length)
             this.pageDetail.total = res.meta.total
             this.pageDetail.total_page = res.meta.last_page
             this.getExcelUrl()
@@ -97,6 +99,7 @@
       },
       addPage(num) {
         this.requestData.page = num
+        this.getCustomersList()
       },
       getExcelUrl() {
         this.excelUrl = `${BASE_URL.api}/api/admin/potential-index-excel?access_token=${storage.get('aiToken')}&time=${this.requestData.time}&start_time=${this.requestData.start_time}&end_time=${this.requestData.end_time}&name=${this.requestData.name}&page=${this.requestData.page}`
@@ -104,7 +107,6 @@
     },
     components: {
       Search,
-      AdminSelect,
       DateSelect,
       PageDetail,
       Toast
