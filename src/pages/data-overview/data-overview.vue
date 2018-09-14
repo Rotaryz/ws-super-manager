@@ -456,6 +456,13 @@
     box-sizing: border-box
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
+  .dataOverView
+    flex: 1
+    display: flex
+    overflow: hidden
+    border-radius: 6px
+    box-shadow: 0 1px 6px 0 rgba(0, 8, 39, 0.10)
+    flex-direction: column
   .data-top
     layout(row)
     width: 100%

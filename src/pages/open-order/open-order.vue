@@ -134,10 +134,13 @@
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
   .activity
-    height: 100%
+    flex: 1
     background: $color-white
     padding: 0 1.5vw
     display: flex
+    overflow: hidden
+    border-radius: 6px
+    box-shadow: 0 1px 6px 0 rgba(0, 8, 39, 0.10)
     flex-direction: column
 
   .ac-tab
@@ -151,6 +154,7 @@
       col-center()
 
   .form-list
+    position: relative
     font-size: $font-size-medium14
     font-family: $fontFamilyRegular
     flex: 1
@@ -164,22 +168,26 @@
 
   .list-header
     width: 100%
-    height: 9.1%
+    height: 50px
     white-space: nowrap
     border-bottom: 1px solid $color-line
     background: $color-big-background
     .list-item
+      display: flex
+      align-items: center
       font-family: $fontFamilyMeddle
       color: $color-text33
 
   .list
-    height: 81.8%
     display: flex
     flex-direction: column
     .list-box
-      height: 10%
+      background: $color-white
+      height: 60px
       overflow: hidden
       border-bottom: 1px solid $color-line
+      &:last-child
+        margin-bottom: 60px
       .list-item
         line-height: 16px
         color: $color-text33
@@ -188,7 +196,6 @@
           height: 40px
           width: 40px
           overflow: hidden
-          background: $color-text33
           .pic
             width: 40px
       .list-item-tap
@@ -198,7 +205,8 @@
         no-wrap()
         width: 90%
         color: $color-text-66
-    no-wrap()
+        .bule
+          color: $color-4985FC
 
   .list-item-img
     width: 60px
@@ -212,6 +220,35 @@
     position: relative
     text-align: left
     overflow: hidden
+    .sort
+      display: flex
+      flex-direction: column
+      justify-content: space-between
+      height: 19px
+      margin-left: 10px
+      .sort-item
+        border: 4px solid $color-text99
+        transition: all 0.4s
+      .sort-top
+        border-top: 4px solid transparent
+        border-left: 4px solid transparent
+        border-right: 4px solid transparent
+      .sort-end
+        border-bottom: 4px solid transparent
+        border-left: 4px solid transparent
+        border-right: 4px solid transparent
+      .sort-top-active
+        border: 4px solid $color-4985FC
+        border-top: 4px solid transparent
+        border-left: 4px solid transparent
+        border-right: 4px solid transparent
+        transition: all 0.4s
+      .sort-end-active
+        border: 4px solid $color-4985FC
+        border-bottom: 4px solid transparent
+        border-left: 4px solid transparent
+        border-right: 4px solid transparent
+        transition: all 0.4s
     .showDetail
       cursor: pointer
       font-size: $font-size-small
@@ -228,5 +265,9 @@
     background: $color-background
 
   .page
-    height: 9.1%
+    width: 100%
+    position: absolute
+    bottom: 0
+    color: $color-white
+    height: 60px
 </style>
