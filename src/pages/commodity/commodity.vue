@@ -32,7 +32,7 @@
           <div class="list-item list-text">{{item.sale_count + '' || '---'}}</div>
           <div class="list-item list-text">{{item.is_online === 0 ? '已下架' : item.is_online === 1 ? '已上架' : '---'}}</div>
           <div class="list-item list-text">
-            <router-link tag="a" target="_blank" :to="'/business-list?num='+ item.merchant_name" class="bule hand">{{item.merchant_name || '---'}}</router-link>
+            <router-link tag="a" target="_blank" :to="'/business-list?num='+ item.merchant_account" class="bule hand">{{item.merchant_name || '---'}}</router-link>
           </div>
           <div class="list-item list-text">{{item.created_at || '---'}}</div>
         </div>
@@ -65,10 +65,6 @@
         keyWord: '',
         startTime: '',
         endTime: '',
-        sortType: 0,
-        fiDate: 'today',
-        fiStart: '',
-        fiEnd: '',
         showIndex: 0,
         goodsList: [],
         pageTotal: {
@@ -88,7 +84,7 @@
         this.downUrl = BASE_URL.api + `/api/admin/goods-export?access_token=${storage.get('aiToken')}&limit=10&title=${this.keyWord}&time=${this.date}&sort_type=${this.sortType}&start_time=${this.startTime}&end_time=${this.endTime}`
       },
       async _sortList(index) {
-        if (index !== 3 || index !== 4) {
+        if (index !== 3 && index !== 4) {
           return
         }
         this.showIndex = index
@@ -108,9 +104,6 @@
         this.page = 1
         this.sortType = 0
         this.keyWord = word
-        this.date = this.fiDate
-        this.startTime = this.fiStart
-        this.endTime = this.fiEnd
         this.$refs.page.beginPage()
         await this._getGoodsList()
       },
@@ -122,6 +115,7 @@
           this.$emit('showToast', res.message)
           return
         }
+        this._getUrl()
         let pages = res.meta
         this.pageTotal = Object.assign({}, {
           total: pages.total,
@@ -130,18 +124,21 @@
         })
         this.goodsList = res.data
         this.$emit('setNull', !this.goodsList.length)
-        console.log(this.goodsList)
       },
-      _checkTime(time) {
+      async _checkTime(time) {
         if (typeof time === 'string') {
-          this.fiDate = time
-          this.fiStart = ''
-          this.fiEnd = ''
-          return
+          this.date = time
+          this.startTime = ''
+          this.endTime = ''
+        } else {
+          this.date = ''
+          this.startTime = time[0]
+          this.endTime = time[1]
         }
-        this.fiDate = ''
-        this.fiStart = time[0]
-        this.fiEnd = time[1]
+        this.page = 1
+        this.sortType = 0
+        this.$refs.page.beginPage()
+        await this._getGoodsList()
       },
       async _addPage(page) {
         this.page = page
@@ -162,10 +159,13 @@
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
   .activity
-    height: 100%
+    flex: 1
     background: $color-white
     padding: 0 1.5vw
     display: flex
+    overflow: hidden
+    border-radius: 6px
+    box-shadow: 0 1px 6px 0 rgba(0, 8, 39, 0.10)
     flex-direction: column
 
   .ac-tab
@@ -179,6 +179,7 @@
       col-center()
 
   .form-list
+    position: relative
     font-size: $font-size-medium14
     font-family: $fontFamilyRegular
     flex: 1
@@ -192,7 +193,7 @@
 
   .list-header
     width: 100%
-    height: 9.1%
+    height: 50px
     white-space: nowrap
     border-bottom: 1px solid $color-line
     background: $color-big-background
@@ -203,13 +204,15 @@
       color: $color-text33
 
   .list
-    height: 81.8%
     display: flex
     flex-direction: column
     .list-box
-      height: 10%
+      background: $color-white
+      height: 60px
       overflow: hidden
       border-bottom: 1px solid $color-line
+      &:last-child
+        margin-bottom: 60px
       .list-item
         line-height: 16px
         color: $color-text33
@@ -287,5 +290,9 @@
     background: $color-background
 
   .page
-    height: 9.1%
+    width: 100%
+    position: absolute
+    bottom: 0
+    color: $color-white
+    height: 60px
 </style>

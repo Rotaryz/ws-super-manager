@@ -11,6 +11,11 @@ const AgentOrder = () => import('pages/agent-order/agent-order') // 消费客户
 const RetailOrder = () => import('pages/retail-order/retail-order') // 潜在客户
 const Activity = () => import('pages/activity/activity') // 事例
 const Commodity = () => import('pages/commodity/commodity') // 事例
+const DataOverview = () => import('pages/data-overview/data-overview')
+const GoodsOrder = () => import('pages/goods-order/goods-order')
+const OpenOrder = () => import('pages/open-order/open-order')
+const Exchange = () => import('pages/exchange/exchange')
+const Withdraw = () => import('pages/withdraw/withdraw')
 
 Vue.use(Router)
 
@@ -61,9 +66,37 @@ const route = new Router({
         meta: {
           title: '商品管理'
         }
-      }
-
-      ]
+      }, {
+        path: 'data-overview',
+        component: DataOverview,
+        meta: {
+          title: ''
+        }
+      }, {
+        path: 'goods-order',
+        component: GoodsOrder,
+        meta: {
+          title: '订单管理,商品订单'
+        }
+      }, {
+        path: 'open-order',
+        component: OpenOrder,
+        meta: {
+          title: '订单管理,开通门店'
+        }
+      }, {
+        path: 'exchange',
+        component: Exchange,
+        meta: {
+          title: '财务管理,交易记录'
+        }
+      }, {
+        path: 'withdraw',
+        component: Withdraw,
+        meta: {
+          title: '财务管理,提现申请'
+        }
+      }]
     },
     {
       path: '/login',

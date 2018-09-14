@@ -5,9 +5,11 @@ import App from './App'
 import router from './router'
 import 'common/stylus/index.styl'
 import fastclick from 'fastclick'
+import echarts from 'echarts'
 import store from './store'
 import 'element-ui/lib/theme-chalk/index.css'
 import {DatePicker} from 'element-ui'
+Vue.prototype.$echarts = echarts
 
 fastclick.attach(document.body)
 Vue.use(DatePicker)
