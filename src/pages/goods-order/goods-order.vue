@@ -68,7 +68,7 @@
           order_sn: '',
           page: 1,
           source: 0,
-          status: 1,
+          status: 0,
           limit: 10
         },
         goodsList: [],
@@ -87,7 +87,7 @@
     },
     methods: {
       _getUrl() {
-        this.downUrl = BASE_URL.api + `/api/admin/order-index-excel?access_token=${storage.get('aiToken')}&limit=10&time=${this.rqData.time}&start_time=${this.rqData.start_time}&end_time=${this.rqData.end_time}&order_sn=${this.rqData.order_sn}&source=${this.rqData.source}&status=${this.rqData.status}`
+        this.downUrl = BASE_URL.api + `/api/admin/order-index-excel?access_token=${storage.get('aiToken')}&time=${this.rqData.time}&start_time=${this.rqData.start_time}&end_time=${this.rqData.end_time}&order_sn=${this.rqData.order_sn}&source=${this.rqData.source}&status=${this.rqData.status}`
       },
       getGoodsOrdersData() {
         this._getUrl()
@@ -164,26 +164,30 @@
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
   .activity
-    height: 100%
+    flex: 1
     background: $color-white
-    padding: 0 1.5vw
     display: flex
+    overflow: hidden
+    border-radius: 6px
+    box-shadow: 0 1px 6px 0 rgba(0, 8, 39, 0.10)
     flex-direction: column
 
   .ac-tab
     min-height: 8.14vh
     box-sizing: border-box
-    padding: 2.8vh 0
+    padding: 2.8vh 1.5vw
     display: flex
     position: relative
     .excel
-      right: 0
+      right: 1.5vw
       col-center()
 
   .form-list
+    position: relative
     font-size: $font-size-medium14
     font-family: $fontFamilyRegular
     flex: 1
+    padding: 0 1.5vw
 
   .list-header, .list-box
     width: 100%
@@ -194,22 +198,26 @@
 
   .list-header
     width: 100%
-    height: 9.1%
+    height: 50px
     white-space: nowrap
     border-bottom: 1px solid $color-line
     background: $color-big-background
     .list-item
+      display: flex
+      align-items: center
       font-family: $fontFamilyMeddle
       color: $color-text33
 
   .list
-    height: 81.8%
     display: flex
     flex-direction: column
     .list-box
-      height: 10%
+      background: $color-white
+      height: 60px
       overflow: hidden
       border-bottom: 1px solid $color-line
+      &:last-child
+        margin-bottom: 60px
       .list-item
         line-height: 16px
         color: $color-text33
@@ -218,7 +226,6 @@
           height: 40px
           width: 40px
           overflow: hidden
-          background: $color-text33
           .pic
             width: 40px
       .list-item-tap
@@ -228,7 +235,8 @@
         no-wrap()
         width: 90%
         color: $color-text-66
-    no-wrap()
+        .bule
+          color: $color-4985FC
 
   .list-item-img
     width: 60px
@@ -242,6 +250,35 @@
     position: relative
     text-align: left
     overflow: hidden
+    .sort
+      display: flex
+      flex-direction: column
+      justify-content: space-between
+      height: 19px
+      margin-left: 10px
+      .sort-item
+        border: 4px solid $color-text99
+        transition: all 0.4s
+      .sort-top
+        border-top: 4px solid transparent
+        border-left: 4px solid transparent
+        border-right: 4px solid transparent
+      .sort-end
+        border-bottom: 4px solid transparent
+        border-left: 4px solid transparent
+        border-right: 4px solid transparent
+      .sort-top-active
+        border: 4px solid $color-4985FC
+        border-top: 4px solid transparent
+        border-left: 4px solid transparent
+        border-right: 4px solid transparent
+        transition: all 0.4s
+      .sort-end-active
+        border: 4px solid $color-4985FC
+        border-bottom: 4px solid transparent
+        border-left: 4px solid transparent
+        border-right: 4px solid transparent
+        transition: all 0.4s
     .showDetail
       cursor: pointer
       font-size: $font-size-small
@@ -252,51 +289,69 @@
       .audit
         color: $color-nomal
     &:nth-child(1)
-      flex: 1.2
+      flex: 1.3
     &:nth-child(2)
-      flex: 1.5
+      flex: 2.2
       white-space: normal !important
       padding-right: 5px
 
   .list-box-active
     background: $color-background
-
   .tab-list
     layout(row)
     margin-bottom: 20px
     border-bottom-1px()
+    padding: 0 1.5vw
     .item
       cursor: pointer
       background: $color-FAFAFA
-      width: 120px
+      width: 90px
       font-size: $font-size-medium14
       font-family: $fontFamilyRegular
       color: #222
-      height: 46px
-      line-height: 46px
+      height: 36px
+      line-height: 36px
       border-top: 1px solid #e1e4e5
       border-right: 1px solid #e1e4e5
       box-sizing: border-box
+      transition: all  0.4s ease-out
+      position: relative
+      &:after
+        content: ""
+        position: absolute
+        bottom: -2px
+        left: 0
+        width: 0
+        border-bottom: 3px solid transparent
+      &:before
+        content: ""
+        position: absolute
+        top: 0
+        left: 0
+        width: 0
+        border-bottom: 4px solid transparent
       &:nth-child(1)
         border-left: 1px solid #e1e4e5
       &.active
         background: #fff
         position: relative
+        transition: all  0.4s ease-out
         &:after
-          content: ""
-          position: absolute
-          bottom: -2px
-          left: 0
           width: 100%
           border-bottom: 3px solid #fff
+          transition: all  0.4s ease-out
         &:before
-          content: ""
-          position: absolute
-          top: 0
-          left: 0
           width: 100%
           border-bottom: 4px solid #4985FC
+          transition: all  0.4s ease-out
 
   .page
-    height: 9.1%
+    width: 100%
+    position: absolute
+    bottom: 0
+    left: 0
+    padding: 0 1.5vw
+    box-sizing: border-box
+    color: $color-white
+    height: 60px
 </style>

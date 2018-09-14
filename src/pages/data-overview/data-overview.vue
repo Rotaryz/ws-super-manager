@@ -91,8 +91,10 @@
       let that = this
       window.onresize = () => {
         return (() => {
-          that.drawLine()
-          that.drawTotalLine()
+          if (that.$route.path === '/data-overview') {
+            that.drawLine()
+            that.drawTotalLine()
+          }
         })()
       }
     },
@@ -198,7 +200,8 @@
                 color: '#ccc',
                 width: 0.5
               }
-            }
+            },
+            padding: [10, 50, 10, 20]
           },
           yAxis: {
             minInterval: 1,
@@ -362,7 +365,8 @@
                 color: '#ccc',
                 width: 0.5
               }
-            }
+            },
+            padding: [10, 50, 10, 20]
           },
           yAxis: {
             minInterval: 1,
@@ -456,6 +460,13 @@
     box-sizing: border-box
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
+  .dataOverView
+    flex: 1
+    display: flex
+    overflow: hidden
+    border-radius: 6px
+    box-shadow: 0 1px 6px 0 rgba(0, 8, 39, 0.10)
+    flex-direction: column
   .data-top
     layout(row)
     width: 100%
