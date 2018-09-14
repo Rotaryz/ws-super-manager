@@ -5,7 +5,10 @@ import storage from 'storage-controller'
 const Home = () => import('pages/home/home')
 const Login = () => import('pages/login/login') // 登录
 const Demo = () => import('pages/demo/demo') // 事例
-const MemberList = () => import('pages/member-list/member-list') // 事例
+const MemberList = () => import('pages/member-list/member-list') // 团队管理
+const BusinessList = () => import('pages/business-list/business-list') // 商家管理
+const AgentOrder = () => import('pages/agent-order/agent-order') // 消费客户
+const RetailOrder = () => import('pages/retail-order/retail-order') // 潜在客户
 const Activity = () => import('pages/activity/activity') // 事例
 const Commodity = () => import('pages/commodity/commodity') // 事例
 const DataOverview = () => import('pages/data-overview/data-overview')
@@ -31,25 +34,25 @@ const route = new Router({
         path: '/member-list',
         component: MemberList,
         meta: {
-          title: '团队列表'
+          title: '商家管理,团队列表'
         }
       }, {
         path: '/business-list',
-        component: MemberList,
+        component: BusinessList,
         meta: {
-          title: '商家列表'
+          title: '商家管理,商家列表'
         }
       }, {
         path: '/agent-order',
-        component: MemberList,
+        component: AgentOrder,
         meta: {
-          title: '消费客户'
+          title: '客户管理,消费客户'
         }
       }, {
         path: '/retail-order',
-        component: MemberList,
+        component: RetailOrder,
         meta: {
-          title: '潜在客户'
+          title: '客户管理,潜在客户'
         }
       }, {
         path: 'activity',
