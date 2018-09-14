@@ -466,7 +466,7 @@
         justify-content: space-between
         padding-left: 40px
         color: $color-text33
-        border-bottom: 1px solid $color-line
+        border-bottom-1px($color-line)
         .header-key
           flex: 1
           cursor: pointer
