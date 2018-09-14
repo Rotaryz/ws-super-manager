@@ -135,8 +135,9 @@
   @import '~common/stylus/mixin'
   .base-model
     position: relative
-    height: 100vh
     display: flex
+    overflow-y: auto
+    min-height: 100vh
     flex-direction: column
 
   .herder-peo
@@ -284,13 +285,13 @@
           color: $color-nomal
           &:before
             background: $color-nomal
+
   .tag-no-top
     height: 62px
 
   .shade-win
     height: 100%
     width: 100%
-    overflow-y: auto
     background: rgba(50, 50, 58, 0.60)
     position: absolute
     top: 0
@@ -310,14 +311,19 @@
       width: 534px
 
   .content-base
-    overflow-y: auto
     padding: 1.5vw
     flex: 1
+    display: flex
+    flex-direction: column
     box-sizing: border-box
     .blank
       row-center()
       top: 50%
       text-align: center
+      &.fade-enter, &.fade-leave-to
+        opacity: 0
+      &.fade-enter-to, &.fade-leave-to
+        transition: opacity .2s ease-in-out
       .blank-icon
         icon-image('icon-null')
         width: 140px

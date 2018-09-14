@@ -144,10 +144,13 @@
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
   .activity
-    height: 100%
+    flex: 1
     background: $color-white
     padding: 0 1.5vw
     display: flex
+    overflow: hidden
+    border-radius: 6px
+    box-shadow: 0 1px 6px 0 rgba(0, 8, 39, 0.10)
     flex-direction: column
 
   .ac-tab
@@ -161,6 +164,7 @@
       col-center()
 
   .form-list
+    position: relative
     font-size: $font-size-medium14
     font-family: $fontFamilyRegular
     flex: 1
@@ -174,7 +178,7 @@
 
   .list-header
     width: 100%
-    height: 9.1%
+    height: 50px
     white-space: nowrap
     border-bottom: 1px solid $color-line
     background: $color-big-background
@@ -185,13 +189,15 @@
       color: $color-text33
 
   .list
-    height: 81.8%
     display: flex
     flex-direction: column
     .list-box
-      height: 10%
+      background: $color-white
+      height: 60px
       overflow: hidden
       border-bottom: 1px solid $color-line
+      &:last-child
+        margin-bottom: 60px
       .list-item
         line-height: 16px
         color: $color-text33
@@ -269,5 +275,9 @@
     background: $color-background
 
   .page
-    height: 9.1%
+    width: 100%
+    position: absolute
+    bottom: 0
+    color: $color-white
+    height: 60px
 </style>

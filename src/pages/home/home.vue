@@ -75,9 +75,11 @@
     display: flex
     height: 100vh
     .content
-      overflow: hidden
+      overflow-y: auto
       flex: 1
 
   .content-box
-    height: 100%
+    display: flex
+    flex: 1
+
 </style>

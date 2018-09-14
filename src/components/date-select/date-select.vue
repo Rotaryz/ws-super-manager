@@ -71,7 +71,7 @@
       width: 60px
       height: 26px
       position: relative
-      transition: all 0.4s
+      transition: all  0.4s ease-out
       border: 0.5px solid $color-textD9
       &:nth-child(2), &:nth-child(3), &:nth-child(4), &:nth-child(5)
         border-left: none
@@ -104,7 +104,7 @@
         right: 0
         top: -0.5px
         box-sizing: content-box
-        transition: all 0.4s
+        transition: all  0.4s ease-out
       &:before
         content: ''
         border-right: 0.5px solid transparent
@@ -116,18 +116,18 @@
         bottom: 0
         left: 0
         box-sizing: content-box
-        transition: all 0.4s
+        transition: all  0.4s ease-out
 
     .date-item-active
-      transition: all 0.4s
+      transition: all  0.4s ease-out
       color: $color-4985FC
       &:after
         border-color: $color-4985FC
-        transition: all 0.4s
+        transition: all  0.4s ease-out
         width: 100%
       &:before
         border-color: $color-4985FC
-        transition: all 0.4s
+        transition: all  0.4s ease-out
         height: 100%
 
   /*
