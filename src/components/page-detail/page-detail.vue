@@ -268,6 +268,7 @@
             transition: all 0.3s ease-out
             border-radius: 3px
         .page-child-active
+          border: 0.5px solid transparent
           transition: all 0.3s ease-out
           color: $color-4985FC
           &:after
