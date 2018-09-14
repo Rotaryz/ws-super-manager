@@ -27,24 +27,24 @@
           <div class="list-item list-text">{{item.money}}</div>
           <div class="list-item list-text">{{item.user_name}}</div>
           <div class="list-item list-text">{{item.bank}}</div>
-          <div class="list-item list-text"  @mouseenter="showNumber" @mouseleave="hideNumber">
+          <div class="list-item list-text"  @mouseenter="showNumber(index)" @mouseleave="hideNumber">
             <div class="hidden">
               *****
               <transition name="fade">
-                <div class="hidden-number"  v-show="bankNumber" @mouseenter="showNumber">{{item.withdrawal_card}}</div>
+                <div class="hidden-number"  v-show="bankIndex * 1 === index && bankNumber" @mouseenter="showNumber(index)">{{item.withdrawal_card}}</div>
               </transition>
             </div>
           </div>
-          <div class="list-item list-text"   @mouseenter="showText" @mouseleave="hideText">
+          <div class="list-item list-text"   @mouseenter="showText(index)" @mouseleave="hideText">
             <div class="text" v-if="item.status * 1 === 0">待审核</div>
             <div class="text" v-if="item.status * 1 === 1">微信受理成功</div>
             <div class="text" v-if="item.status * 1 === 2">审核不通过</div>
             <div class="text" v-if="item.status * 1 === 3">微信打款成功</div>
             <div class="text" v-if="item.status * 1 === 4">微信打款失败</div>
             <div class="text" v-if="item.status * 1 === 5">微信受理失败</div>
-            <div class="icon" v-if="item.status * 1 === 2 || item.status * 1 === 5 || item.status * 1 === 4"><transition name="fade"><div class="hidden-number" v-show="text && item.note" @mouseenter="showText">{{item.note}}</div></transition></div>
+            <div class="icon" v-if="item.status * 1 === 0 || item.status * 1 === 5 || item.status * 1 === 4"><transition name="fade"><div class="hidden-number" v-show="text  && textIndex * 1 === index" @mouseenter="showText(index)">{{item.note || '未查到原因'}}</div></transition></div>
           </div>
-          <div class="list-item list-text">{{item.status}}
+          <div class="list-item list-text">
             <div class="item-text" v-if="item.status * 1 === 0 || item.status * 1 === 5 || item.status * 1 === 4" @click="showModel(item)">审核</div>
           </div>
         </div>
@@ -54,7 +54,7 @@
         <page-detail ref="page" :pageDtail="withdrawPage" @addPage="goPage"></page-detail>
       </div>
     </div>
-    <div class="model-box" v-show="showModels">
+    <div class="model-box" :class="showActive ? 'model-active' : 'model-noactive'" v-show="showModels">
       <div class="model-top">
         <div class="model-text">审核</div>
         <div class="icon" @click="hideModel"></div>
@@ -110,10 +110,13 @@
         },
         withdrawList: [],
         bankNumber: false,
+        bankIndex: 0,
         text: false,
         showModels: false,
-        withId: '',
+        showActive: false,
+        withId: 0,
         noteText: '',
+        textIndex: '',
         downUrl: '',
         inputText: '请输入订单编号',
         inputIndex: 1
@@ -123,22 +126,31 @@
       this._getUrl()
       await this.getAuditData()
     },
+    destroyed() {
+      this.$emit('hideShade')
+    },
     methods: {
       _getUrl() {
-        this.downUrl = BASE_URL.api + `/api/admin/withdraw-index-excel?access_token=${storage.get('aiToken')}&limit=10&time=${this.rqData.time}&start_time=${this.rqData.start_time}&end_time=${this.rqData.end_time}&withdraw_sn=${this.rqData.withdraw_sn}&status=${this.rqData.status}`
+        this.downUrl = BASE_URL.api + `/api/admin/withdraw-index-excel?access_token=${storage.get('aiToken')}&time=${this.rqData.time}&start_time=${this.rqData.start_time}&end_time=${this.rqData.end_time}&withdraw_sn=${this.rqData.withdraw_sn}&status=${this.rqData.status}&mobile=${this.rqData.mobile}`
       },
       showModel(item) {
+        this.noteText = ''
         this.$emit('showShade')
         this.showModels = true
+        this.showActive = true
         this.withId = item.id
       },
       hideModel() {
-        this.$emit('hideShade')
-        this.showModels = false
+        this.showActive = false
+        setTimeout(() => {
+          this.$emit('hideShade')
+          this.showModels = false
+        }, 200)
       },
       upWithdrawAudit(index) {
-        if (this.note.length === 0) {
+        if (this.noteText.length === 0) {
           this.$emit('showToast', '请填写审核原因')
+          return
         }
         let data = {
           status: index,
@@ -148,22 +160,30 @@
         Exchange.withdrawAudit(data).then(res => {
           if (res.error === ERR_OK) {
             this.$emit('showToast', '提交成功')
-            this.$emit('hideShade')
-            this.showModels = false
+            this.showActive = false
+            setTimeout(() => {
+              this.$emit('hideShade')
+              this.showModels = false
+            }, 200)
           } else {
             this.$emit('showToast', res.message)
-            this.$emit('hideShade')
-            this.showModels = false
+            this.showActive = false
+            setTimeout(() => {
+              this.$emit('hideShade')
+              this.showModels = false
+            }, 200)
           }
         })
       },
-      showNumber() {
+      showNumber(index) {
+        this.bankIndex = index
         this.bankNumber = true
       },
       hideNumber() {
         this.bankNumber = false
       },
-      showText() {
+      showText(index) {
+        this.textIndex = index
         this.text = true
       },
       hideText() {
@@ -213,7 +233,6 @@
         }
       },
       searchBtn(text) {
-        console.log(text)
         if (this.inputIndex * 1 === 1) {
           this.rqData.mobile = ''
           this.rqData.withdraw_sn = text
@@ -295,6 +314,7 @@
       height: 60px
       overflow: hidden
       border-bottom: 1px solid $color-line
+      overflow: visible !important
       &:last-child
         margin-bottom: 60px
       .list-item
@@ -393,13 +413,12 @@
           font-family: $fontFamilyRegular
           min-width: 182px
           background: #fff
-          text-align: center
-          padding: 5px
+          padding: 10px
           border-radius:3px
           bottom: 22px
-          left: -90px
+          left: -95px
           z-index: 11
-          text-align: left
+          text-align: center
           box-shadow: 0 1px 4px 0 rgba(12, 6, 14, 0.20)
           &:after
             content: ''
@@ -437,12 +456,14 @@
       color: $color-text33
       font-family: $fontFamilyRegular
       min-width: 182px
+      padding: 0 5px
       background: #fff
       height: 26px
+      line-height: 26px
       text-align: center
       border-radius:3px
       top: -30px
-      left: -72px
+      left: -77px
       z-index: 11
       margin: auto
       box-shadow: 0 1px 4px 0 rgba(12, 6, 14, 0.20)
@@ -472,4 +493,179 @@
     padding-left: 10px
   .admin-search
     margin-left: -5px
+  .model-box
+    box-shadow: 0 1px 6px 0 rgba(0, 8, 39, 0.10)
+    background: $color-white
+    height: 270px
+    width: 534px
+    position: fixed
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    z-index: 999
+    margin: auto
+    .model-top
+      height: 60px
+      layout(row)
+      align-items: center
+      justify-content: space-between
+      padding: 0 30px
+      border-bottom-1px()
+      .model-text
+        font-family: $fontFamilyRegular
+        font-size: $font-size-medium16
+        color: $color-text33
+      .icon
+        width: 16px
+        height: 16px
+        background-size: 16px
+        bg-image(icon-del2)
+        cursor: pointer
+    .modelarea
+      width: 474px
+      border-1px()
+      height: 90px
+      margin: 27px auto 20px
+      padding: 5px 10px
+      text-align: justify
+      resize:none
+      font-family: $fontFamilyRegular
+      font-size: $font-size-medium14
+      color: $color-text33
+      line-height: 18px
+      border: 1px solid #ccc
+      outline: none
+    .modelarea::-webkit-input-placeholder
+      color:#ccc
+    .modelarea:-moz-placeholder
+      color:#ccc
+    .modelarea::-moz-placeholder
+      color:#ccc
+    .modelarea:-ms-input-placeholder
+      color:#ccc
+    .model-btn
+      layout(row)
+      align-items: center
+      justify-content: center
+      .btn
+        width: 94px
+        height: 40px
+        line-height: 40px
+        background: $color-4985FC
+        border-radius: 3px
+        margin: 0 27px
+        font-family: $fontFamilyRegular
+        font-size: $font-size-medium16
+        color: $color-white
+        cursor: pointer
+        &:nth-child(2)
+          background: #EF705D
+  .model-active
+    animation:layerFadeIn .3s
+    -webkit-animation:layerFadeIn .3s
+    -moz-animation:layerFadeIn .3s
+    -ms-animation:layerFadeIn .3s
+    -o-animation:layerFadeIn .3s
+  .model-noactive
+    animation:hideFadeIn .3s
+    -webkit-animation:hideFadeIn .3s
+    -moz-animation:hideFadeIn .3s
+    -ms-animation:hideFadeIn .3s
+    -o-animation:hideFadeIn .3s
+  @keyframes layerFadeIn {
+    0% {
+      opacity:0
+      transform:scale(.5)
+    }
+    100% {
+      opacity:1
+      transform:scale(1)
+    }
+  }@-webkit-keyframes layerFadeIn {
+     0% {
+       opacity:0
+       -webkit-transform:scale(.5)
+     }
+     100% {
+       opacity:1
+       -webkit-transform:scale(1)
+     }
+   }@-moz-keyframes layerFadeIn {
+      0% {
+        opacity:0
+        -moz-transform:scale(.5)
+      }
+      100% {
+        opacity:1
+        -moz-transform:scale(1)
+      }
+    }@-ms-keyframes layerFadeIn {
+       0% {
+         opacity:0
+         -ms-transform:scale(.5);
+         filter:Alpha(opacity=0)
+       }
+       100% {
+         opacity:1
+         -ms-transform:scale(1);
+         filter:Alpha(opacity=100)
+       }
+     }@-o-keyframes layerFadeIn {
+        0% {
+          opacity:0
+          -o-transform:scale(.5)
+        }
+        100% {
+          opacity:1
+          -o-transform:scale(1)
+        }
+      }
+  @keyframes hideFadeIn {
+    0% {
+      opacity:1;
+      transform:scale(1)
+    }
+    100% {
+      transform:scale(.5);
+      opacity:0
+    }
+  }@-webkit-keyframes hideFadeIn {
+     0% {
+       opacity:1;
+       -webkit-transform:scale(1)
+     }
+     100% {
+       -webkit-transform:scale(.5);
+       opacity:0
+     }
+   }@-moz-keyframes hideFadeIn {
+      0% {
+        opacity:1;
+        -moz-transform:scale(1)
+      }
+      100% {
+        -moz-transform:scale(.5);
+        opacity:0
+      }
+    }@-ms-keyframes hideFadeIn {
+       0% {
+         opacity:1;
+         -ms-transform:scale(1)
+       }
+       100% {
+         -ms-transform:scale(.5);
+         opacity:0;
+         filter:Alpha(opacity=0)
+       }
+     }@-o-keyframes hideFadeIn {
+        0% {
+          opacity:1;
+          -webkit-transform:scale(1)
+        }
+        100% {
+          -webkit-transform:scale(.5);
+          opacity:0
+        }
+      }
 </style>

@@ -68,7 +68,7 @@
           order_sn: '',
           page: 1,
           source: 0,
-          status: 1,
+          status: 0,
           limit: 10
         },
         goodsList: [],
@@ -87,7 +87,7 @@
     },
     methods: {
       _getUrl() {
-        this.downUrl = BASE_URL.api + `/api/admin/order-index-excel?access_token=${storage.get('aiToken')}&limit=10&time=${this.rqData.time}&start_time=${this.rqData.start_time}&end_time=${this.rqData.end_time}&order_sn=${this.rqData.order_sn}&source=${this.rqData.source}&status=${this.rqData.status}`
+        this.downUrl = BASE_URL.api + `/api/admin/order-index-excel?access_token=${storage.get('aiToken')}&time=${this.rqData.time}&start_time=${this.rqData.start_time}&end_time=${this.rqData.end_time}&order_sn=${this.rqData.order_sn}&source=${this.rqData.source}&status=${this.rqData.status}`
       },
       getGoodsOrdersData() {
         this._getUrl()
@@ -166,7 +166,6 @@
   .activity
     flex: 1
     background: $color-white
-    padding: 0 1.5vw
     display: flex
     overflow: hidden
     border-radius: 6px
@@ -176,11 +175,11 @@
   .ac-tab
     min-height: 8.14vh
     box-sizing: border-box
-    padding: 2.8vh 0
+    padding: 2.8vh 1.5vw
     display: flex
     position: relative
     .excel
-      right: 0
+      right: 1.5vw
       col-center()
 
   .form-list
@@ -188,6 +187,7 @@
     font-size: $font-size-medium14
     font-family: $fontFamilyRegular
     flex: 1
+    padding: 0 1.5vw
 
   .list-header, .list-box
     width: 100%
@@ -291,7 +291,7 @@
     &:nth-child(1)
       flex: 1.3
     &:nth-child(2)
-      flex: 1.5
+      flex: 2.2
       white-space: normal !important
       padding-right: 5px
 
@@ -301,42 +301,57 @@
     layout(row)
     margin-bottom: 20px
     border-bottom-1px()
+    padding: 0 1.5vw
     .item
       cursor: pointer
       background: $color-FAFAFA
-      width: 120px
+      width: 90px
       font-size: $font-size-medium14
       font-family: $fontFamilyRegular
       color: #222
-      height: 46px
-      line-height: 46px
+      height: 36px
+      line-height: 36px
       border-top: 1px solid #e1e4e5
       border-right: 1px solid #e1e4e5
       box-sizing: border-box
+      transition: all  0.4s ease-out
+      position: relative
+      &:after
+        content: ""
+        position: absolute
+        bottom: -2px
+        left: 0
+        width: 0
+        border-bottom: 3px solid transparent
+      &:before
+        content: ""
+        position: absolute
+        top: 0
+        left: 0
+        width: 0
+        border-bottom: 4px solid transparent
       &:nth-child(1)
         border-left: 1px solid #e1e4e5
       &.active
         background: #fff
         position: relative
+        transition: all  0.4s ease-out
         &:after
-          content: ""
-          position: absolute
-          bottom: -2px
-          left: 0
           width: 100%
           border-bottom: 3px solid #fff
+          transition: all  0.4s ease-out
         &:before
-          content: ""
-          position: absolute
-          top: 0
-          left: 0
           width: 100%
           border-bottom: 4px solid #4985FC
+          transition: all  0.4s ease-out
 
   .page
     width: 100%
     position: absolute
     bottom: 0
+    left: 0
+    padding: 0 1.5vw
+    box-sizing: border-box
     color: $color-white
     height: 60px
 </style>

@@ -73,7 +73,7 @@
     },
     methods: {
       _getUrl() {
-        this.downUrl = BASE_URL.api + `/api/admin/store-index-excel?access_token=${storage.get('aiToken')}&limit=10&time=${this.rqData.time}&start_time=${this.rqData.start_time}&end_time=${this.rqData.end_time}&order_sn=${this.rqData.order_sn}`
+        this.downUrl = BASE_URL.api + `/api/admin/store-index-excel?access_token=${storage.get('aiToken')}&time=${this.rqData.time}&start_time=${this.rqData.start_time}&end_time=${this.rqData.end_time}&order_sn=${this.rqData.order_sn}`
       },
       getOpenOrdersData() {
         this._getUrl()

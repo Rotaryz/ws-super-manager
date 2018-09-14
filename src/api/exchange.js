@@ -34,8 +34,8 @@ export default {
    * @returns {*}
    */
   withdrawAudit(data) {
-    let url = '/api/admin/withdraw-index'
-    return request.get(url, data)
+    let url = '/api/admin/apply-withdraw'
+    return request.post(url, data)
   },
   /**
    * 提现审核
