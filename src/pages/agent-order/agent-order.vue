@@ -31,7 +31,7 @@
         </div>
       </div>
     </div>
-    <page-detail :pageDtail="pageDetail" @addPage="addPage"></page-detail>
+    <page-detail ref="pageDetail" :pageDtail="pageDetail" @addPage="addPage"></page-detail>
     <toast ref="toast"></toast>
   </div>
 </template>
@@ -88,10 +88,14 @@
           this.requestData.start_time = ''
           this.requestData.end_time = ''
         }
+        this.requestData.page = 1
+        this.$refs.pageDetail.beginPage()
         this.getCustomersList()
       },
       search(inputTxt) {
         this.requestData.name = inputTxt
+        this.requestData.page = 1
+        this.$refs.pageDetail.beginPage()
         this.getCustomersList()
       },
       getCustomersList() {
@@ -181,6 +185,7 @@
           border-bottom: 1px solid $color-line
           .item
             flex: 1
+            no-wrap()
             &.area
               flex: 1.4
               no-wrap()

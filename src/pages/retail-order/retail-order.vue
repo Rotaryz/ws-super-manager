@@ -17,13 +17,13 @@
             <img class="head-img" :src="val.avatar" alt="">
           </div>
           <span class="item">{{val.nickname || '---'}}</span>
-          <span class="item">{{(val.sex !== 0 && val.sex * 1 === 1 ? '男' : '女') || '---'}}</span>
+          <span class="item">{{(val.sex !== 0 && val.sex * 1 === 1 ? '男' : '女') || '未知'}}</span>
           <span class="item">{{val.area || '---'}}</span>
           <span class="item">{{val.created_at || '---'}}</span>
         </div>
       </div>
     </div>
-    <page-detail :pageDtail="pageDetail" @addPage="addPage"></page-detail>
+    <page-detail ref="pageDetail" :pageDtail="pageDetail" @addPage="addPage"></page-detail>
     <toast ref="toast"></toast>
   </div>
 </template>
@@ -65,7 +65,6 @@
     },
     methods: {
       checkTime(status) {
-        console.log(status)
         if (status instanceof Array) {
           this.requestData.start_time = status[0]
           this.requestData.end_time = status[1]
@@ -75,10 +74,14 @@
           this.requestData.start_time = ''
           this.requestData.end_time = ''
         }
+        this.requestData.page = 1
+        this.$refs.pageDetail.beginPage()
         this.getCustomersList()
       },
       search(inputTxt) {
         this.requestData.name = inputTxt
+        this.requestData.page = 1
+        this.$refs.pageDetail.beginPage()
         this.getCustomersList()
       },
       getCustomersList() {
@@ -167,6 +170,7 @@
           text-align: left
           .item
             flex: 1.8
+            no-wrap()
             &:last-child
               flex: 1
           .head-img

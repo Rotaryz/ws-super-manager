@@ -23,7 +23,7 @@
         </div>
       </div>
     </div>
-    <page-detail :pageDtail="pageDetail" @addPage="addPage"></page-detail>
+    <page-detail ref="pageDetail" :pageDtail="pageDetail" @addPage="addPage"></page-detail>
     <toast></toast>
   </div>
 </template>
@@ -79,6 +79,8 @@
           this.requestData.start_time = ''
           this.requestData.end_time = ''
         }
+        this.requestData.page = 1
+        this.$refs.pageDetail.beginPage()
         this.getMemberList()
       },
       getMemberList() {
@@ -95,6 +97,8 @@
       },
       search(inputTxt) {
         this.requestData.keyword = inputTxt
+        this.requestData.page = 1
+        this.$refs.pageDetail.beginPage()
         this.getMemberList()
       },
       handleClick(num) {
@@ -246,4 +250,5 @@
           text-align: left
           .item
             flex: 1
+            no-wrap()
 </style>

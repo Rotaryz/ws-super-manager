@@ -12,37 +12,39 @@
     </div>
     <div class="content-list">
       <div class="list-header">
-        <div class="header-key" v-for="(item, index) in headerList" @click="handleClick(index)" :class="{'handle': index === 7 || index === 8 || index === 9}">
+        <div class="header-key" v-for="(item, index) in headerList" @click="handleClick(index)"
+             :class="{'handle': index === 7 || index === 8 || index === 9}">
           <span class="contxt" :class="`${headClass[`class${index}`]}`">{{item}}</span>
         </div>
       </div>
       <div class="list-content">
         <div class="list-item" v-for="(item, index) in data">
-            <span class="item">{{item.name || '---'}}</span>
-            <span class="item">{{item.mobile || '---'}}</span>
-            <span class="item">{{item.role_name || '---'}}</span>
-            <span class="item">{{item.is_freeze_str || '---'}}</span>
-            <span class="item">{{item.status_str || '---'}}</span>
-            <span class="item">{{item.service_version || '---'}}</span>
-            <span class="item">{{item.open_type_str || '---'}}</span>
-            <span class="item">{{item.latent_customer_count || '---'}}</span>
-            <span class="item">{{item.customer_count || '---'}}</span>
-            <span class="item">{{item.order_count || '---'}}</span>
-            <span class="item">{{item.created_at || '---'}}</span>
-            <span class="item">{{item.expiration_time || '---'}}</span>
-            <div class="list-handle item">
-              <span class="handle-item" @click="openPop('open', item.name, item.id, item.is_freeze_str, item.expiration_time)">开通</span>
-              <span class="handle-item" @click="openPop('freeze', item.name, item.id, item.is_freeze_str)">{{item.is_freeze_str === '正常' ? '冻结' : '解冻'}}</span>
-              <span class="handle-item" @click="openPop('authority', item.name, item.id, item.is_freeze_str)">越权</span>
-              <span class="handle-item" @click="openPop('shop', item.name, item.id, item.is_freeze_str)">店铺</span>
-            </div>
+          <span class="item">{{item.name || '---'}}</span>
+          <span class="item">{{item.mobile || '---'}}</span>
+          <span class="item">{{item.role_name || '---'}}</span>
+          <span class="item">{{item.is_freeze_str || '---'}}</span>
+          <span class="item">{{item.status_str || '---'}}</span>
+          <span class="item">{{item.service_version || '---'}}</span>
+          <span class="item">{{item.open_type_str || '---'}}</span>
+          <span class="item">{{item.latent_customer_count || '---'}}</span>
+          <span class="item">{{item.customer_count || '---'}}</span>
+          <span class="item">{{item.order_count || '---'}}</span>
+          <span class="item">{{item.created_at || '---'}}</span>
+          <span class="item">{{item.expiration_time || '---'}}</span>
+          <div class="list-handle item">
+            <span class="handle-item"
+                  @click="openPop('open', item.name, item.id, item.is_freeze_str, item.expiration_time)">开通</span>
+            <span class="handle-item" @click="openPop('freeze', item.name, item.id, item.is_freeze_str)">{{item.is_freeze_str === '正常' ? '冻结' : '解冻'}}</span>
+            <span class="handle-item" @click="openPop('authority', item.name, item.id, item.is_freeze_str)">越权</span>
+            <span class="handle-item" @click="openPop('shop', item.name, item.id, item.is_freeze_str)">店铺</span>
+          </div>
         </div>
       </div>
     </div>
-    <page-detail :pageDtail="pageDetail" @addPage="addPage"></page-detail>
+    <page-detail ref="pageDetail" :pageDtail="pageDetail" @addPage="addPage"></page-detail>
     <toast ref="toast"></toast>
-    <div class="pop-box" v-if="showPop">
-      <div class="pop-content">
+    <div class="pop-box" v-show="showPop">
+      <div class="pop-content" :class="showActive ? 'model-active' : 'model-noactive'">
         <header class="title">
           <span>{{popTile[showPopContent]}}“{{popName}}”商家</span>
           <span class="closePop" @click="closePop"></span>
@@ -71,7 +73,7 @@
         <div class="pop-main" v-if="showPopContent === 1 || showPopContent === 2">
           <textarea v-model="popTxt" class="popTxt" :placeholder="showPopContent === 1?'备注原因':'冻结原因'"></textarea>
           <div class="content-btn">
-            <a class="btn" href="javascript:;"  @click="closePop">取消</a>
+            <a class="btn" href="javascript:;" @click="closePop">取消</a>
             <a class="btn active" href="javascript:;" @click="operate">{{showPopContent === 1 ? '冻结' : '解冻'}}</a>
           </div>
         </div>
@@ -98,8 +100,8 @@
   import AdminSelect from 'components/admin-select/admin-select'
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
-  import {Business} from 'api'
-  import {ERR_OK, BASE_URL} from 'common/js/config'
+  import { Business } from 'api'
+  import { ERR_OK, BASE_URL } from 'common/js/config'
   import Toast from 'components/toast/toast'
   import storage from 'storage-controller'
 
@@ -152,6 +154,7 @@
         showList: true,
         popTxt: '',
         showPop: false,
+        showActive: false,
         showPopContent: false,
         addTime: '',
         authorityNum: '',
@@ -195,10 +198,14 @@
           this.requestData.start_time = ''
           this.requestData.end_time = ''
         }
+        this.requestData.page = 1
+        this.$refs.pageDetail.beginPage()
         this.getBusinessList()
       },
       search(inputTxt) {
         this.requestData.keyword = inputTxt
+        this.requestData.page = 1
+        this.$refs.pageDetail.beginPage()
         this.getBusinessList()
       },
       handleClick(num) {
@@ -265,7 +272,9 @@
         this.excelUrl = `${BASE_URL.api}/api/admin/potential-index-excel?${accessToken}&${query}`
       },
       openPop(type, name, id, status, endTime) { // 打开弹窗
+        this.$emit('showShade')
         this.showPop = true
+        this.showActive = true
         this.popName = name
         this.merchant_id = id
         switch (type) {
@@ -290,7 +299,11 @@
         }
       },
       closePop() { // 关闭弹窗
-        this.showPop = false
+        this.$emit('hideShade')
+        setTimeout(() => {
+          this.showPop = false
+        }, 200)
+        this.showActive = false
         this.popTxt = ''
         this.authorityNum = ''
       },
@@ -427,7 +440,7 @@
     flex-direction: column
     background: $color-white
     border-radius: 5px
-    box-shadow: 0 1px 6px 0 rgba(0,8,39,0.10)
+    box-shadow: 0 1px 6px 0 rgba(0, 8, 39, 0.10)
     padding: 30px
     padding-top: 0
     box-sizing: border-box
@@ -464,7 +477,7 @@
             position: relative
             &:before
             &:after
-              content:''
+              content: ''
               display: inline-block
               width: 0
               height: 0
@@ -515,20 +528,21 @@
             width: 40px
             heihgt: 40px
     .pop-box
+      z-index: 888
       position: fixed
-      left: 0
-      right: 0
       top: 0
+      left: 200px
       bottom: 0
-      background: rgba(50,50,58,0.6)
-      z-index: 1
+      right: 0
+      display: flex
+      align-items: center
+      justify-content: center
       .pop-content
         width: 530px
         min-height: 260px
         background: $color-white
         border-radius: 3px
-        all-center()
-        box-shadow: 0 0 5px 0 rgba(12,6,14,0.6)
+        box-shadow: 0 0 5px 0 rgba(12, 6, 14, 0.6)
         .title
           height: 60px
           border-bottom: 1px solid #DADADA
@@ -549,7 +563,7 @@
           text-align: left
           .popTxt
             padding: 8px
-            resize: vertical
+            resize: none
             font-size: 14px
             width: 100%
             height: 90px
@@ -609,4 +623,32 @@
           height: 260px
           justify-content: center
           align-items: center
+
+  .model-active
+    animation: layerFadeIn .3s
+
+  .model-noactive
+    animation: hideFadeIn .3s
+
+  @keyframes layerFadeIn {
+    0% {
+      opacity: 0;
+      transform: scale(.5)
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1)
+    }
+  }
+
+  @keyframes hideFadeIn {
+    0% {
+      opacity: 1;
+      transform: scale(1)
+    }
+    100% {
+      transform: scale(.5);
+      opacity: 0
+    }
+  }
 </style>
