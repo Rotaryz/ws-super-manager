@@ -37,10 +37,12 @@
     </transition>
     <div class="content-base">
       <slot name="content"></slot>
-      <div class="blank" v-if="showNull">
-        <div class="blank-icon"></div>
-        <div class="blank-title">暂无相关数据</div>
-      </div>
+      <transition name="fade">
+        <div class="blank" v-if="showNull">
+          <div class="blank-icon"></div>
+          <div class="blank-title">暂无相关数据</div>
+        </div>
+      </transition>
     </div>
     <toast ref="toast"></toast>
   </div>

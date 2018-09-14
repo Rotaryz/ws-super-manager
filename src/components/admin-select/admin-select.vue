@@ -112,16 +112,51 @@
     .admin-select-box
       min-width: 48px
       border-radius: 4px
-      border-1px($color-textD9, 4px)
+      border 0.5px solid $color-textD9
       padding: 0 31px 0 15px
       line-height: 28px
-      box-sizing: border-box
       white-space: nowrap
       font-size: $font-size-small12
       position: relative
       color: $color-text-66
+      &:after
+        content: ''
+        border-top: 0.5px solid transparent
+        border-bottom: 0.5px solid transparent
+        position: absolute
+        z-index: 5
+        height: 100%
+        width: 0
+        right: 0
+        top: -0.5px
+        border-radius 4px
+        box-sizing: content-box
+        transition: all 0.3s ease-out
+      &:before
+        content: ''
+        border-right: 0.5px solid transparent
+        border-left: 0.5px solid transparent
+        position: absolute
+        z-index: 5
+        height: 0
+        width: 100%
+        bottom: 0
+        left: 0
+        border-radius 4px
+        box-sizing: content-box
+        transition: all 0.3s ease-out
       &:hover
-        color: $color-text33
+        border: 0.5px solid transparent
+        transition: all 0.3s ease-out
+        &:after
+          border-color: $color-text99
+          transition: all 0.3s ease-out
+          width: 100%
+        &:before
+          border-color: $color-text99
+          transition: all 0.3s ease-out
+          height: 100%
+
       .city-tap-top
         width: 9px
         col-center()

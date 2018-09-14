@@ -37,7 +37,11 @@
       </div>
       <div class="input-box">
         跳至
-        <input type="number" class="border-page input-height-item" v-model="pageInput"/>
+        <div class="input-box-big">
+          <span class="after"></span>
+          <input type="number" class="border-page" v-model="pageInput"/>
+          <span class="before"></span>
+        </div>
         页
       </div>
       <!--<div class="border-page input-height-item" @click="goPage" @mouseenter="notAllowed" :style="{'cursor': isHand.handGo}">跳转</div>-->
@@ -230,38 +234,80 @@
           height: @width
           box-sizing: border-box
           border-radius: 3px
-          border-1px($color-ccc, 3px)
+          border: 0.5px solid $color-ccc
           font-size: $font-size-small12
           color: $color-text33
           line-height: 26px
           margin-right: 8px
+          position: relative
+          transition: all 0.3s ease-out
+          &:after
+            content: ''
+            border-top: 0.5px solid transparent
+            border-bottom: 0.5px solid transparent
+            position: absolute
+            z-index: 5
+            height: 100%
+            width: 0
+            right: 0
+            top: -0.5px
+            box-sizing: content-box
+            transition: all 0.3s ease-out
+            border-radius: 3px
+          &:before
+            content: ''
+            border-right: 0.5px solid transparent
+            border-left: 0.5px solid transparent
+            position: absolute
+            z-index: 5
+            height: 0
+            width: 100%
+            bottom: 0
+            left: 0
+            box-sizing: content-box
+            transition: all 0.3s ease-out
+            border-radius: 3px
+        .page-child-active
+          transition: all 0.3s ease-out
+          color: $color-4985FC
+          &:after
+            border-color: $color-4985FC
+            transition: all 0.3s ease-out
+            width: 100%
+          &:before
+            border-color: $color-4985FC
+            transition: all 0.3s ease-out
+            height: 100%
+
         .page-hide-more
           width: 20px
           height: 4px
           display: inline-block
           margin-right: 8px
           icon-image('icon-spot')
-        .page-child-active
-          border-1px($color-4985FC, 3px)
-          color: $color-4985FC
+
       .page-icon
         cursor: pointer
         icon-image('icon-before')
         margin-right: 10px
         height: 25px
         width: 25px
+        transition: all 0.3s
         &:hover
+          transition: all 0.3s
           icon-image('icon-before_hover')
       .page-icon-two
+        transition: all 0.3s
         icon-image('icon-later')
         &:hover
+          transition: all 0.3s
           icon-image('icon-later_hover')
       .border-page
         display: flex
         line-height: 25px
         border-radius: 3px
         margin: 0 10px
-        border: 1px solid $color-lineCC
+        border: 0.5px solid $color-lineCC
         font-size: $font-size-medium
       div.border-page
         margin-right: 0
@@ -273,6 +319,7 @@
         cursor: pointer
         padding-right: 33px
         position: relative
+        border-animate($color-text99, 3px)
         .page-tap
           position: absolute
           right: 0
@@ -315,7 +362,7 @@
           &.fade-enter, &.fade-leave-to
             opacity: 0
           &.fade-enter-to, &.fade-leave-to
-            transition: all .2s ease-in-out
+            transition: all .3s ease-in-out
           .page-item
             cursor: pointer
             height: 29px
@@ -324,10 +371,54 @@
               background: $color-big-background
           .page-item-active
             background: $color-big-background
-      input.border-page
-        height: 25px
-        width: 39px
-        text-align: center
+      .input-box-big
+        position: relative
+        margin: 0 8px
+        transition: all 0.4s ease-out
+        input.border-page
+          position: relative
+          z-index: 10
+          height: 25px
+          width: 39px
+          margin: 0
+          text-align: center
+          transition: all 0.4s ease-out
+        .after
+          border-top: 0.5px solid transparent
+          border-bottom: 0.5px solid transparent
+          position: absolute
+          z-index: 5
+          height: 27px
+          width: 0
+          right: 0
+          top: -0.5px
+          box-sizing: content-box
+          border-radius 4px
+          transition: all 0.4s ease-out
+        .before
+          border-right: 0.5px solid transparent
+          border-left: 0.5px solid transparent
+          position: absolute
+          z-index: 5
+          height: 0
+          width: 41px
+          bottom: 0
+          left: -0.5px
+          box-sizing: content-box
+          border-radius 4px
+          transition: all 0.4s ease-out
+        &:hover
+          .border-page
+            transition: all 0.4s ease-out
+            border: 0.5px solid transparent
+          .after
+            border-color: $color-text99
+            transition: all 0.4s ease-out
+            width: 41px
+          .before
+            border-color: $color-text99
+            transition: all 0.4s ease-out
+            height: 27px
       .input-box
         white-space: nowrap
         display: flex
