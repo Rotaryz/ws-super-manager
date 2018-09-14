@@ -290,6 +290,8 @@
     background: $color-background
 
   .page
+    display: flex
+    align-items: center
     width: 100%
     position: absolute
     bottom: 0

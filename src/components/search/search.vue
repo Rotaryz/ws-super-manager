@@ -70,7 +70,7 @@
         height: 28px
         width: 0
         right: 0
-        top: -0.5px
+        top: -1px
         box-sizing: content-box
         border-radius 4px
         transition: all 0.4s ease-out

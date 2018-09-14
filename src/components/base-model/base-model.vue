@@ -37,12 +37,10 @@
     </transition>
     <div class="content-base">
       <slot name="content"></slot>
-      <transition name="fade">
-        <div class="blank" v-if="showNull">
-          <div class="blank-icon"></div>
-          <div class="blank-title">暂无相关数据</div>
-        </div>
-      </transition>
+      <div class="blank" v-if="showNull">
+        <div class="blank-icon"></div>
+        <div class="blank-title">暂无相关数据</div>
+      </div>
     </div>
     <toast ref="toast"></toast>
   </div>
@@ -158,7 +156,9 @@
       width: 78px
       position: relative
       cursor: pointer
+      transition: all 0.3s
       &:hover
+        transition: all 0.3s
         background: $color-background
     .guide
       margin-left: 26px
@@ -178,6 +178,7 @@
       padding: 0 41px 0 33px
       position: relative
       z-index: 1500
+      transition: all 0.3s
       .logout-box
         position: absolute
         right: 2px
@@ -320,7 +321,7 @@
     box-sizing: border-box
     .blank
       row-center()
-      top: 50%
+      top: 55%
       text-align: center
       &.fade-enter, &.fade-leave-to
         opacity: 0

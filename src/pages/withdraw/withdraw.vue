@@ -27,22 +27,26 @@
           <div class="list-item list-text">{{item.money}}</div>
           <div class="list-item list-text">{{item.user_name}}</div>
           <div class="list-item list-text">{{item.bank}}</div>
-          <div class="list-item list-text"  @mouseenter="showNumber(index)" @mouseleave="hideNumber">
+          <div class="list-item list-text" @mouseenter="showNumber(index)" @mouseleave="hideNumber">
             <div class="hidden">
               *****
               <transition name="fade">
-                <div class="hidden-number"  v-show="bankIndex * 1 === index && bankNumber" @mouseenter="showNumber(index)">{{item.withdrawal_card}}</div>
+                <div class="hidden-number" v-show="bankIndex * 1 === index && bankNumber" @mouseenter="showNumber(index)">{{item.withdrawal_card}}</div>
               </transition>
             </div>
           </div>
-          <div class="list-item list-text"   @mouseenter="showText(index)" @mouseleave="hideText">
+          <div class="list-item list-text" @mouseenter="showText(index)" @mouseleave="hideText">
             <div class="text" v-if="item.status * 1 === 0">待审核</div>
             <div class="text" v-if="item.status * 1 === 1">微信受理成功</div>
             <div class="text" v-if="item.status * 1 === 2">审核不通过</div>
             <div class="text" v-if="item.status * 1 === 3">微信打款成功</div>
             <div class="text" v-if="item.status * 1 === 4">微信打款失败</div>
             <div class="text" v-if="item.status * 1 === 5">微信受理失败</div>
-            <div class="icon" v-if="item.status * 1 === 0 || item.status * 1 === 5 || item.status * 1 === 4"><transition name="fade"><div class="hidden-number" v-show="text  && textIndex * 1 === index" @mouseenter="showText(index)">{{item.note || '未查到原因'}}</div></transition></div>
+            <div class="icon" v-if="item.status * 1 === 2 || item.status * 1 === 5 || item.status * 1 === 4">
+              <transition name="fade">
+                <div class="hidden-number" v-show="text  && textIndex * 1 === index" @mouseenter="showText(index)">{{item.note || '未查到原因'}}</div>
+              </transition>
+            </div>
           </div>
           <div class="list-item list-text">
             <div class="item-text" v-if="item.status * 1 === 0 || item.status * 1 === 5 || item.status * 1 === 4" @click="showModel(item)">审核</div>
@@ -59,7 +63,7 @@
         <div class="model-text">审核</div>
         <div class="icon" @click="hideModel"></div>
       </div>
-      <textarea class="modelarea"  placeholder="备注原因" v-model="noteText"></textarea>
+      <textarea class="modelarea" placeholder="备注原因" v-model="noteText"></textarea>
       <div class="model-btn">
         <div class="btn" @click="upWithdrawAudit(1)">审核通过</div>
         <div class="btn" @click="upWithdrawAudit(2)">审核不通过</div>
@@ -73,7 +77,7 @@
   import AdminSelect from 'components/admin-select/admin-select' // 下拉框
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
-  import { Exchange } from 'api'
+  import {Exchange} from 'api'
   import {ERR_OK, BASE_URL} from 'common/js/config'
   import storage from 'storage-controller'
 
@@ -395,6 +399,7 @@
       overflow: visible !important
       white-space: normal !important
     &:nth-child(10)
+      flex: 1.1
       overflow: visible !important
       white-space: normal !important
       layout(row)
@@ -414,7 +419,7 @@
           min-width: 182px
           background: #fff
           padding: 10px
-          border-radius:3px
+          border-radius: 3px
           bottom: 22px
           left: -95px
           z-index: 11
@@ -436,8 +441,7 @@
           &.fade-enter, &.fade-leave-to
             opacity: 0
           &.fade-enter-to, &.fade-leave-to
-            transition: all .2s ease-in-out
-
+            transition: all .4s ease-in-out
 
   .list-box-active
     background: $color-background
@@ -448,6 +452,7 @@
     bottom: 0
     color: $color-white
     height: 60px
+
   .hidden
     position: relative
     .hidden-number
@@ -461,7 +466,7 @@
       height: 26px
       line-height: 26px
       text-align: center
-      border-radius:3px
+      border-radius: 3px
       top: -30px
       left: -77px
       z-index: 11
@@ -483,16 +488,20 @@
       &.fade-enter, &.fade-leave-to
         opacity: 0
       &.fade-enter-to, &.fade-leave-to
-        transition: all .2s ease-in-out
+        transition: all .4s ease-in-out
+
   .item-text
     font-family: $fontFamilyRegular
     font-size: $font-size-medium14
     color: $color-4985FC
     cursor: pointer
+
   .admin-input
     padding-left: 10px
+
   .admin-search
     margin-left: -5px
+
   .model-box
     box-shadow: 0 1px 6px 0 rgba(0, 8, 39, 0.10)
     background: $color-white
@@ -529,7 +538,7 @@
       margin: 27px auto 20px
       padding: 5px 10px
       text-align: justify
-      resize:none
+      resize: none
       font-family: $fontFamilyRegular
       font-size: $font-size-medium14
       color: $color-text33
@@ -537,13 +546,13 @@
       border: 1px solid #ccc
       outline: none
     .modelarea::-webkit-input-placeholder
-      color:#ccc
+      color: #ccc
     .modelarea:-moz-placeholder
-      color:#ccc
+      color: #ccc
     .modelarea::-moz-placeholder
-      color:#ccc
+      color: #ccc
     .modelarea:-ms-input-placeholder
-      color:#ccc
+      color: #ccc
     .model-btn
       layout(row)
       align-items: center
@@ -561,111 +570,131 @@
         cursor: pointer
         &:nth-child(2)
           background: #EF705D
+
   .model-active
-    animation:layerFadeIn .3s
-    -webkit-animation:layerFadeIn .3s
-    -moz-animation:layerFadeIn .3s
-    -ms-animation:layerFadeIn .3s
-    -o-animation:layerFadeIn .3s
+    animation: layerFadeIn .3s
+    -webkit-animation: layerFadeIn .3s
+    -moz-animation: layerFadeIn .3s
+    -ms-animation: layerFadeIn .3s
+    -o-animation: layerFadeIn .3s
+
   .model-noactive
-    animation:hideFadeIn .3s
-    -webkit-animation:hideFadeIn .3s
-    -moz-animation:hideFadeIn .3s
-    -ms-animation:hideFadeIn .3s
-    -o-animation:hideFadeIn .3s
+    animation: hideFadeIn .3s
+    -webkit-animation: hideFadeIn .3s
+    -moz-animation: hideFadeIn .3s
+    -ms-animation: hideFadeIn .3s
+    -o-animation: hideFadeIn .3s
+
   @keyframes layerFadeIn {
     0% {
-      opacity:0
-      transform:scale(.5)
+      opacity: 0
+      transform: scale(.5)
     }
     100% {
-      opacity:1
-      transform:scale(1)
+      opacity: 1
+      transform: scale(1)
     }
-  }@-webkit-keyframes layerFadeIn {
-     0% {
-       opacity:0
-       -webkit-transform:scale(.5)
-     }
-     100% {
-       opacity:1
-       -webkit-transform:scale(1)
-     }
-   }@-moz-keyframes layerFadeIn {
-      0% {
-        opacity:0
-        -moz-transform:scale(.5)
-      }
-      100% {
-        opacity:1
-        -moz-transform:scale(1)
-      }
-    }@-ms-keyframes layerFadeIn {
-       0% {
-         opacity:0
-         -ms-transform:scale(.5);
-         filter:Alpha(opacity=0)
-       }
-       100% {
-         opacity:1
-         -ms-transform:scale(1);
-         filter:Alpha(opacity=100)
-       }
-     }@-o-keyframes layerFadeIn {
-        0% {
-          opacity:0
-          -o-transform:scale(.5)
-        }
-        100% {
-          opacity:1
-          -o-transform:scale(1)
-        }
-      }
+  }
+
+  @-webkit-keyframes layerFadeIn {
+    0% {
+      opacity: 0
+      -webkit-transform: scale(.5)
+    }
+    100% {
+      opacity: 1
+      -webkit-transform: scale(1)
+    }
+  }
+
+  @-moz-keyframes layerFadeIn {
+    0% {
+      opacity: 0
+      -moz-transform: scale(.5)
+    }
+    100% {
+      opacity: 1
+      -moz-transform: scale(1)
+    }
+  }
+
+  @-ms-keyframes layerFadeIn {
+    0% {
+      opacity: 0
+      -ms-transform: scale(.5);
+      filter: Alpha(opacity = 0)
+    }
+    100% {
+      opacity: 1
+      -ms-transform: scale(1);
+      filter: Alpha(opacity = 100)
+    }
+  }
+
+  @-o-keyframes layerFadeIn {
+    0% {
+      opacity: 0
+      -o-transform: scale(.5)
+    }
+    100% {
+      opacity: 1
+      -o-transform: scale(1)
+    }
+  }
+
   @keyframes hideFadeIn {
     0% {
-      opacity:1;
-      transform:scale(1)
+      opacity: 1;
+      transform: scale(1)
     }
     100% {
-      transform:scale(.5);
-      opacity:0
+      transform: scale(.5);
+      opacity: 0
     }
-  }@-webkit-keyframes hideFadeIn {
-     0% {
-       opacity:1;
-       -webkit-transform:scale(1)
-     }
-     100% {
-       -webkit-transform:scale(.5);
-       opacity:0
-     }
-   }@-moz-keyframes hideFadeIn {
-      0% {
-        opacity:1;
-        -moz-transform:scale(1)
-      }
-      100% {
-        -moz-transform:scale(.5);
-        opacity:0
-      }
-    }@-ms-keyframes hideFadeIn {
-       0% {
-         opacity:1;
-         -ms-transform:scale(1)
-       }
-       100% {
-         -ms-transform:scale(.5);
-         opacity:0;
-         filter:Alpha(opacity=0)
-       }
-     }@-o-keyframes hideFadeIn {
-        0% {
-          opacity:1;
-          -webkit-transform:scale(1)
-        }
-        100% {
-          -webkit-transform:scale(.5);
-          opacity:0
-        }
-      }
+  }
+
+  @-webkit-keyframes hideFadeIn {
+    0% {
+      opacity: 1;
+      -webkit-transform: scale(1)
+    }
+    100% {
+      -webkit-transform: scale(.5);
+      opacity: 0
+    }
+  }
+
+  @-moz-keyframes hideFadeIn {
+    0% {
+      opacity: 1;
+      -moz-transform: scale(1)
+    }
+    100% {
+      -moz-transform: scale(.5);
+      opacity: 0
+    }
+  }
+
+  @-ms-keyframes hideFadeIn {
+    0% {
+      opacity: 1;
+      -ms-transform: scale(1)
+    }
+    100% {
+      -ms-transform: scale(.5);
+      opacity: 0;
+      filter: Alpha(opacity = 0)
+    }
+  }
+
+  @-o-keyframes hideFadeIn {
+    0% {
+      opacity: 1;
+      -webkit-transform: scale(1)
+    }
+    100% {
+      -webkit-transform: scale(.5);
+      opacity: 0
+    }
+  }
 </style>
