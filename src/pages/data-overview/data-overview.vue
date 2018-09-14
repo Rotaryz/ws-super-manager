@@ -91,8 +91,10 @@
       let that = this
       window.onresize = () => {
         return (() => {
-          that.drawLine()
-          that.drawTotalLine()
+          if (that.$route.path === '/data-overview') {
+            that.drawLine()
+            that.drawTotalLine()
+          }
         })()
       }
     },
@@ -198,7 +200,8 @@
                 color: '#ccc',
                 width: 0.5
               }
-            }
+            },
+            padding: [10, 50, 10, 20]
           },
           yAxis: {
             minInterval: 1,
@@ -362,7 +365,8 @@
                 color: '#ccc',
                 width: 0.5
               }
-            }
+            },
+            padding: [10, 50, 10, 20]
           },
           yAxis: {
             minInterval: 1,
