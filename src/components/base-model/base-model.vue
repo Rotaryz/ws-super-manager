@@ -156,7 +156,9 @@
       width: 78px
       position: relative
       cursor: pointer
+      transition: all 0.3s
       &:hover
+        transition: all 0.3s
         background: $color-background
     .guide
       margin-left: 26px
@@ -176,6 +178,7 @@
       padding: 0 41px 0 33px
       position: relative
       z-index: 1500
+      transition: all 0.3s
       .logout-box
         position: absolute
         right: 2px

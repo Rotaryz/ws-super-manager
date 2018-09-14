@@ -38,10 +38,10 @@
   import Search from 'components/search/search' // 搜索框
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
-  import Business from 'api'
-  import {ERR_OK, BASE_URL} from 'common/js/config'
+  import {Business} from 'api'
+  import {ERR_OK} from 'common/js/config'
   import Toast from 'components/toast/toast'
-  import storage from 'storage-controller'
+  // import storage from 'storage-controller'
 
   export default {
     name: 'member-list',
@@ -138,7 +138,7 @@
     flex-direction: column
     background: $color-white
     border-radius: 5px
-    box-shadow: 0 1px 6px 0 rgba(0,8,39,0.10)
+    box-shadow: 0 1px 6px 0 rgba(0, 8, 39, 0.10)
     padding: 30px
     height: 100%
     padding-top: 0
@@ -174,7 +174,7 @@
             position: relative
             &:before
             &:after
-              content:''
+              content: ''
               display: inline-block
               width: 0
               height: 0
