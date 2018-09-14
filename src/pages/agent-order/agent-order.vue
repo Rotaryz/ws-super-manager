@@ -157,7 +157,7 @@
       .list-header
         flex: 1
         background: $color-FAFAFA
-        height: 7.6%
+        height: 50px
         line-height: 50px
         font-family: $fontFamilyMeddle
         display: flex
@@ -173,9 +173,8 @@
           &:nth-of-type(6)
             flex: 3.8
       .list-content
-        height: 92.4%
         .list-item
-          height: 10%
+          height: 60px
           flex: 1
           display: flex
           align-items: center
