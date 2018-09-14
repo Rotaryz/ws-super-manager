@@ -269,7 +269,7 @@
           }
         }
         let accessToken = `access_token=${storage.get('aiToken')}`
-        this.excelUrl = `${BASE_URL.api}/api/admin/potential-index-excel?${accessToken}&${query}`
+        this.excelUrl = `${BASE_URL.api}/api/admin/merchant-list-export?${accessToken}&${query}`
       },
       openPop(type, name, id, status, endTime) { // 打开弹窗
         this.$emit('showShade')
