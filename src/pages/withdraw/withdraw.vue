@@ -63,7 +63,11 @@
         <div class="model-text">审核</div>
         <div class="icon" @click="hideModel"></div>
       </div>
-      <textarea class="modelarea" placeholder="备注原因" v-model="noteText"></textarea>
+      <div class="textarea-box">
+        <span class="after"></span>
+        <textarea class="modelarea" placeholder="备注原因" v-model="noteText"></textarea>
+        <span class="before"></span>
+      </div>
       <div class="model-btn">
         <div class="btn" @click="upWithdrawAudit(1)">审核通过</div>
         <div class="btn" @click="upWithdrawAudit(2)">审核不通过</div>
@@ -532,18 +536,21 @@
         bg-image(icon-del2)
         cursor: pointer
     .modelarea
+      position: relative
       width: 474px
       border-1px()
       height: 90px
       margin: 27px auto 20px
       padding: 5px 10px
       text-align: justify
+      z-index: 10
       resize: none
+      border-radius: 4px
       font-family: $fontFamilyRegular
       font-size: $font-size-medium14
       color: $color-text33
       line-height: 18px
-      border: 1px solid #ccc
+      border: 0.5px solid #d9d9d9
       outline: none
     .modelarea::-webkit-input-placeholder
       color: #ccc
@@ -568,9 +575,51 @@
         font-size: $font-size-medium16
         color: $color-white
         cursor: pointer
+        transition: all 0.4s ease-out
         &:nth-child(2)
           background: #EF705D
-
+        &:hover
+          transition: all 0.4s ease-out
+          font-size: 17px
+  .textarea-box
+    position: relative
+    transition: all 0.4s ease-out
+    .after
+      border-top: 0.5px solid transparent
+      border-bottom: 0.5px solid transparent
+      position: absolute
+      z-index: 5
+      height: 102px
+      width: 0
+      right: 19px
+      top: 26px
+      box-sizing: content-box
+      border-radius 4px
+      transition: all 0.4s ease-out
+    .before
+      border-right: 0.5px solid transparent
+      border-left: 0.5px solid transparent
+      position: absolute
+      z-index: 5
+      height: 0
+      width: 496px
+      top: 26px
+      right: 18px
+      box-sizing: content-box
+      border-radius 4px
+      transition: all 0.4s ease-out
+    &:hover
+      .modelarea
+        border: 0.5px solid transparent
+        transition: all 0.4s ease-out
+      .after
+        border-color: $color-text99
+        transition: all 0.4s ease-out
+        width: 496px
+      .before
+        border-color: $color-text99
+        transition: all 0.4s ease-out
+        height: 102px
   .model-active
     animation: layerFadeIn .3s
     -webkit-animation: layerFadeIn .3s
