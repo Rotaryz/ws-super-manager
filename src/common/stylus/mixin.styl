@@ -149,7 +149,7 @@ layout($direction = column, $inline = block, $wrap = wrap)
   flex-direction: $direction
   flex-wrap: $wrap
 
-border-animate($color = #4985fc, $radius = 2px)
+border-animate($color = #4985fc, $radius = 2px, $font-color = #333)
   position: relative
   &:after
     content: ''
@@ -178,6 +178,7 @@ border-animate($color = #4985fc, $radius = 2px)
     box-sizing: content-box
     transition: all 0.3s ease-out
   &:hover
+    color: $font-color
     transition: all 0.3s ease-out
     &:after
       border-color: $color

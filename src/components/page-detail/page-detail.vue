@@ -234,20 +234,58 @@
           height: @width
           box-sizing: border-box
           border-radius: 3px
-          border-1px($color-ccc, 3px)
+          border: 0.5px solid $color-ccc
           font-size: $font-size-small12
           color: $color-text33
           line-height: 26px
           margin-right: 8px
+          position: relative
+          transition: all 0.3s ease-out
+          &:after
+            content: ''
+            border-top: 0.5px solid transparent
+            border-bottom: 0.5px solid transparent
+            position: absolute
+            z-index: 5
+            height: 100%
+            width: 0
+            right: 0
+            top: -0.5px
+            box-sizing: content-box
+            transition: all 0.3s ease-out
+            border-radius: 3px
+          &:before
+            content: ''
+            border-right: 0.5px solid transparent
+            border-left: 0.5px solid transparent
+            position: absolute
+            z-index: 5
+            height: 0
+            width: 100%
+            bottom: 0
+            left: 0
+            box-sizing: content-box
+            transition: all 0.3s ease-out
+            border-radius: 3px
+        .page-child-active
+          transition: all 0.3s ease-out
+          color: $color-4985FC
+          &:after
+            border-color: $color-4985FC
+            transition: all 0.3s ease-out
+            width: 100%
+          &:before
+            border-color: $color-4985FC
+            transition: all 0.3s ease-out
+            height: 100%
+
         .page-hide-more
           width: 20px
           height: 4px
           display: inline-block
           margin-right: 8px
           icon-image('icon-spot')
-        .page-child-active
-          border-1px($color-4985FC, 3px)
-          color: $color-4985FC
+
       .page-icon
         cursor: pointer
         icon-image('icon-before')
@@ -324,7 +362,7 @@
           &.fade-enter, &.fade-leave-to
             opacity: 0
           &.fade-enter-to, &.fade-leave-to
-            transition: all .2s ease-in-out
+            transition: all .3s ease-in-out
           .page-item
             cursor: pointer
             height: 29px

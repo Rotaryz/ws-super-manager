@@ -60,7 +60,7 @@
           children: [{content: '活动类型', data: [{title: '全部', status: ''}, {title: '火爆拼团', status: '1'}, {title: '疯狂砍价', status: '3'}]}]
         }],
         page: 1,
-        date: 'today',
+        date: '',
         keyWord: '',
         startTime: '',
         endTime: '',

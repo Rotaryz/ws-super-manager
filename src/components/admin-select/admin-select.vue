@@ -146,6 +146,7 @@
         box-sizing: content-box
         transition: all 0.3s ease-out
       &:hover
+        border: 0.5px solid transparent
         transition: all 0.3s ease-out
         &:after
           border-color: $color-text99
