@@ -1,6 +1,10 @@
 <template>
   <div class="search-box">
-    <input type="text" class="input-box" :placeholder="placeholerTxt" @input="inputIn">
+    <div class="input-box-big">
+      <span class="after"></span>
+      <input type="text" class="input-box" :placeholder="placeholerTxt" @input="inputIn">
+      <span class="before"></span>
+    </div>
     <div class="btn-box hand" @click="searchFn">{{btnTxt}}</div>
   </div>
 </template>
@@ -41,17 +45,59 @@
     display: flex
     align-items: center
     margin-left: 10px
-    .input-box
-      width: 224px
-      height: 28px
-      border: 0.5px solid $color-textD9
-      border-radius: 4px
-      font-size: $font-size-small12
-      font-family: $fontFamilyRegular
-      color: $color-text
-      box-sizing: border-box
-      text-indent: 8px
-      line-height: 26px
+    .input-box-big
+      position: relative
+      transition: all 0.4s ease-out
+      .input-box
+        position: relative
+        z-index: 10
+        box-sizing: border-box
+        border: 0.5px solid $color-textD9
+        width: 224px
+        border-radius: 4px
+        height: 27px
+        font-size: $font-size-small12
+        font-family: $fontFamilyRegular
+        color: $color-text33
+        text-indent: 8px
+        line-height: 26px
+        transition: all 0.4s ease-out
+      .after
+        border-top: 0.5px solid transparent
+        border-bottom: 0.5px solid transparent
+        position: absolute
+        z-index: 5
+        height: 28px
+        width: 0
+        right: 0
+        top: -0.5px
+        box-sizing: content-box
+        border-radius 4px
+        transition: all 0.4s ease-out
+      .before
+        border-right: 0.5px solid transparent
+        border-left: 0.5px solid transparent
+        position: absolute
+        z-index: 5
+        height: 0
+        width: 225px
+        bottom: 0
+        left: -1px
+        box-sizing: content-box
+        border-radius 4px
+        transition: all 0.4s ease-out
+      &:hover
+        .input-box
+          border: 0.5px solid transparent
+        .after
+          border-color: $color-text99
+          transition: all 0.4s ease-out
+          width: 225px
+        .before
+          border-color: $color-text99
+          transition: all 0.4s ease-out
+          height: 28px
+
     .input-box::-webkit-input-placeholder { /* WebKit browsers */
       color: $color-ccc
     }
@@ -72,9 +118,13 @@
       line-height: 28px
       border-radius: 4px
       font-family: $fontFamilyRegular
-      font-size: $font-size-small12
       color: $color-white
       margin-left: 20px
+      font-size: $font-size-small12
+      transition: all 0.4s ease-out
+      &:hover
+        transition: all 0.4s ease-out
+        font-size: 13px
 
 
 </style>

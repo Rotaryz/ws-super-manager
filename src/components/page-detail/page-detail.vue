@@ -37,7 +37,11 @@
       </div>
       <div class="input-box">
         跳至
-        <input type="number" class="border-page input-height-item" v-model="pageInput"/>
+        <div class="input-box-big">
+          <span class="after"></span>
+          <input type="number" class="border-page" v-model="pageInput"/>
+          <span class="before"></span>
+        </div>
         页
       </div>
       <!--<div class="border-page input-height-item" @click="goPage" @mouseenter="notAllowed" :style="{'cursor': isHand.handGo}">跳转</div>-->
@@ -250,18 +254,22 @@
         margin-right: 10px
         height: 25px
         width: 25px
+        transition: all 0.3s
         &:hover
+          transition: all 0.3s
           icon-image('icon-before_hover')
       .page-icon-two
+        transition: all 0.3s
         icon-image('icon-later')
         &:hover
+          transition: all 0.3s
           icon-image('icon-later_hover')
       .border-page
         display: flex
         line-height: 25px
         border-radius: 3px
         margin: 0 10px
-        border: 1px solid $color-lineCC
+        border: 0.5px solid $color-lineCC
         font-size: $font-size-medium
       div.border-page
         margin-right: 0
@@ -273,6 +281,7 @@
         cursor: pointer
         padding-right: 33px
         position: relative
+        border-animate($color-text99, 3px)
         .page-tap
           position: absolute
           right: 0
@@ -324,10 +333,54 @@
               background: $color-big-background
           .page-item-active
             background: $color-big-background
-      input.border-page
-        height: 25px
-        width: 39px
-        text-align: center
+      .input-box-big
+        position: relative
+        margin: 0 8px
+        transition: all 0.4s ease-out
+        input.border-page
+          position: relative
+          z-index: 10
+          height: 25px
+          width: 39px
+          margin: 0
+          text-align: center
+          transition: all 0.4s ease-out
+        .after
+          border-top: 0.5px solid transparent
+          border-bottom: 0.5px solid transparent
+          position: absolute
+          z-index: 5
+          height: 27px
+          width: 0
+          right: 0
+          top: -0.5px
+          box-sizing: content-box
+          border-radius 4px
+          transition: all 0.4s ease-out
+        .before
+          border-right: 0.5px solid transparent
+          border-left: 0.5px solid transparent
+          position: absolute
+          z-index: 5
+          height: 0
+          width: 41px
+          bottom: 0
+          left: -0.5px
+          box-sizing: content-box
+          border-radius 4px
+          transition: all 0.4s ease-out
+        &:hover
+          .border-page
+            transition: all 0.4s ease-out
+            border: 0.5px solid transparent
+          .after
+            border-color: $color-text99
+            transition: all 0.4s ease-out
+            width: 41px
+          .before
+            border-color: $color-text99
+            transition: all 0.4s ease-out
+            height: 27px
       .input-box
         white-space: nowrap
         display: flex

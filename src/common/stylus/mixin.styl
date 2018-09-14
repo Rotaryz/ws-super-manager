@@ -125,7 +125,6 @@ no-wrap()
   overflow: hidden
   white-space: nowrap
 
-
 //  水平居中
 row-center()
   position: absolute
@@ -144,7 +143,47 @@ all-center()
   top: 50%
   left: 50%
   transform: translate(-50%, -50%)
+
 layout($direction = column, $inline = block, $wrap = wrap)
   display: $inline == block ? flex:inline-flex
   flex-direction: $direction
   flex-wrap: $wrap
+
+border-animate($color = #4985fc, $radius = 2px)
+  position: relative
+  &:after
+    content: ''
+    border-top: 0.5px solid transparent
+    border-bottom: 0.5px solid transparent
+    position: absolute
+    z-index: 5
+    height: 100%
+    width: 0
+    right: 0
+    top: -0.5px
+    border-radius $radius
+    box-sizing: content-box
+    transition: all 0.3s ease-out
+  &:before
+    content: ''
+    border-right: 0.5px solid transparent
+    border-left: 0.5px solid transparent
+    position: absolute
+    z-index: 5
+    height: 0
+    width: 100%
+    bottom: 0
+    left: 0
+    border-radius $radius
+    box-sizing: content-box
+    transition: all 0.3s ease-out
+  &:hover
+    transition: all 0.3s ease-out
+    &:after
+      border-color: $color
+      transition: all 0.3s ease-out
+      width: 100%
+    &:before
+      border-color: $color
+      transition: all 0.3s ease-out
+      height: 100%
