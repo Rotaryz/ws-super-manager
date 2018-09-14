@@ -89,6 +89,7 @@
       &:hover
         .input-box
           border: 0.5px solid transparent
+          transition: all 0.4s ease-out
         .after
           border-color: $color-text99
           transition: all 0.4s ease-out
