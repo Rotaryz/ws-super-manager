@@ -17,13 +17,13 @@
             <img class="head-img" :src="val.avatar" alt="">
           </div>
           <span class="item">{{val.nickname || '---'}}</span>
-          <span class="item">{{(val.sex && val.sex * 1 === 1 ? '男' : '女') || '---'}}</span>
+          <span class="item">{{(val.sex !== 0 && val.sex * 1 === 1 ? '男' : '女') || '未知'}}</span>
           <span class="item">{{val.area || '---'}}</span>
           <span class="item">{{val.created_at || '---'}}</span>
         </div>
       </div>
     </div>
-    <page-detail :pageDtail="pageDetail" @addPage="addPage"></page-detail>
+    <page-detail ref="pageDetail" :pageDtail="pageDetail" @addPage="addPage"></page-detail>
     <toast ref="toast"></toast>
   </div>
 </template>
@@ -42,7 +42,6 @@
     data() {
       return {
         headerList: ['客户头像', '客户昵称', '性别', '地区', '加入时间'],
-        arr: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
         data: [],
         requestData: {
           time: 'today',
@@ -66,7 +65,6 @@
     },
     methods: {
       checkTime(status) {
-        console.log(status)
         if (status instanceof Array) {
           this.requestData.start_time = status[0]
           this.requestData.end_time = status[1]
@@ -76,10 +74,14 @@
           this.requestData.start_time = ''
           this.requestData.end_time = ''
         }
+        this.requestData.page = 1
+        this.$refs.pageDetail.beginPage()
         this.getCustomersList()
       },
       search(inputTxt) {
         this.requestData.name = inputTxt
+        this.requestData.page = 1
+        this.$refs.pageDetail.beginPage()
         this.getCustomersList()
       },
       getCustomersList() {
@@ -102,7 +104,7 @@
         this.getCustomersList()
       },
       getExcelUrl() {
-        this.excelUrl = `${BASE_URL.api}/api/admin/potential-index-excel?access_token=${storage.get('aiToken')}&time=${this.requestData.time}&start_time=${this.requestData.start_time}&end_time=${this.requestData.end_time}&name=${this.requestData.name}&page=${this.requestData.page}`
+        this.excelUrl = `${BASE_URL.api}/api/admin/potential-index-excel?access_token=${storage.get('aiToken')}&time=${this.requestData.time}&start_time=${this.requestData.start_time}&end_time=${this.requestData.end_time}&name=${this.requestData.name}`
       }
     },
     components: {
@@ -119,12 +121,12 @@
   @import '~common/stylus/mixin'
   .retail-order
     display: flex
+    flex: 1
     flex-direction: column
     background: $color-white
     border-radius: 5px
     box-shadow: 0 1px 6px 0 rgba(0,8,39,0.10)
     padding: 30px
-    height: 100%
     padding-top: 0
     box-sizing: border-box
     .content-top
@@ -168,6 +170,7 @@
           text-align: left
           .item
             flex: 1.8
+            no-wrap()
             &:last-child
               flex: 1
           .head-img

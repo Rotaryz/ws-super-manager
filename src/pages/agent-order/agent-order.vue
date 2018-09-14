@@ -31,7 +31,7 @@
         </div>
       </div>
     </div>
-    <page-detail :pageDtail="pageDetail" @addPage="addPage"></page-detail>
+    <page-detail ref="pageDetail" :pageDtail="pageDetail" @addPage="addPage"></page-detail>
     <toast ref="toast"></toast>
   </div>
 </template>
@@ -88,10 +88,14 @@
           this.requestData.start_time = ''
           this.requestData.end_time = ''
         }
+        this.requestData.page = 1
+        this.$refs.pageDetail.beginPage()
         this.getCustomersList()
       },
       search(inputTxt) {
         this.requestData.name = inputTxt
+        this.requestData.page = 1
+        this.$refs.pageDetail.beginPage()
         this.getCustomersList()
       },
       getCustomersList() {
@@ -119,7 +123,7 @@
         this.getCustomersList()
       },
       getExcelUrl() {
-        this.excelUrl = `${BASE_URL.api}/api/admin/consumption-index-excel?access_token=${storage.get('aiToken')}&time=${this.requestData.time}&start_time=${this.requestData.start_time}&end_time=${this.requestData.end_time}&name=${this.requestData.name}&page=${this.requestData.page}`
+        this.excelUrl = `${BASE_URL.api}/api/admin/consumption-index-excel?access_token=${storage.get('aiToken')}&time=${this.requestData.time}&start_time=${this.requestData.start_time}&end_time=${this.requestData.end_time}&name=${this.requestData.name}`
       }
     }
   }
@@ -130,12 +134,12 @@
   @import '~common/stylus/mixin'
   .agent-order
     display: flex
+    flex: 1
     flex-direction: column
     background: $color-white
     border-radius: 5px
     box-shadow: 0 1px 6px 0 rgba(0,8,39,0.10)
     padding: 30px
-    height: 100%
     padding-top: 0
     box-sizing: border-box
     .content-top
@@ -181,6 +185,7 @@
           border-bottom: 1px solid $color-line
           .item
             flex: 1
+            no-wrap()
             &.area
               flex: 1.4
               no-wrap()
