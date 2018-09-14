@@ -284,7 +284,6 @@
           color: $color-nomal
           &:before
             background: $color-nomal
-
   .tag-no-top
     height: 62px
 
