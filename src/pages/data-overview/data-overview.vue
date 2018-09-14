@@ -200,7 +200,8 @@
                 color: '#ccc',
                 width: 0.5
               }
-            }
+            },
+            padding: [10, 50, 10, 20]
           },
           yAxis: {
             minInterval: 1,
@@ -364,7 +365,8 @@
                 color: '#ccc',
                 width: 0.5
               }
-            }
+            },
+            padding: [10, 50, 10, 20]
           },
           yAxis: {
             minInterval: 1,
