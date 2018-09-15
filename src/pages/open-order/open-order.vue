@@ -37,7 +37,7 @@
   import {Order} from 'api'
   import {ERR_OK, BASE_URL} from 'common/js/config'
   import storage from 'storage-controller'
-  const TITLELIST = ['订单号', '商品名称', '实付金额', '用户 ', '支付时间']
+  const TITLELIST = ['订单号', '商品名称', '实付金额', '商家 ', '支付时间']
 
   export default {
     name: 'open-order',
