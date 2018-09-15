@@ -354,4 +354,6 @@
     box-sizing: border-box
     color: $color-white
     height: 60px
+    layout(row)
+    align-items: center
 </style>

@@ -456,6 +456,8 @@
     bottom: 0
     color: $color-white
     height: 60px
+    layout(row)
+    align-items: center
 
   .hidden
     position: relative
