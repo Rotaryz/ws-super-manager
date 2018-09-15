@@ -239,11 +239,11 @@
   .tag
     display: flex
     background: $color-white
-    min-height: 90px
+    min-height: 80px
     align-items: center
     position: relative
     .tag-title
-      line-height: 90px
+      line-height: 80px
       color: $color-text-little
       text-indent: 25px
       font-size: $font-size-large18
