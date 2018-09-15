@@ -2,7 +2,7 @@
   <div class="search-box">
     <div class="input-box-big">
       <span class="after"></span>
-      <input type="text" class="input-box" :placeholder="placeholerTxt" @input="inputIn">
+      <input type="text" class="input-box" v-model="txt" :placeholder="placeholerTxt" @input="inputIn">
       <span class="before"></span>
     </div>
     <div class="btn-box hand" @click="searchFn">{{btnTxt}}</div>
@@ -19,6 +19,10 @@
       btnTxt: {
         type: String,
         default: '搜 索'
+      },
+      txt: {
+        type: String,
+        default: ''
       }
     },
     data() {
