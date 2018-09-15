@@ -4,7 +4,8 @@
     <div class="content">
       <base-model ref="baseModel" :showTag="showTag" :showNull="showNull">
         <div slot="content" class="content-box">
-          <router-view ref="mina" @setNull="setNull" @showToast="showToast" @showShade="showShade" @hideShade="hideShade" @showImage="showImage" @setTab="setTab"></router-view>
+          <router-view ref="mina" @setNull="setNull" @showToast="showToast" @showShade="showShade"
+                       @hideShade="hideShade" @showImage="showImage" @setTab="setTab"></router-view>
         </div>
       </base-model>
       <!--<router-view @showChild="showChild"/>-->

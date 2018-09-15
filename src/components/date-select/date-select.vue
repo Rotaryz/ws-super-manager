@@ -35,6 +35,9 @@
       }
     },
     methods: {
+      setIndex(index) {
+        this.tabIndex = index
+      },
       checkTab(index) {
         this.tabIndex = index
         let status = this.arrTitle[index].status
