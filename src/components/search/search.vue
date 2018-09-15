@@ -118,13 +118,14 @@
       text-align: center
       line-height: 28px
       border-radius: 4px
+      box-sizing: border-box
       font-family: $fontFamilyRegular
       color: $color-white
       margin-left: 20px
       font-size: $font-size-small12
-      transition: all 0.4s ease-out
+      transition: font-size 0.4s ease-out
       &:hover
-        transition: all 0.4s ease-out
+        transition: font-size 0.4s ease-out
         font-size: 13px
 
 

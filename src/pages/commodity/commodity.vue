@@ -10,12 +10,12 @@
         <div class="list-item" :class="{'hand': index ===3 || index === 4}" v-for="(item, index) in titleList" :key="index" @click="_sortList(index)">
           {{item}}
           <div class="sort" v-if="index ===3">
-            <span class="sort-item sort-top" :class="{'sort-top-active': showIndex === 3 && sortType === 1}"></span>
-            <span class="sort-item sort-end" :class="{'sort-end-active' :  showIndex === 3 && sortType === 2}"></span>
+            <span class="sort-item sort-top" :class="{'sort-top-active': showIndex === 3 && sortType === 2}"></span>
+            <span class="sort-item sort-end" :class="{'sort-end-active' :  showIndex === 3 && sortType === 1}"></span>
           </div>
           <div class="sort" v-if="index ===4">
-            <span class="sort-item sort-top" :class="{'sort-top-active': showIndex === 4 && sortType === 3}"></span>
-            <span class="sort-item sort-end" :class="{'sort-end-active': showIndex === 4 && sortType === 4}"></span>
+            <span class="sort-item sort-top" :class="{'sort-top-active': showIndex === 4 && sortType === 4}"></span>
+            <span class="sort-item sort-end" :class="{'sort-end-active': showIndex === 4 && sortType === 3}"></span>
           </div>
         </div>
       </div>

@@ -606,9 +606,9 @@
       position: absolute
       z-index: 5
       height: 0
-      width: 497px
+      width: 496px
       top: 26px
-      right: 18px
+      right: 18.5px
       box-sizing: content-box
       border-radius 4px
       transition: all 0.4s ease-out
@@ -619,7 +619,7 @@
       .after
         border-color: $color-text99
         transition: all 0.4s ease-out
-        width: 497px
+        width: 496px
       .before
         border-color: $color-text99
         transition: all 0.4s ease-out
