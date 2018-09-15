@@ -92,8 +92,8 @@
       window.onresize = () => {
         return (() => {
           if (that.$route.path === '/data-overview') {
-            that.drawLine()
             that.drawTotalLine()
+            that.drawLine()
           }
         })()
       }
