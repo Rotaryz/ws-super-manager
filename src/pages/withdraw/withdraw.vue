@@ -169,6 +169,7 @@
           if (res.error === ERR_OK) {
             this.$emit('showToast', '提交成功')
             this.showActive = false
+            this.getAuditData()
             setTimeout(() => {
               this.$emit('hideShade')
               this.showModels = false
@@ -176,6 +177,7 @@
           } else {
             this.$emit('showToast', res.message)
             this.showActive = false
+            this.getAuditData()
             setTimeout(() => {
               this.$emit('hideShade')
               this.showModels = false
@@ -604,7 +606,7 @@
       position: absolute
       z-index: 5
       height: 0
-      width: 496px
+      width: 497px
       top: 26px
       right: 18px
       box-sizing: content-box
@@ -617,7 +619,7 @@
       .after
         border-color: $color-text99
         transition: all 0.4s ease-out
-        width: 496px
+        width: 497px
       .before
         border-color: $color-text99
         transition: all 0.4s ease-out
