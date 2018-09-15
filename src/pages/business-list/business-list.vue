@@ -108,8 +108,8 @@
   import AdminSelect from 'components/admin-select/admin-select'
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
-  import { Business } from 'api'
-  import { ERR_OK, BASE_URL } from 'common/js/config'
+  import {Business} from 'api'
+  import {ERR_OK, BASE_URL, BEGIN_TIME} from 'common/js/config'
   import Toast from 'components/toast/toast'
   import storage from 'storage-controller'
 
@@ -158,7 +158,7 @@
         data: [],
         requestData: {
           keyword: '',
-          time: 'today',
+          time: BEGIN_TIME,
           sort_type: '',
           start_time: '',
           end_time: '',
@@ -203,7 +203,7 @@
       setTimeout(() => {
         this.$refs.dateSelect.setIndex(index)
       }, 200)
-      this.requestData.time = this.$route.query.num ? '' : 'today'
+      this.requestData.time = this.$route.query.num ? '' : BEGIN_TIME
       this.getBusinessList()
       this.getExcelUrl()
     },

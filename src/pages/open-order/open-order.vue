@@ -35,8 +35,9 @@
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
   import {Order} from 'api'
-  import {ERR_OK, BASE_URL} from 'common/js/config'
+  import {ERR_OK, BASE_URL, BEGIN_TIME} from 'common/js/config'
   import storage from 'storage-controller'
+
   const TITLELIST = ['订单号', '商品名称', '实付金额', '用户 ', '支付时间']
 
   export default {
@@ -50,7 +51,7 @@
           children: [{content: '活动类型', data: []}]
         }],
         rqData: {
-          time: 'today',
+          time: BEGIN_TIME,
           start_time: 0,
           end_time: 0,
           order_sn: '',

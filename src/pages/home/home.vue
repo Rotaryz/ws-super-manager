@@ -77,7 +77,9 @@
     display: flex
     height: 100vh
     .content
-      overflow-y: auto
+      overflow: auto
+      padding-left: 200px
+      box-sizing: border-box
       flex: 1
 
   .content-box

@@ -31,6 +31,8 @@
   #app
     width: 100vw
     height: 100vh
+    box-sizing: border-box
+    /*min-width: 1513px*/
     overflow: hidden
     font-family: PingFangSC-Regular, 'Avenir', Helvetica, Arial, sans-serif
     -webkit-font-smoothing: antialiased

@@ -50,7 +50,7 @@
   import AdminSelect from 'components/admin-select/admin-select' // 下拉框
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail'
-  import {ERR_OK, BASE_URL} from '../../common/js/config' // 下拉框
+  import {ERR_OK, BASE_URL, BEGIN_TIME} from '../../common/js/config' // 下拉框
   import storage from 'storage-controller'
 
   const TITLELIST = ['商品图片', '商品标题', '商品单价', '浏览量', '销量', '商品状态', '商品来源', '创建时间']
@@ -61,7 +61,7 @@
       return {
         titleList: TITLELIST,
         page: 1,
-        date: 'today',
+        date: BEGIN_TIME,
         keyWord: '',
         startTime: '',
         endTime: '',
@@ -228,6 +228,7 @@
         color: rgba(0, 0, 0, .1)
       .list-text
         no-wrap()
+        -webkit-box-orient: vertical
         width: 90%
         color: $color-text-66
         .bule
@@ -285,6 +286,13 @@
         color: $color-nomal
     &:nth-child(2)
       flex: 1.5
+      line-height: 18px
+      overflow: hidden
+      text-overflow: ellipsis
+      display: -webkit-box
+      -webkit-line-clamp: 2
+      white-space: normal !important
+      text-align: left
 
   .list-box-active
     background: $color-background

@@ -21,8 +21,9 @@
           </div>
           <div class="list-item list-text">{{item.activity_name || '---'}}</div>
           <div class="list-item list-text">{{item.price || '---'}}</div>
-          <div class="list-item list-text">{{item.rule_id === 1 ? '火爆拼图' : item.rule_id === 3 ? '疯狂砍价' : '---'}}</div>
+          <div class="list-item list-text">{{item.rule_id === 1 ? '火爆拼团' : item.rule_id === 3 ? '疯狂砍价' : '---'}}</div>
           <div class="list-item list-text">{{item.activity_status_str || '---'}}</div>
+          <div class="list-item list-text">{{item.goods_title || '---'}}</div>
           <div class="list-item list-text">
             <router-link tag="a" target="_blank" :to="'/business-list?num='+ item.merchant_account" class="bule hand">{{item.merchant_name || '---'}}</router-link>
           </div>
@@ -43,11 +44,11 @@
   import AdminSelect from 'components/admin-select/admin-select' // 下拉框
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
-  import {ERR_OK, BASE_URL} from '../../common/js/config' // 下拉框
+  import {ERR_OK, BASE_URL, BEGIN_TIME} from '../../common/js/config' // 下拉框
   import storage from 'storage-controller'
   import {Goods} from 'api'
 
-  const TITLELIST = ['活动图片', '活动标题', '活动价', '活动类型', '活动状态', '活动来源', '创建时间']
+  const TITLELIST = ['活动图片', '活动标题', '活动价', '活动类型', '活动状态', '关联商品', '活动来源', '创建时间']
 
   export default {
     name: 'activity',
@@ -60,7 +61,7 @@
           children: [{content: '活动类型', data: [{title: '全部', status: ''}, {title: '火爆拼团', status: '1'}, {title: '疯狂砍价', status: '3'}]}]
         }],
         page: 1,
-        date: 'today',
+        date: BEGIN_TIME,
         keyWord: '',
         startTime: '',
         endTime: '',
@@ -212,6 +213,7 @@
         font-size: $font-size-small12
         color: rgba(0, 0, 0, .1)
       .list-text
+        -webkit-box-orient: vertical
         no-wrap()
         width: 90%
         color: $color-text-66
@@ -270,6 +272,13 @@
         color: $color-nomal
     &:nth-child(2)
       flex: 1.5
+      line-height: 18px
+      overflow: hidden
+      text-overflow: ellipsis
+      display: -webkit-box
+      -webkit-line-clamp: 2
+      white-space: normal !important
+      text-align: left
 
   .list-box-active
     background: $color-background

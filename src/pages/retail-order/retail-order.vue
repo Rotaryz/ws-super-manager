@@ -33,7 +33,7 @@
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
   import {Customers} from 'api'
-  import {ERR_OK, BASE_URL} from 'common/js/config'
+  import {ERR_OK, BASE_URL, BEGIN_TIME} from 'common/js/config'
   import Toast from 'components/toast/toast'
   import storage from 'storage-controller'
 
@@ -44,7 +44,7 @@
         headerList: ['客户头像', '客户昵称', '性别', '地区', '加入时间'],
         data: [],
         requestData: {
-          time: 'today',
+          time: BEGIN_TIME,
           start_time: '',
           end_time: '',
           name: '',
@@ -125,7 +125,7 @@
     flex-direction: column
     background: $color-white
     border-radius: 5px
-    box-shadow: 0 1px 6px 0 rgba(0,8,39,0.10)
+    box-shadow: 0 1px 6px 0 rgba(0, 8, 39, 0.10)
     padding: 30px
     padding-top: 0
     box-sizing: border-box

@@ -254,12 +254,16 @@
   @import '~common/stylus/mixin'
   .navigation
     background: $color-menu-background
-    float: left
+    position: fixed
+    top: 0
+    bottom: 0
+    left: 0
     color: $color-white
-    height: 100vh
-    position: relative
+    min-height: 100vh
+    overflow-y: auto
     z-index: 1000
     white-space: nowrap
+    hide-scrollbar()
     .big-show
       width: 200px
       .herder
@@ -282,8 +286,7 @@
           overflow: hidden
           border-bottom: 1px solid #3B3B43
           .nav-tap
-            height: 58px
-            margin: 5.5px 0
+            height: 69px
             transition: all 0.2s
             align-items: center
             color: $color-white

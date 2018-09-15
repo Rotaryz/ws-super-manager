@@ -33,8 +33,8 @@
   import Search from 'components/search/search' // 搜索框
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
-  import { Business } from 'api'
-  import { ERR_OK } from 'common/js/config'
+  import {Business} from 'api'
+  import {ERR_OK, BEGIN_TIME} from 'common/js/config'
   import Toast from 'components/toast/toast'
 
   export default {
@@ -51,7 +51,7 @@
           class5: ''
         },
         requestData: {
-          time: 'today',
+          time: BEGIN_TIME,
           keyword: '',
           sort_type: '',
           start_time: '',

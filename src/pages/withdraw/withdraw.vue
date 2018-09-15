@@ -82,7 +82,7 @@
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
   import {Exchange} from 'api'
-  import {ERR_OK, BASE_URL} from 'common/js/config'
+  import {ERR_OK, BASE_URL, BEGIN_TIME} from 'common/js/config'
   import storage from 'storage-controller'
 
   const TITLELIST = ['订单号', '提交时间', '账号', '可提现金额 ', '冻结金额', '提现金额', '真实姓名', '银行类型', '银行卡号', '提现状态', '操作']
@@ -102,7 +102,7 @@
           children: [{content: '订单查询', data: [{title: '订单查询', status: 1}, {title: '账号查询', status: 2}]}]
         }],
         rqData: {
-          time: 'today',
+          time: BEGIN_TIME,
           start_time: 0,
           end_time: 0,
           withdraw_sn: '',
@@ -585,6 +585,7 @@
         &:hover
           transition: all 0.4s ease-out
           font-size: 17px
+
   .textarea-box
     position: relative
     transition: all 0.4s ease-out
@@ -624,6 +625,7 @@
         border-color: $color-text99
         transition: all 0.4s ease-out
         height: 102px
+
   .model-active
     animation: layerFadeIn .3s
     -webkit-animation: layerFadeIn .3s

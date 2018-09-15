@@ -3,7 +3,7 @@
     <li class="date-item hand" :class="{'date-item-active': tabIndex === index}" v-for="(item, index) in arrTitle" :key="index" @click="checkTab(index)">
       {{item.title}}
       <transition name="fade">
-        <div class="block" v-if="item.status === ''" v-show="tabIndex === 4">
+        <div class="block" v-if="item.status === 'set'" v-show="tabIndex === 5">
           <el-date-picker
             v-model="moreTime"
             type="daterange"
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-  const NAV = [{title: '今天', status: 'today'}, {title: '昨天', status: 'yesterday'}, {title: '7天', status: 'week'}, {title: '30天', status: 'month'}, {title: '自定义', status: ''}]
+  const NAV = [{title: '今天', status: 'today'}, {title: '昨天', status: 'yesterday'}, {title: '7天', status: 'week'}, {title: '30天', status: 'month'}, {title: '全部', status: ''}, {title: '自定义', status: 'set'}]
   export default {
     name: 'date-select',
     props: {
@@ -41,7 +41,7 @@
       checkTab(index) {
         this.tabIndex = index
         let status = this.arrTitle[index].status
-        if (!status) {
+        if (status === 'set') {
           this.moreTime = ''
           return
         }
@@ -74,10 +74,11 @@
       width: 60px
       height: 26px
       position: relative
-      transition: all  0.3s ease-out
+      transition: all 0.3s ease-out
       border: 0.5px solid $color-textD9
-      &:nth-child(2), &:nth-child(3), &:nth-child(4), &:nth-child(5)
-        border-left: none
+      border-left: none
+      &:nth-child(1)
+        border-left: 0.5px solid $color-textD9
       &:last-child
         border-top-right-radius: 4px
         border-bottom-right-radius: 4px
@@ -107,7 +108,7 @@
         right: 0
         top: -0.5px
         box-sizing: content-box
-        transition: all  0.3s ease-out
+        transition: all 0.3s ease-out
       &:before
         content: ''
         border-right: 0.5px solid transparent
@@ -119,18 +120,18 @@
         bottom: 0
         left: 0
         box-sizing: content-box
-        transition: all  0.3s ease-out
+        transition: all 0.3s ease-out
 
     .date-item-active
-      transition: all  0.3s ease-out
+      transition: all 0.3s ease-out
       color: $color-4985FC
       &:after
         border-color: $color-4985FC
-        transition: all  0.3s ease-out
+        transition: all 0.3s ease-out
         width: 100%
       &:before
         border-color: $color-4985FC
-        transition: all  0.3s ease-out
+        transition: all 0.3s ease-out
         height: 100%
 
   /*

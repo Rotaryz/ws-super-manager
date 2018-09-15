@@ -134,9 +134,10 @@
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
   .base-model
+    min-width: 1300px
     position: relative
     display: flex
-    overflow-y: auto
+    overflow: auto
     min-height: 100vh
     flex-direction: column
 

@@ -43,7 +43,7 @@
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
   import {Order} from 'api'
-  import {ERR_OK, BASE_URL} from 'common/js/config'
+  import {ERR_OK, BASE_URL, BEGIN_TIME} from 'common/js/config'
   import storage from 'storage-controller'
 
   const TITLELIST = ['订单号', '商品信息', '单价', '数量', '实付金额', '业务类型', '下单用户', '下单时间', '状态']
@@ -62,7 +62,7 @@
         }],
         tabStatus: ORDERSTATUS,
         rqData: {
-          time: 'today',
+          time: BEGIN_TIME,
           start_time: 0,
           end_time: 0,
           order_sn: '',
@@ -297,6 +297,7 @@
 
   .list-box-active
     background: $color-background
+
   .tab-list
     layout(row)
     margin-bottom: 20px
@@ -314,7 +315,7 @@
       border-top: 1px solid #e1e4e5
       border-right: 1px solid #e1e4e5
       box-sizing: border-box
-      transition: all  0.4s ease-out
+      transition: all 0.4s ease-out
       position: relative
       &:after
         content: ""
@@ -335,15 +336,15 @@
       &.active
         background: #fff
         position: relative
-        transition: all  0.4s ease-out
+        transition: all 0.4s ease-out
         &:after
           width: 100%
           border-bottom: 3px solid #fff
-          transition: all  0.4s ease-out
+          transition: all 0.4s ease-out
         &:before
           width: 100%
           border-bottom: 4px solid #4985FC
-          transition: all  0.4s ease-out
+          transition: all 0.4s ease-out
 
   .page
     width: 100%

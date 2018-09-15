@@ -23,7 +23,8 @@
         <div class="data-item" v-for="(item, index) in dataOverview" v-bind:key="index">
           <div class="item-box">
             <div class="item-title">
-              <div class="icon" :class="item.icon"></div><div class="text">{{item.title}}</div>
+              <div class="icon" :class="item.icon"></div>
+              <div class="text">{{item.title}}</div>
             </div>
             <div class="big-munber">{{item.number}}</div>
             <div class="all-text">累计</div>
@@ -52,8 +53,8 @@
   import AdminSelect from 'components/admin-select/admin-select' // 下拉框
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
-  import { Data } from 'api'
-  import { ERR_OK } from 'common/js/config'
+  import {Data} from 'api'
+  import {ERR_OK, BEGIN_TIME} from 'common/js/config'
 
   const OVERVIEW = [{icon: 'shop', number: 0, title: '商家数量', allNumber: 0}, {icon: 'pay', number: 0, title: '付费店铺数', allNumber: 0}, {icon: 'order', number: 0, title: '交易订单数量', allNumber: 0}, {icon: 'amount', number: 0, title: '交易金额(元)', allNumber: 0}]
   const NAVLIST = [{title: '今天', status: 'today'}, {title: '昨天', status: 'yesterday'}, {title: '7天', status: 'week'}, {title: '30天', status: 'month'}]
@@ -70,7 +71,7 @@
         yesterMoney: 0,
         yesDay: {},
         totalDay: {},
-        navIndex: 'today',
+        navIndex: BEGIN_TIME,
         typeIndex: 1
       }
     },
@@ -461,11 +462,13 @@
     box-sizing: border-box
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
+
   .dataOverView
     flex: 1
     display: flex
     border-radius: 6px
     flex-direction: column
+
   .data-top
     layout(row)
     width: 100%
@@ -477,7 +480,7 @@
         height: 380px
         background: #fff
         width: 100%
-        box-shadow: 0 1px 3px 0 rgba(0,8,39,0.10)
+        box-shadow: 0 1px 3px 0 rgba(0, 8, 39, 0.10)
         border-radius: 3px
         padding-right: 30px
         .title
@@ -542,9 +545,9 @@
         .item-box
           height: 180px
           background: $color-white
-          box-shadow: 0 1px 3px 0 rgba(0,8,39,0.10)
+          box-shadow: 0 1px 3px 0 rgba(0, 8, 39, 0.10)
           border-radius: 3px
-          width:100%
+          width: 100%
           padding-top: 30px
           .item-title
             layout(row)
@@ -585,9 +588,10 @@
             font-size: $font-size-large18
             color: $color-text-66
             padding-left: 80px
+
   .data-bottom
     background: $color-white
-    box-shadow: 0 1px 3px 0 rgba(0,8,39,0.10)
+    box-shadow: 0 1px 3px 0 rgba(0, 8, 39, 0.10)
     border-radius: 3px
     flex: 1
     flex-direction: column
@@ -615,6 +619,7 @@
       #echartLine
         width: 100%
         height: 100%
+
   .z
     width: 1px
 </style>
