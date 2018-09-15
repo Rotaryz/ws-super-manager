@@ -9,11 +9,11 @@ const DEV_URL = {
 }
 
 const TEST_URL = {
-  api: 'https://ws-super-manager.jkweixin.net'
+  api: 'https://ws-api.jkweixin.net'
 }
 
 const PROD_URL = {
-  api: 'https://ws-super-manager.jkweixin.com'
+  api: 'https://ws-api.jkweixin.com'
 }
 
 export const BASE_URL = env.NODE_ENV === 'production' ? PROD_URL : env.NODE_ENV === 'test' ? TEST_URL : env.NODE_ENV === 'dev' ? DEV_URL : LOCAL_URL
