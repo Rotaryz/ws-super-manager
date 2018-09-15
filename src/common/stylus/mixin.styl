@@ -162,7 +162,6 @@ border-animate($color = #4985fc, $radius = 2px, $font-color = #333)
     right: 0
     top: -0.5px
     border-radius $radius
-    box-sizing: content-box
     transition: all 0.3s ease-out
   &:before
     content: ''
@@ -175,7 +174,6 @@ border-animate($color = #4985fc, $radius = 2px, $font-color = #333)
     bottom: 0
     left: 0
     border-radius $radius
-    box-sizing: content-box
     transition: all 0.3s ease-out
   &:hover
     color: $font-color
@@ -188,3 +186,46 @@ border-animate($color = #4985fc, $radius = 2px, $font-color = #333)
       border-color: $color
       transition: all 0.3s ease-out
       height: 100%
+
+// 宽度= 原宽度 + 1; 高度= 原高度 + 1
+input-animate($color = #4985fc, $radius = 2px, $w, $h, $l = -1px, $t = -1px, $b = 2px, $font-color = #333)
+  position: relative
+  box-sizing: content-box
+  input, textarea
+    border: 0.5px solid $color-textD9
+    position: relative
+    z-index: 10
+  .after
+    border-top: 0.5px solid transparent
+    border-bottom: 0.5px solid transparent
+    position: absolute
+    z-index: 5
+    height: $h
+    width: 0
+    right: 0
+    top: $t
+    border-radius $radius
+    transition: all 0.4s ease-out
+  .before
+    border-right: 0.5px solid transparent
+    border-left: 0.5px solid transparent
+    position: absolute
+    z-index: 5
+    height: 0
+    width: $w
+    bottom: 2px
+    left: $l
+    border-radius $radius
+    transition: all 0.4s ease-out
+  &:hover
+    input, textarea
+      border: 0.5px solid transparent
+      transition: all 0.4s ease-out
+    .after
+      border-color: $color
+      transition: all 0.4s ease-out
+      width: $w
+    .before
+      border-color: $color
+      transition: all 0.4s ease-out
+      height: $h

@@ -71,7 +71,11 @@
           </div>
         </div>
         <div class="pop-main" v-if="showPopContent === 1 || showPopContent === 2">
-          <textarea v-model="popTxt" class="popTxt" :placeholder="showPopContent === 1?'备注原因':'冻结原因'"></textarea>
+          <div class="input-box-big">
+            <span class="after"></span>
+            <textarea v-model="popTxt" class="popTxt" :placeholder="showPopContent === 1?'备注原因':'冻结原因'"></textarea>
+            <span class="before"></span>
+          </div>
           <div class="content-btn">
             <a class="btn" href="javascript:;" @click="closePop">取消</a>
             <a class="btn active" href="javascript:;" @click="operate">{{showPopContent === 1 ? '冻结' : '解冻'}}</a>
@@ -100,8 +104,8 @@
   import AdminSelect from 'components/admin-select/admin-select'
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
-  import { Business } from 'api'
-  import { ERR_OK, BASE_URL } from 'common/js/config'
+  import {Business} from 'api'
+  import {ERR_OK, BASE_URL} from 'common/js/config'
   import Toast from 'components/toast/toast'
   import storage from 'storage-controller'
 
@@ -570,6 +574,8 @@
         .pop-main
           padding: 20px 30px
           text-align: left
+          .input-box-big
+            input-animate($color-text99, 0px, 471px, 91px)
           .popTxt
             padding: 8px
             resize: none
@@ -578,7 +584,7 @@
             height: 90px
             outline: none
             box-sizing: border-box
-            border: 1px solid $color-line
+            border: 0.5px solid $color-line
             &::-webkit-input-placeholder
               color: $color-ccc
           .content-btn
