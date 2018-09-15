@@ -2,11 +2,11 @@
   <div class="business-list">
     <div class="content-top">
       <div class="left">
-        <date-select @checkTime="checkTime"></date-select>
+        <date-select @checkTime="checkTime" ref="dateSelect"></date-select>
         <admin-select :select="activityType1" @setValue="setValue"></admin-select>
         <admin-select :select="activityType2" @setValue="setValue"></admin-select>
         <admin-select :select="activityType3" @setValue="setValue"></admin-select>
-        <search @search="search" placeholerTxt="请输入商家名称、帐号"></search>
+        <search @search="search" placeholerTxt="请输入商家名称、帐号" :txt="requestData.keyword"></search>
       </div>
       <a :href="excelUrl" class="excel">导出Excel</a>
     </div>
@@ -198,6 +198,12 @@
       }
     },
     created() {
+      this.requestData.keyword = this.$route.query.num || ''
+      let index = this.$route.query.num ? -1 : 0
+      setTimeout(() => {
+        this.$refs.dateSelect.setIndex(index)
+      }, 200)
+      this.requestData.time = this.$route.query.num ? '' : 'today'
       this.getBusinessList()
       this.getExcelUrl()
     },
