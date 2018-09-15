@@ -3,9 +3,9 @@
     <div class="content-top">
       <div class="left">
         <date-select @checkTime="checkTime"></date-select>
-        <admin-select :select="activityType1" @setValue="setValue1"></admin-select>
-        <admin-select :select="activityType2" @setValue="setValue2"></admin-select>
-        <admin-select :select="activityType3" @setValue="setValue3"></admin-select>
+        <admin-select :select="activityType1" @setValue="setValue"></admin-select>
+        <admin-select :select="activityType2" @setValue="setValue"></admin-select>
+        <admin-select :select="activityType3" @setValue="setValue"></admin-select>
         <search @search="search" placeholerTxt="请输入商家名称、帐号"></search>
       </div>
       <a :href="excelUrl" class="excel">导出Excel</a>
@@ -66,8 +66,8 @@
             </el-date-picker>
           </p>
           <div class="content-btn">
-            <a class="btn" href="javascript:;">取消</a>
-            <a class="btn active" href="javascript:;" @click="openBusiness">确定</a>
+            <div class="btn" @click="closePop">取消</div>
+            <div class="btn active" @click="openBusiness">确定</div>
           </div>
         </div>
         <div class="pop-main" v-if="showPopContent === 1 || showPopContent === 2">
@@ -77,17 +77,21 @@
             <span class="before"></span>
           </div>
           <div class="content-btn">
-            <a class="btn" href="javascript:;" @click="closePop">取消</a>
-            <a class="btn active" href="javascript:;" @click="operate">{{showPopContent === 1 ? '冻结' : '解冻'}}</a>
+            <div class="btn" @click="closePop">取消</div>
+            <div class="btn active" @click="operate">{{showPopContent === 1 ? '冻结' : '解冻'}}</div>
           </div>
         </div>
         <div class="pop-main" v-if="showPopContent === 3">
           <div class="add-call">
             操作人手机号：
-            <input class="phone-num" type="number" v-model="authorityNum">
+            <div class="phone-box">
+              <span class="before"></span>
+              <input class="phone-num" type="number" v-model="authorityNum">
+              <span class="after"></span>
+            </div>
           </div>
           <div class="content-btn">
-            <a class="btn active" href="javascript:;" @click="overPower">确定</a>
+            <div class="btn active" @click="overPower">确定</div>
           </div>
         </div>
         <div class="pop-main code" v-if="showPopContent === 4">
@@ -104,8 +108,8 @@
   import AdminSelect from 'components/admin-select/admin-select'
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
-  import {Business} from 'api'
-  import {ERR_OK, BASE_URL} from 'common/js/config'
+  import { Business } from 'api'
+  import { ERR_OK, BASE_URL } from 'common/js/config'
   import Toast from 'components/toast/toast'
   import storage from 'storage-controller'
 
@@ -118,17 +122,38 @@
         activityType1: [{
           select: false,
           show: false,
-          children: [{content: '账号状态', data: [{title: '正常', status: '0'}, {title: '冻结', status: '1'}]}]
+          children: [{
+            content: '账号状态',
+            data: [{title: '全部', status: '', type: 0}, {title: '正常', status: '0', type: 0}, {
+              title: '冻结',
+              status: '1',
+              type: 0
+            }]
+          }]
         }],
         activityType2: [{
           select: false,
           show: false,
-          children: [{content: '商家版本', data: [{title: '试用版', status: '0'}, {title: '付费版', status: '1'}]}]
+          children: [{
+            content: '商家版本',
+            data: [{title: '全部', status: '', type: 1}, {title: '试用版', status: '0', type: 1}, {
+              title: '付费版',
+              status: '1',
+              type: 1
+            }]
+          }]
         }],
         activityType3: [{
           select: false,
           show: false,
-          children: [{content: '开通方式', data: [{title: '自费开通', status: '0'}, {title: '激活码开通', status: '1'}]}]
+          children: [{
+            content: '开通方式',
+            data: [{title: '全部', status: '', type: 2}, {title: '自费开通', status: '0', type: 2}, {
+              title: '激活码开通',
+              status: '1',
+              type: 2
+            }]
+          }]
         }],
         data: [],
         requestData: {
@@ -177,19 +202,23 @@
       this.getExcelUrl()
     },
     methods: {
-      setValue1(item) {
-        this.activityType1[0].children[0].content = item.title
-        this.requestData.is_freeze = item.status
-        this.getBusinessList()
-      },
-      setValue2(item) {
-        this.activityType2[0].children[0].content = item.title
-        this.requestData.service_version = item.status
-        this.getBusinessList()
-      },
-      setValue3(item) {
-        this.activityType3[0].children[0].content = item.title
-        this.requestData.open_type = item.status
+      setValue(item) {
+        switch (item.type) {
+          case 0 :
+            this.activityType1[0].children[0].content = item.title
+            this.requestData.is_freeze = item.status
+            break
+          case 1 :
+            this.activityType2[0].children[0].content = item.title
+            this.requestData.service_version = item.status
+            break
+          case 2:
+            this.activityType3[0].children[0].content = item.title
+            this.requestData.open_type = item.status
+            break
+        }
+        this.requestData.page = 1
+        this.$refs.pageDetail.beginPage()
         this.getBusinessList()
       },
       checkTime(status) {
@@ -263,6 +292,8 @@
               break
           }
         }
+        this.requestData.page = 1
+        this.$refs.pageDetail.beginPage()
         this.getBusinessList()
       },
       addPage(num) {
@@ -594,17 +625,24 @@
             .btn
               width: 96px
               height: 40px
+              cursor: pointer
               border: 1px solid $color-ccc
               border-radius: 3px
               text-align: center
+              box-sizing: border-box
+              font-family: $fontFamilyRegular
               line-height: 40px
               font-size: 16px
               color: $color-text33
+              transition: all 0.4s ease-out
               &.active
                 background: $color-4985FC
                 color: $color-white
                 border: 0
                 margin-left: 20px
+              &:hover
+                transition: all 0.4s ease-out
+                font-size: 17px
           .type
             display: inline-block
             width: 70px
@@ -624,8 +662,10 @@
             margin-top: 20px
             display: flex
             align-items: center
-            .phone-num
+            .phone-box
               margin-left: 10px
+              input-animate($color-text99, 3px, 181px, 31px, -1px, -1px, -1px)
+            .phone-num
               width: 180px
               height: 30px
               outline: none
