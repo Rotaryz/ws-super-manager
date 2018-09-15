@@ -134,7 +134,7 @@
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
   .base-model
-    min-width: 1300px
+    min-width: 1400px
     position: relative
     display: flex
     overflow: auto

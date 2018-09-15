@@ -6,7 +6,7 @@
         <admin-select :select="activityType1" @setValue="setValue"></admin-select>
         <admin-select :select="activityType2" @setValue="setValue"></admin-select>
         <admin-select :select="activityType3" @setValue="setValue"></admin-select>
-        <search @search="search" placeholerTxt="请输入商家名称、帐号" :txt="requestData.keyword"></search>
+        <search @search="search" placeholerTxt="请输入商家名称、帐号" ref="search"></search>
       </div>
       <a :href="excelUrl" class="excel">导出Excel</a>
     </div>
@@ -207,7 +207,8 @@
       let index = this.$route.query.num ? -1 : 0
       setTimeout(() => {
         this.$refs.dateSelect.setIndex(index)
-      }, 200)
+        this.$refs.search.setInput(this.requestData.keyword)
+      }, 100)
       this.requestData.time = this.$route.query.num ? '' : BEGIN_TIME
       this.getBusinessList()
       this.getExcelUrl()

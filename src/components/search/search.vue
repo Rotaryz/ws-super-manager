@@ -19,18 +19,18 @@
       btnTxt: {
         type: String,
         default: '搜 索'
-      },
-      txt: {
-        type: String,
-        default: ''
       }
     },
     data() {
       return {
-        inputTxt: ''
+        inputTxt: '',
+        txt: ''
       }
     },
     methods: {
+      setInput(txt) {
+        this.txt = txt
+      },
       inputIn(e) {
         this.inputTxt = e.target.value
       },
