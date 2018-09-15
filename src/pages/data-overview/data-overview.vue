@@ -56,7 +56,7 @@
   import { ERR_OK } from 'common/js/config'
 
   const OVERVIEW = [{icon: 'shop', number: 0, title: '商家数量', allNumber: 0}, {icon: 'pay', number: 0, title: '付费店铺数', allNumber: 0}, {icon: 'order', number: 0, title: '交易订单数量', allNumber: 0}, {icon: 'amount', number: 0, title: '交易金额(元)', allNumber: 0}]
-  const NAVLIST = [{title: '今天', status: '1'}, {title: '昨天', status: '2'}, {title: '7天', status: '3'}, {title: '30天', status: '4'}]
+  const NAVLIST = [{title: '今天', status: 'today'}, {title: '昨天', status: 'yesterday'}, {title: '7天', status: 'week'}, {title: '30天', status: 'month'}]
   const TYPELIST = [{title: '商家', status: '1'}, {title: '付费店铺', status: '2'}, {title: '交易订单', status: '3'}, {title: '交易金额', status: '4'}]
   export default {
     name: 'data-overview',
@@ -70,7 +70,7 @@
         yesterMoney: 0,
         yesDay: {},
         totalDay: {},
-        navIndex: 1,
+        navIndex: 'today',
         typeIndex: 1
       }
     },
@@ -105,8 +105,8 @@
       getExchangeData() {
         Data.exchangeMoney().then(res => {
           if (res.error === ERR_OK) {
-            this.totalMoeny = res.data.totalPayment
-            this.yesterMoney = res.data.yesterdayPayment
+            this.totalMoeny = res.data.total_payment
+            this.yesterMoney = res.data.yesterday_payment
             this.yesDay = res.data
             this.drawLine()
           } else {
@@ -120,20 +120,20 @@
             let data = OVERVIEW
             data.forEach((item) => {
               if (item.icon === 'shop') {
-                item.number = res.data.Merchant[0]
-                item.allNumber = res.data.Merchant[1]
+                item.number = res.data.merchant[0]
+                item.allNumber = res.data.merchant[1]
               }
               if (item.icon === 'pay') {
                 item.number = res.data.shop[0]
                 item.allNumber = res.data.shop[1]
               }
               if (item.icon === 'order') {
-                item.number = res.data.orderNUM[0]
-                item.allNumber = res.data.orderNUM[1]
+                item.number = res.data.order_num[0]
+                item.allNumber = res.data.order_num[1]
               }
               if (item.icon === 'amount') {
-                item.number = res.data.orderToatal[0]
-                item.allNumber = res.data.orderToatal[1]
+                item.number = res.data.order_total[0]
+                item.allNumber = res.data.order_total[1]
               }
             })
           } else {
@@ -443,6 +443,7 @@
       },
       checkTime(index) {
         this.navIndex = index
+        console.log(index)
         this.totalChart()
       },
       checkType(index) {

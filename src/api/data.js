@@ -24,10 +24,10 @@ export default {
    * @param data
    * @returns {*}
    */
-  totalChart(type = 1, datetype = 1) {
+  totalChart(type = 1, date_type = 1) {
     let data = {
       type,
-      datetype
+      date_type
     }
     let url = '/api/admin/total-Chart'
     return request.get(url, data)
