@@ -8,18 +8,19 @@
     </div>
     <div class="content-list">
       <div class="list-header">
-        <div class="header-key" v-for="(item, index) in headerList" @click="handleClick(index)" :class="{'handle': index === 2 || index === 3 || index === 4 || index === 5}">
+        <div class="header-key" v-for="(item, index) in headerList" @click="handleClick(index)"
+             :class="{'handle': index === 2 || index === 3 || index === 4 || index === 5}">
           <span class="contxt" :class="`${headClass[`class${index}`]}`">{{item}}</span>
         </div>
       </div>
       <div class="list-content">
         <div class="list-item" v-for="item in data">
-          <span class="item">{{item.name}}</span>
-          <span class="item">{{item.active_code}}</span>
-          <span class="item">{{item.groups_num}}</span>
-          <span class="item">{{item.potential_num}}</span>
-          <span class="item">{{item.consume_num}}</span>
-          <span class="item">{{item.order_num}}</span>
+          <span class="item">{{item.name || '---'}}</span>
+          <span class="item">{{item.active_code || '---'}}</span>
+          <span class="item">{{item.groups_num || '---'}}</span>
+          <span class="item">{{item.potential_num || '---'}}</span>
+          <span class="item">{{item.consume_num || '---'}}</span>
+          <span class="item">{{item.order_num || '---'}}</span>
         </div>
       </div>
     </div>
@@ -32,8 +33,8 @@
   import Search from 'components/search/search' // 搜索框
   import DateSelect from 'components/date-select/date-select' // 下拉框
   import PageDetail from 'components/page-detail/page-detail' // 下拉框
-  import {Business} from 'api'
-  import {ERR_OK} from 'common/js/config'
+  import { Business } from 'api'
+  import { ERR_OK } from 'common/js/config'
   import Toast from 'components/toast/toast'
 
   export default {
@@ -163,6 +164,8 @@
               break
           }
         }
+        this.requestData.page = 1
+        this.$refs.pageDetail.beginPage()
         this.getMemberList()
       },
       addPage(num) {
@@ -188,7 +191,7 @@
     flex-direction: column
     background: $color-white
     border-radius: 5px
-    box-shadow: 0 1px 6px 0 rgba(0,8,39,0.10)
+    box-shadow: 0 1px 6px 0 rgba(0, 8, 39, 0.10)
     padding: 30px
     padding-top: 0
     box-sizing: border-box
@@ -224,7 +227,7 @@
             position: relative
             &:before
             &:after
-              content:''
+              content: ''
               display: inline-block
               width: 0
               height: 0
