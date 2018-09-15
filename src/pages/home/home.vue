@@ -63,6 +63,7 @@
     watch: {
       '$route'(to) {
         this.setNull(false)
+        this.hideShade(false)
       }
     }
   }
