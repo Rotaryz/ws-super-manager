@@ -93,8 +93,8 @@
       window.onresize = () => {
         return (() => {
           if (that.$route.path === '/data-overview') {
-            that.drawLine()
             that.drawTotalLine()
+            that.drawLine()
           }
         })()
       }
@@ -158,7 +158,7 @@
           grid: {
             top: 105,
             left: 30,
-            right: 8,
+            right: 20,
             bottom: 15,
             containLabel: true
           },

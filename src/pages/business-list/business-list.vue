@@ -136,9 +136,9 @@
           show: false,
           children: [{
             content: '商家版本',
-            data: [{title: '全部', status: '', type: 1}, {title: '试用版', status: '0', type: 1}, {
-              title: '付费版',
-              status: '1',
+            data: [{title: '全部', status: '', type: 1}, {title: '正式版', status: '1', type: 1}, {
+              title: '体验版',
+              status: '0',
               type: 1
             }]
           }]
@@ -148,9 +148,14 @@
           show: false,
           children: [{
             content: '开通方式',
-            data: [{title: '全部', status: '', type: 2}, {title: '自费开通', status: '0', type: 2}, {
+            data: [{title: '全部', status: '', type: 2}, {title: '线上支付', status: '0', type: 2}, {
               title: '激活码开通',
               status: '1',
+              type: 2
+            },
+            {
+              title: '代理商开通',
+              status: '2',
               type: 2
             }]
           }]
@@ -351,9 +356,10 @@
         this.showActive = false
         this.popTxt = ''
         this.authorityNum = ''
+        this.expire_time = ''
+        this.addTime = ''
       },
       addDate() {
-        console.log(this.addTime)
         this.expire_time = this.addTime.toLocaleDateString().replace(/\//g, '-').replace(/\b\d\b/g, '0$&')
         // this.addTime.toLocaleDateString().replace(/\//g, '-')
       },
@@ -385,6 +391,10 @@
           this.$refs.toast.show('请选择延迟日期')
           return
         }
+        if (new Date(this.expire_time) < new Date(this.endTime)) {
+          this.$refs.toast.show('选择日期应大于到期日期')
+          return
+        }
         Business.openBusiness({merchant_id: this.merchant_id, expire_time: this.expire_time})
           .then((res) => {
             if (res.error !== ERR_OK) {
@@ -392,8 +402,8 @@
               return
             }
             this.$refs.toast.show(res.message)
+            this.closePop()
           })
-        this.closePop()
       },
       frozenBusiness() {
         if (!this.popTxt || this.popTxt.replace(/^\s+|\s+$/g, '') === '') {
