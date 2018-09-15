@@ -157,7 +157,7 @@
           grid: {
             top: 105,
             left: 30,
-            right: 8,
+            right: 20,
             bottom: 15,
             containLabel: true
           },
