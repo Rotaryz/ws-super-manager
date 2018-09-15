@@ -80,7 +80,7 @@
             storage.set('aiToken', data.access_token)
             storage.set('userName', data.admin_info.username)
             setTimeout(() => {
-              this.$router.push('/activity')
+              this.$router.push('/data-overview')
             }, 300)
           } else if (res.error) {
             this.$refs.toast.show(res.message)

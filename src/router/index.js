@@ -104,7 +104,7 @@ const route = new Router({
     }
   ]
 })
-const DEFAULT_ROUTE = '/activity'
+const DEFAULT_ROUTE = '/data-overview'
 const OAUTH_ROUTE = '/login'
 route.beforeEach((to, from, next) => {
   if (to.path === '/') {
