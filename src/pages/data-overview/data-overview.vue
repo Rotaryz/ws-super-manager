@@ -320,7 +320,7 @@
         let myChart = this.$echarts.init(document.getElementById('echartLine'))
         myChart.setOption({
           grid: {
-            top: 60,
+            top: 45,
             left: '30px',
             right: '30px',
             bottom: 15,
@@ -464,9 +464,7 @@
   .dataOverView
     flex: 1
     display: flex
-    overflow: hidden
     border-radius: 6px
-    box-shadow: 0 1px 6px 0 rgba(0, 8, 39, 0.10)
     flex-direction: column
   .data-top
     layout(row)
@@ -591,6 +589,9 @@
     background: $color-white
     box-shadow: 0 1px 3px 0 rgba(0,8,39,0.10)
     border-radius: 3px
+    flex: 1
+    flex-direction: column
+    display: flex
     .echart-top
       height: 60px
       layout(row)
@@ -608,12 +609,12 @@
           color: $color-text33
           margin-right: 46px
     .echart-box
-      height: 320px
+      flex: 1
       width: 100%
       position: relative
       #echartLine
         width: 100%
-        height: 320px
+        height: 100%
   .z
     width: 1px
 </style>
