@@ -135,6 +135,7 @@
   .agent-order
     display: flex
     flex: 1
+    overflow-x: hidden
     flex-direction: column
     background: $color-white
     border-radius: 5px
@@ -170,9 +171,9 @@
           overflow: hidden
           text-align: left
           &:nth-of-type(4)
-            flex: 1.4
+            flex: 1.2
           &:nth-of-type(6)
-            flex: 3.8
+            flex: 2.8
       .list-content
         .list-item
           height: 60px
@@ -188,10 +189,10 @@
             no-wrap()
             line-height: 18px
             &.area
-              flex: 1.4
+              flex: 1.2
               no-wrap()
           .long-item
-            flex: 3.8
+            flex: 2.8
             line-height: 18px
             no-wrap()
             .address
