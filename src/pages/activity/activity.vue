@@ -271,7 +271,7 @@
         color: $color-text-little
       .audit
         color: $color-nomal
-    &:nth-child(2)
+    &:nth-child(2),&:nth-child(6)
       flex: 1.5
       word-break: break-all
       line-height: 18px

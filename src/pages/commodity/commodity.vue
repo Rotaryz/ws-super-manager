@@ -17,6 +17,10 @@
             <span class="sort-item sort-top" :class="{'sort-top-active': showIndex === 4 && sortType === 4}"></span>
             <span class="sort-item sort-end" :class="{'sort-end-active': showIndex === 4 && sortType === 3}"></span>
           </div>
+          <div class="sort" v-if="index ===5">
+            <span class="sort-item sort-top" :class="{'sort-top-active': showIndex === 5 && sortType === 6}"></span>
+            <span class="sort-item sort-end" :class="{'sort-end-active': showIndex === 5 && sortType === 5}"></span>
+          </div>
         </div>
       </div>
       <div class="list">
@@ -85,7 +89,7 @@
         this.downUrl = BASE_URL.api + `/api/admin/goods-export?access_token=${storage.get('aiToken')}&title=${this.keyWord}&time=${this.date}&sort_type=${this.sortType}&start_time=${this.startTime}&end_time=${this.endTime}`
       },
       async _sortList(index) {
-        if (index !== 3 && index !== 4) {
+        if (index !== 3 && index !== 4 && index !== 5) {
           return
         }
         this.showIndex = index
@@ -95,6 +99,9 @@
             break
           case 4:
             this.sortType = this.sortType !== 3 ? 3 : 4
+            break
+          case 5:
+            this.sortType = this.sortType !== 5 ? 5 : 6
             break
         }
         this.page = 1
