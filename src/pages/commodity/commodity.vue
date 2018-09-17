@@ -3,7 +3,7 @@
     <div class="ac-tab">
       <date-select @checkTime="_checkTime"></date-select>
       <search @search="_search" placeholerTxt="请输入商品名称"></search>
-      <a :href="downUrl" class="excel">导出Excel</a>
+      <a :href="downUrl" target="_blank" class="excel">导出Excel</a>
     </div>
     <div class="form-list">
       <div class="list-header">
@@ -27,6 +27,7 @@
             </div>
           </div>
           <div class="list-item list-text">{{item.title || '---'}}</div>
+          <div class="list-item list-text"></div>
           <div class="list-item list-text">{{item.original_price + '' || '---'}}</div>
           <div class="list-item list-text">{{item.browse_count + '' || '---'}}</div>
           <div class="list-item list-text">{{item.sale_count + '' || '---'}}</div>
@@ -53,7 +54,7 @@
   import {ERR_OK, BASE_URL, BEGIN_TIME} from '../../common/js/config' // 下拉框
   import storage from 'storage-controller'
 
-  const TITLELIST = ['商品图片', '商品标题', '商品单价', '浏览量', '销量', '商品状态', '商品来源', '创建时间']
+  const TITLELIST = ['商品图片', '商品标题', '', '商品单价', '浏览量', '销量', '商品状态', '商品来源', '创建时间']
 
   export default {
     name: 'activity',
@@ -169,10 +170,11 @@
     flex-direction: column
 
   .ac-tab
-    min-height: 8.14vh
+    min-height: 88px
+    max-height: 88px
     box-sizing: border-box
-    padding: 2.8vh 0
     display: flex
+    align-items: center
     position: relative
     .excel
       right: 0
@@ -285,6 +287,7 @@
       .audit
         color: $color-nomal
     &:nth-child(2)
+      word-break: break-all
       flex: 1.5
       line-height: 18px
       overflow: hidden
@@ -293,6 +296,8 @@
       -webkit-line-clamp: 2
       white-space: normal !important
       text-align: left
+    &:nth-child(3)
+      flex: 0.05
 
   .list-box-active
     background: $color-background

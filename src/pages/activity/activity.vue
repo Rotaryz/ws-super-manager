@@ -4,7 +4,7 @@
       <date-select @checkTime="_checkTime"></date-select>
       <admin-select :select="activityType" role="activity" @setValue="setValue"></admin-select>
       <search @search="_search" placeholerTxt="请输入商家名称、活动名称"></search>
-      <a :href="downUrl" class="excel">导出Excel</a>
+      <a :href="downUrl" target="_blank" class="excel">导出Excel</a>
     </div>
     <div class="form-list">
       <div class="list-header">
@@ -20,6 +20,7 @@
             </div>
           </div>
           <div class="list-item list-text">{{item.activity_name || '---'}}</div>
+          <div class="list-item list-text"></div>
           <div class="list-item list-text">{{item.price || '---'}}</div>
           <div class="list-item list-text">{{item.rule_id === 1 ? '火爆拼团' : item.rule_id === 3 ? '疯狂砍价' : '---'}}</div>
           <div class="list-item list-text">{{item.activity_status_str || '---'}}</div>
@@ -48,7 +49,7 @@
   import storage from 'storage-controller'
   import {Goods} from 'api'
 
-  const TITLELIST = ['活动图片', '活动标题', '活动价', '活动类型', '活动状态', '关联商品', '活动来源', '创建时间']
+  const TITLELIST = ['活动图片', '活动标题', '', '活动价', '活动类型', '活动状态', '关联商品', '活动来源', '创建时间']
 
   export default {
     name: 'activity',
@@ -155,10 +156,11 @@
     flex-direction: column
 
   .ac-tab
-    min-height: 8.14vh
+    min-height: 88px
+    max-height: 88px
     box-sizing: border-box
-    padding: 2.8vh 0
     display: flex
+    align-items: center
     position: relative
     .excel
       right: 0
@@ -272,6 +274,7 @@
         color: $color-nomal
     &:nth-child(2)
       flex: 1.5
+      word-break: break-all
       line-height: 18px
       overflow: hidden
       text-overflow: ellipsis
@@ -279,6 +282,8 @@
       -webkit-line-clamp: 2
       white-space: normal !important
       text-align: left
+    &:nth-child(3)
+      flex: 0.05
 
   .list-box-active
     background: $color-background

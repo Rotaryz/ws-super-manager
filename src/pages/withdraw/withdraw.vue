@@ -9,7 +9,7 @@
       <div class="admin-search">
         <search @search="searchBtn" :placeholerTxt="inputText"></search>
       </div>
-      <a :href="downUrl" class="excel">导出Excel</a>
+      <a :href="downUrl" class="excel" target="_blank">导出Excel</a>
     </div>
     <div class="form-list">
       <div class="list-header">
@@ -282,10 +282,11 @@
     flex-direction: column
 
   .ac-tab
-    min-height: 8.14vh
+    min-height: 88px
+    max-height: 88px
     box-sizing: border-box
-    padding: 2.8vh 0
     display: flex
+    align-items: center
     position: relative
     .excel
       right: 0

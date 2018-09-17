@@ -5,7 +5,7 @@
         <date-select @checkTime="checkTime"></date-select>
         <search @search="search" placeholerTxt="请输入昵称"></search>
       </div>
-      <a :href="excelUrl" class="excel">导出Excel</a>
+      <a :href="excelUrl" class="excel" target="_blank">导出Excel</a>
     </div>
     <div class="content-list">
       <div class="list-header">

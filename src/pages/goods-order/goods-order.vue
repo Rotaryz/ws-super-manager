@@ -4,7 +4,7 @@
       <date-select @checkTime="checkTime"></date-select>
       <admin-select :select="activityType" role="activity" @setValue="setType"></admin-select>
       <search @search="searchBtn"></search>
-      <a :href="downUrl" class="excel">导出Excel</a>
+      <a :href="downUrl" class="excel" target="_blank">导出Excel</a>
     </div>
     <ul class="tab-list">
       <li class="item" v-for="(item, index) in tabStatus" v-bind:key="index"
@@ -173,10 +173,12 @@
     flex-direction: column
 
   .ac-tab
-    min-height: 8.14vh
+    min-height: 88px
+    max-height: 88px
     box-sizing: border-box
-    padding: 2.8vh 1.5vw
+    padding: 0 1.5vw
     display: flex
+    align-items: center
     position: relative
     .excel
       right: 1.5vw

@@ -221,6 +221,7 @@
     display: flex
     align-items: center
     justify-content: space-between
+    align-items: center
     color: $color-text33
     font-size: $font-size-medium14
     .page
@@ -309,7 +310,7 @@
         border-radius: 3px
         margin: 0 10px
         border: 0.5px solid $color-lineCC
-        font-size: $font-size-medium
+        font-size: $font-size-small12
       div.border-page
         margin-right: 0
         padding: 0 15px

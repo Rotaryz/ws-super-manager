@@ -114,7 +114,7 @@
       border-radius: 4px
       border 0.5px solid $color-textD9
       padding: 0 31px 0 15px
-      line-height: 28px
+      line-height: 26px
       white-space: nowrap
       font-size: $font-size-small12
       position: relative

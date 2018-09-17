@@ -8,7 +8,7 @@
         <admin-select :select="activityType3" @setValue="setValue"></admin-select>
         <search @search="search" placeholerTxt="请输入商家名称、帐号" ref="search"></search>
       </div>
-      <a :href="excelUrl" class="excel">导出Excel</a>
+      <a :href="excelUrl" class="excel" target="_blank">导出Excel</a>
     </div>
     <div class="content-list">
       <div class="list-header">

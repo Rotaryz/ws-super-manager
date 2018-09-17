@@ -12,14 +12,14 @@
             <div class="nav-title" v-show="!showAnimation">
               <span>{{item.title}}</span>
             </div>
-            <i class="nav" :class="{'nav-active': item.showHeight !== 58}" v-show="!showAnimation"></i>
+            <i class="nav" :class="{'nav-active': item.showHeight > 69}" v-show="!showAnimation"></i>
           </router-link>
           <div v-if="item.children.length > 1" class="nav-tap" :class="{'nav-tap-active':bigChild === index,'nav-item-no-border':item.children.length > 1}">
             <span class="nav-icon"><img :src="item.icon" class="nav-pic"></span>
             <div class="nav-title" v-show="!showAnimation">
               <span>{{item.title}}</span>
             </div>
-            <i class="nav" :class="{'nav-active': item.showHeight !== 58}" v-show="!showAnimation"></i>
+            <i class="nav" :class="{'nav-active': item.showHeight > 69}" v-show="!showAnimation"></i>
           </div>
           <ul class="nav-big-child" v-if="item.children">
             <li class="nav-item" v-for="(items , idx) in item.children" :key="idx" @click.stop="bigChildren(idx)">
@@ -176,21 +176,12 @@
       },
       showChild(index, status = true, go = true) {
         this.smallIndex = index
-        clearInterval(this.timer)
         if (this.navList[index].children.length === 1) {
           if (this.recodIndex !== -1) {
-            this.timer = setInterval(() => {
-              if (this.navList[this.recodIndex].showHeight <= HEIGHT) {
-                this.navList[this.recodIndex].showHeight = HEIGHT
-                clearInterval(this.timer)
-                return false
-              }
-              this.navList[this.recodIndex].showHeight -= 20
-            }, 30)
+            this.navList[this.recodIndex].showHeight = HEIGHT
           }
           this.bigChild = index
         } else if (this.navList[index].children.length > 1) {
-          clearInterval(this.timer)
           let childCode = this.navList[index].childrenIndex === -1 ? 0 : this.navList[index].childrenIndex
           if (go) {
             this.navList[index].url = this.navList[index].children[childCode].url
@@ -199,42 +190,19 @@
           this.recodIndex = index
           this.navList[this.recodIndex].childrenIndex = childCode
           this.bigChild = -1
-          clearInterval(this.timer)
           for (let i = 0; i < this.navList.length; i++) {
             if (i !== index && this.navList[i].showHeight > HEIGHT) {
-              clearInterval(this.sortTimer)
-              this.sortTimer = setInterval(() => {
-                if (this.navList[i].showHeight <= HEIGHT) {
-                  this.navList[i].showHeight = HEIGHT
-                  clearInterval(this.sortTimer)
-                  return
-                }
-                this.navList[i].showHeight -= 20
-              }, 30)
+              this.navList[i].showHeight = HEIGHT
             } else {
-              clearInterval(this.timer)
               let num = index === 0 ? 1 : this.navList[index].children.length
               if (this.navList[index].showHeight === HEIGHT) {
-                let target = num * SMALLHEIGHT + HEIGHT
-                this.timer = setInterval(() => {
-                  if (this.navList[index].showHeight >= target) {
-                    this.navList[index].showHeight = target
-                    clearInterval(this.timer)
-                    return
-                  }
-                  this.navList[index].showHeight += 20
+                setTimeout(() => {
+                  this.navList[index].showHeight = num * SMALLHEIGHT + HEIGHT
                 }, 30)
               } else {
-                if (status) {
-                  this.timer = setInterval(() => {
-                    if (this.navList[index].showHeight <= HEIGHT) {
-                      this.navList[index].showHeight = HEIGHT
-                      clearInterval(this.timer)
-                      return
-                    }
-                    this.navList[index].showHeight -= 20
-                  }, 30)
-                }
+                setTimeout(() => {
+                  this.navList[index].showHeight = HEIGHT
+                }, 30)
               }
             }
           }
@@ -283,11 +251,11 @@
           height: 24px
       .nav-big
         .nav-item
+          transition: all 0.3s ease-out
           overflow: hidden
           border-bottom: 1px solid #3B3B43
           .nav-tap
             height: 69px
-            transition: all 0.2s
             align-items: center
             color: $color-white
             display: flex
@@ -295,6 +263,7 @@
             position: relative
             box-sizing: border-box
             border-left: 6px solid $color-menu-background
+            transition: all 0.3s ease-out
             .nav-icon
               height: 100%
               width: 55px
@@ -329,6 +298,7 @@
           .router-link-active
             background: rgba(255, 255, 255, .1)
             border-left: 6px solid $color-4985FC !important
+            transition: all 0.3s ease-out
         .nav-big-child
           .nav-item
             height: 58px
@@ -340,20 +310,22 @@
               display: flex
               align-items: center
               border-left: 6px solid $color-menu-background
+              transition: all 0.3s ease-out
               &:hover
                 background: rgba(255, 255, 255, 0.1)
                 border-color: transparent
-                transition: all 0.2s
+                transition: all 0.3s ease-out
               .nav-icon
                 width: 46px
             .router-link-active
               background: rgba(255, 255, 255, 0.1)
               border-left: 6px solid $color-4985FC !important
+              transition: all 0.3s ease-out
           .nav-title
             color: $color-white
 
       .big-hide
         width: 79px
-        transition: all .2s
+        transition: all .3s
 
 </style>
