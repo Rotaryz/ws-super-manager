@@ -152,7 +152,7 @@
         justify-content: space-between
         padding-left: 2vw
         color: $color-text33
-        border-bottom: 1px solid $color-line
+        border-bottom: 0.5px solid $color-line
         .header-key
           flex: 1.8
           overflow: hidden
@@ -168,7 +168,7 @@
           justify-content: space-between
           padding-left: 40px
           box-sizing: border-box
-          border-bottom: 1px solid $color-line
+          border-bottom: 0.5px solid $color-line
           text-align: left
           .item
             flex: 1.8
