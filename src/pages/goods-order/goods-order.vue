@@ -294,6 +294,7 @@
       flex: 2.2
       white-space: normal !important
       padding-right: 5px
+      word-break: break-all
 
   .list-box-active
     background: $color-background
