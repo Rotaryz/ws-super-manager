@@ -31,6 +31,7 @@
           <div class="list-item list-text">{{item.original_price + '' || '---'}}</div>
           <div class="list-item list-text">{{item.browse_count + '' || '---'}}</div>
           <div class="list-item list-text">{{item.sale_count + '' || '---'}}</div>
+          <div class="list-item list-text">{{item.divide_sale_count + '' || '---'}}</div>
           <div class="list-item list-text">{{item.is_online === 0 ? '已下架' : item.is_online === 1 ? '已上架' : '---'}}</div>
           <div class="list-item list-text">
             <router-link tag="a" target="_blank" :to="'/business-list?num='+ item.merchant_account" class="bule hand">{{item.merchant_name || '---'}}</router-link>
@@ -54,7 +55,7 @@
   import {ERR_OK, BASE_URL, BEGIN_TIME} from '../../common/js/config' // 下拉框
   import storage from 'storage-controller'
 
-  const TITLELIST = ['商品图片', '商品标题', '', '商品单价', '浏览量', '销量', '商品状态', '商品来源', '创建时间']
+  const TITLELIST = ['商品图片', '商品标题', '', '商品单价', '浏览量', '销量(自销)', '销量(分销)', '商品状态', '商品来源', '创建时间']
 
   export default {
     name: 'activity',

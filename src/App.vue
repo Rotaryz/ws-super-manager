@@ -28,6 +28,7 @@
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
+  @import "~common/stylus/variable"
   #app
     width: 100vw
     height: 100vh

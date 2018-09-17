@@ -7,34 +7,33 @@
 </template>
 
 <script type="text/ecmascript-6">
-export default {
-  data() {
-    return {
-      showToast: false,
-      content: 'carNumber error!'
-    }
-  },
-  methods: {
-    show(content, time) {
-      this.content = content
-      this.showToast = true
-      const showTime = time || 1000
-      setTimeout(() => {
-        this.showToast = false
-      }, showTime)
+  export default {
+    data() {
+      return {
+        showToast: false,
+        content: 'carNumber error!'
+      }
+    },
+    methods: {
+      show(content, time) {
+        this.content = content
+        this.showToast = true
+        const showTime = time || 1000
+        setTimeout(() => {
+          this.showToast = false
+        }, showTime)
+      }
     }
   }
-}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import '~common/stylus/variable'
+  @import '~common/stylus/mixin'
 
   .toast
-    position: absolute
+    all-center()
     z-index: 9999
-    top: 42%
-    left: 50%
     min-width: 200px
     max-width: 300px
     margin-left: -100px

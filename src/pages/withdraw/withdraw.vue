@@ -531,7 +531,7 @@
       align-items: center
       justify-content: space-between
       padding: 0 30px
-      border-bottom-1px()
+      border-bottom-1px(#e8e8e8)
       .model-text
         font-family: $fontFamilyRegular
         font-size: $font-size-medium16
@@ -545,14 +545,12 @@
     .modelarea
       position: relative
       width: 474px
-      border-1px()
       height: 90px
       margin: 27px auto 20px
       padding: 5px 10px
       text-align: justify
       z-index: 10
       resize: none
-      border-radius: 4px
       font-family: $fontFamilyRegular
       font-size: $font-size-medium14
       color: $color-text33
@@ -602,7 +600,6 @@
       right: 19px
       top: 26px
       box-sizing: content-box
-      border-radius 4px
       transition: all 0.4s ease-out
     .before
       border-right: 0.5px solid transparent
@@ -614,7 +611,6 @@
       top: 26px
       right: 18.5px
       box-sizing: content-box
-      border-radius 4px
       transition: all 0.4s ease-out
     &:hover
       .modelarea
