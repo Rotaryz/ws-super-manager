@@ -7,7 +7,7 @@ export default {
    * @returns {*}
    */
   exchangeMoney(data) {
-    let url = '/api/admin/total-Payment'
+    let url = '/api/admin/total-payment'
     return request.get(url, data)
   },
   /**
@@ -16,7 +16,7 @@ export default {
    * @returns {*}
    */
   totalMode(data) {
-    let url = '/api/admin/total-Mode'
+    let url = '/api/admin/total-mode'
     return request.get(url, data)
   },
   /**
@@ -29,7 +29,7 @@ export default {
       type,
       date_type
     }
-    let url = '/api/admin/total-Chart'
+    let url = '/api/admin/total-chart'
     return request.get(url, data)
   }
 }
