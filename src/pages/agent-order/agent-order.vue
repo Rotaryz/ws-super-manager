@@ -17,7 +17,7 @@
             <img class="head-img" :src="val.avatar" alt="">
           </div>
           <span class="item">{{val.nickname || '---'}}</span>
-          <span class="item">{{(val.sex && val.sex * 1 === 1 ? '男' : '女') || '未知'}}</span>
+          <span class="item">{{val.sex * 1 === 1 ? '男' : val.sex * 1 === 0 ? '未知' : '女'}}</span>
           <span class="item area">{{val.area || '---'}}</span>
           <span class="item">{{val.mobile || '---'}}</span>
           <div class="long-item">
