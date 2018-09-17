@@ -97,8 +97,8 @@
           </div>
         </div>
         <div class="pop-main code" v-if="showPopContent === 4">
-          <img v-if="!loadImg" :src="codeUrl" alt="" class="xcx-img">
-          <img v-if="loadImg" src="./loading.gif" alt="" class="load-img">
+          <img v-if="!loadImg" :src="codeUrl" alt="" key="1" class="xcx-img">
+          <img v-if="loadImg" src="./loading.gif" alt="" key="2" class="load-img">
         </div>
       </div>
     </div>
@@ -456,6 +456,7 @@
       },
       previewMerchant() {
         this.loadImg = true
+        console.log(this.loadImg)
         Business.previewMerchant({merchant_id: this.merchant_id})
           .then((res) => {
             if (res.error !== ERR_OK) {
@@ -463,6 +464,7 @@
               return
             }
             this.loadImg = false
+            console.log(this.loadImg)
             this.codeUrl = res.message.qrcode_url
           })
       }
