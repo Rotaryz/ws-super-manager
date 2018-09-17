@@ -2,7 +2,7 @@
   <div class="search-box">
     <div class="input-box-big">
       <span class="after"></span>
-      <input type="text" class="input-box" v-model="txt" :placeholder="placeholerTxt" @input="inputIn">
+      <input type="text" class="input-box" id="search" v-model="txt" :placeholder="placeholerTxt">
       <span class="before"></span>
     </div>
     <div class="btn-box hand" @click="searchFn">{{btnTxt}}</div>
@@ -31,11 +31,8 @@
       setInput(txt) {
         this.txt = txt
       },
-      inputIn(e) {
-        this.inputTxt = e.target.value
-      },
       searchFn() {
-        this.$emit('search', this.inputTxt)
+        this.$emit('search', this.txt)
       }
     }
   }
