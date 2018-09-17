@@ -428,7 +428,7 @@
         this.closePop()
       },
       unfreezeBusiness() {
-        Business.unfreezeBusiness({merchant_id: this.merchant_id, remark: this.popTxt})
+        Business.unfreezeBusiness({merchant_id: this.merchant_id})
           .then((res) => {
             if (res.error !== ERR_OK) {
               this.$refs.toast.show(res.message)
