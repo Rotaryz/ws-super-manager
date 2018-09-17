@@ -26,9 +26,9 @@
           <span class="item">{{item.status_str || '---'}}</span>
           <span class="item">{{item.service_version || '---'}}</span>
           <span class="item">{{item.open_type_str || '---'}}</span>
-          <span class="item">{{item.latent_customer_count || '---'}}</span>
-          <span class="item">{{item.customer_count || '---'}}</span>
-          <span class="item">{{item.order_count || '---'}}</span>
+          <span class="item handle">{{item.latent_customer_count || '---'}}</span>
+          <span class="item handle">{{item.customer_count || '---'}}</span>
+          <span class="item handle">{{item.order_count || '---'}}</span>
           <span class="item">{{item.created_at || '---'}}</span>
           <span class="item">{{item.expiration_time || '---'}}</span>
           <div class="list-handle item">
@@ -582,6 +582,8 @@
             line-height: 18px
             &:nth-of-type(2)
               flex: 1.2
+          .handle
+            flex: 1.2
           .list-handle
             flex: 2.2
             color: $color-4985FC

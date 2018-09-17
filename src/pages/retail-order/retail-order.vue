@@ -166,7 +166,7 @@
           display: flex
           align-items: center
           justify-content: space-between
-          padding-left: 40px
+          padding-left: 2vw
           box-sizing: border-box
           border-bottom: 0.5px solid $color-line
           text-align: left
