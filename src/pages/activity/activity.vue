@@ -20,7 +20,6 @@
             </div>
           </div>
           <div class="list-item list-text">{{item.activity_name || '---'}}</div>
-          <div class="list-item list-text"></div>
           <div class="list-item list-text">{{item.price || '---'}}</div>
           <div class="list-item list-text">{{item.rule_id === 1 ? '火爆拼团' : item.rule_id === 3 ? '疯狂砍价' : '---'}}</div>
           <div class="list-item list-text">{{item.activity_status_str || '---'}}</div>
@@ -49,7 +48,7 @@
   import storage from 'storage-controller'
   import {Goods} from 'api'
 
-  const TITLELIST = ['活动图片', '活动标题', '', '活动价', '活动类型', '活动状态', '关联商品', '活动来源', '创建时间']
+  const TITLELIST = ['活动图片', '活动标题', '活动价', '活动类型', '活动状态', '关联商品', '活动来源', '创建时间']
 
   export default {
     name: 'activity',
@@ -282,8 +281,7 @@
       -webkit-line-clamp: 2
       white-space: normal !important
       text-align: left
-    &:nth-child(3)
-      flex: 0.05
+      padding-right: 5px
 
   .list-box-active
     background: $color-background

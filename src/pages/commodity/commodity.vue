@@ -27,7 +27,6 @@
             </div>
           </div>
           <div class="list-item list-text">{{item.title || '---'}}</div>
-          <div class="list-item list-text"></div>
           <div class="list-item list-text">{{item.original_price + '' || '---'}}</div>
           <div class="list-item list-text">{{item.browse_count + '' || '---'}}</div>
           <div class="list-item list-text">{{item.sale_count + '' || '---'}}</div>
@@ -55,7 +54,7 @@
   import {ERR_OK, BASE_URL, BEGIN_TIME} from '../../common/js/config' // 下拉框
   import storage from 'storage-controller'
 
-  const TITLELIST = ['商品图片', '商品标题', '', '商品单价', '浏览量', '销量(自销)', '销量(分销)', '商品状态', '商品来源', '创建时间']
+  const TITLELIST = ['商品图片', '商品标题', '商品单价', '浏览量', '销量(自销)', '销量(分销)', '商品状态', '商品来源', '创建时间']
 
   export default {
     name: 'activity',
@@ -297,8 +296,7 @@
       -webkit-line-clamp: 2
       white-space: normal !important
       text-align: left
-    &:nth-child(3)
-      flex: 0.05
+      padding-right: 5px
 
   .list-box-active
     background: $color-background

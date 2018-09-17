@@ -208,7 +208,7 @@
     },
     created() {
       this.requestData.keyword = this.$route.query.num || ''
-      let index = this.$route.query.num ? -1 : 0
+      let index = this.$route.query.num ? 4 : 0
       setTimeout(() => {
         this.$refs.dateSelect.setIndex(index)
         this.$refs.search.setInput(this.requestData.keyword)

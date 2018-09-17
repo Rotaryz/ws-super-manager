@@ -68,7 +68,7 @@
   .date
     display: flex
     .date-item
-      line-height: 28px
+      line-height: 27px
       font-size: $font-size-small12
       color: $color-text-66
       width: 60px
