@@ -34,7 +34,7 @@
           <div class="list-handle item">
             <span class="handle-item"
                   @click="openPop('open', item.name, item.id, item.is_freeze_str, item.expiration_time)">开通</span>
-            <span class="handle-item" @click="openPop('freeze', item.name, item.id, item.is_freeze_str)">{{item.is_freeze_str === '正常' ? '冻结' : '解冻'}}</span>
+            <span class="handle-item" @click="openPop('freeze', item.name, item.id, item.is_freeze_str, item.expiration_time, item.freeze_reason)">{{item.is_freeze_str === '正常' ? '冻结' : '解冻'}}</span>
             <span class="handle-item" @click="openPop('authority', item.name, item.id, item.is_freeze_str)">越权</span>
             <span class="handle-item" @click="openPop('shop', item.name, item.id, item.is_freeze_str)">店铺</span>
           </div>
@@ -73,11 +73,12 @@
           </div>
         </div>
         <div class="pop-main" v-if="showPopContent === 1 || showPopContent === 2">
-          <div class="input-box-big">
+          <div class="input-box-big" v-if="showPopContent === 1">
             <span class="after"></span>
-            <textarea v-model="popTxt" class="popTxt" :placeholder="showPopContent === 1?'备注原因':'冻结原因'"></textarea>
+            <textarea v-model="popTxt" class="popTxt" placeholder="备注原因"></textarea>
             <span class="before"></span>
           </div>
+          <div v-if="showPopContent === 2" class="reasonTxt">冻结原因：{{reasonTxt}}</div>
           <div class="content-btn">
             <div class="btn" @click="closePop">取消</div>
             <div class="btn active" @click="operate">{{showPopContent === 1 ? '冻结' : '解冻'}}</div>
@@ -97,8 +98,8 @@
           </div>
         </div>
         <div class="pop-main code" v-if="showPopContent === 4">
-          <img v-if="!loadImg" :src="codeUrl" alt="" class="xcx-img">
-          <img v-if="loadImg" src="./loading.gif" alt="" class="load-img">
+          <img v-if="!loadImg" :src="codeUrl" alt="" key="1" class="xcx-img">
+          <img v-if="loadImg" src="./loading.gif" alt="" key="2" class="load-img">
         </div>
       </div>
     </div>
@@ -201,7 +202,8 @@
         expire_time: '',
         codeUrl: '',
         endTime: '',
-        loadImg: false
+        loadImg: false,
+        reasonTxt: ''
       }
     },
     created() {
@@ -324,7 +326,7 @@
         let accessToken = `access_token=${storage.get('aiToken')}`
         this.excelUrl = `${BASE_URL.api}/api/admin/merchant-list-export?${accessToken}&${query}`
       },
-      openPop(type, name, id, status, endTime) { // 打开弹窗
+      openPop(type, name, id, status, endTime, reasonTxt) { // 打开弹窗
         this.$emit('showShade')
         this.showPop = true
         this.showActive = true
@@ -340,6 +342,7 @@
               this.showPopContent = 1
             } else {
               this.showPopContent = 2
+              this.reasonTxt = reasonTxt
             }
             break
           case 'authority':
@@ -361,6 +364,7 @@
         this.authorityNum = ''
         this.expire_time = ''
         this.addTime = ''
+        this.reasonTxt = ''
       },
       addDate() {
         this.expire_time = this.addTime.toLocaleDateString().replace(/\//g, '-').replace(/\b\d\b/g, '0$&')
@@ -570,7 +574,7 @@
           justify-content: space-between
           padding-left: 2vw
           box-sizing: border-box
-          border-bottom: 1px solid $color-line
+          border-bottom: 0.5px solid $color-line
           text-align: left
           .item
             flex: 1
@@ -584,7 +588,7 @@
             white-space: nowrap
             .handle-item
               padding: 0 7px
-              border-left: 1px solid $color-line
+              border-left: 0.5px solid $color-line
               cursor: pointer
               &:first-child
                 border-left: 0
@@ -610,7 +614,7 @@
         box-shadow: 0 0 5px 0 rgba(12, 6, 14, 0.6)
         .title
           height: 60px
-          border-bottom: 1px solid #DADADA
+          border-bottom: 0.5px solid #E8E8E8
           font-size: 16px
           padding: 0 30px
           box-sizing: border-box
@@ -640,6 +644,16 @@
             border: 0.5px solid $color-line
             &::-webkit-input-placeholder
               color: $color-ccc
+          .reasonTxt
+            padding: 8px
+            resize: none
+            font-size: 14px
+            width: 100%
+            height: 90px
+            box-sizing: border-box
+            border: 0.5px solid $color-line
+            color: $color-text33
+            background: #f5f7fb
           .content-btn
             display: flex
             justify-content: flex-end
@@ -648,7 +662,7 @@
               width: 96px
               height: 40px
               cursor: pointer
-              border: 1px solid $color-ccc
+              border: 0.5px solid $color-ccc
               border-radius: 3px
               text-align: center
               box-sizing: border-box
@@ -692,7 +706,7 @@
               height: 30px
               outline: none
               line-height: 30px
-              border: 1px solid $color-line
+              border: 0.5px solid $color-line
               border-radius: 3px
               padding: 0 5px
               box-sizing: border-box
