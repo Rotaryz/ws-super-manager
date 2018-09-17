@@ -41,7 +41,9 @@
         </div>
       </div>
     </div>
-    <page-detail ref="pageDetail" :pageDtail="pageDetail" @addPage="addPage"></page-detail>
+    <div class="bot-page">
+      <page-detail ref="pageDetail" :pageDtail="pageDetail" @addPage="addPage"></page-detail>
+    </div>
     <toast ref="toast"></toast>
     <div class="pop-box" v-show="showPop">
       <div class="pop-content" :class="showActive ? 'model-active' : 'model-noactive'">
@@ -370,7 +372,6 @@
         } else {
           this.unfreezeBusiness()
         }
-        this.closePop()
       },
       getBusinessList() {
         Business.getBusinessList(this.requestData)
@@ -403,8 +404,8 @@
               return
             }
             this.$refs.toast.show(res.message)
-            this.closePop()
           })
+        this.closePop()
       },
       frozenBusiness() {
         if (!this.popTxt || this.popTxt.replace(/^\s+|\s+$/g, '') === '') {
@@ -420,6 +421,7 @@
             this.$refs.toast.show(res.message)
             this.getBusinessList()
           })
+        this.closePop()
       },
       unfreezeBusiness() {
         Business.unfreezeBusiness({merchant_id: this.merchant_id, remark: this.popTxt})
@@ -431,13 +433,16 @@
             this.$refs.toast.show(res.message)
             this.getBusinessList()
           })
+        this.closePop()
       },
       overPower() {
         if (!this.authorityNum) {
           this.$refs.toast.show('输入手机号')
+          return
         }
         if (!/^1[3|4|5|6|7|8][0-9]{9}$/.test(this.authorityNum)) {
           this.$refs.toast.show('请正确输入手机号')
+          return
         }
         Business.overPower({merchant_id: this.merchant_id, mobile: this.authorityNum})
           .then((res) => {
@@ -497,9 +502,9 @@
     background: $color-white
     border-radius: 5px
     box-shadow: 0 1px 6px 0 rgba(0, 8, 39, 0.10)
-    padding: 30px
-    padding-top: 0
+    padding: 0 1.5vw
     box-sizing: border-box
+    font-family: $fontFamilyRegular
     .content-top
       display: flex
       justify-content: space-between
@@ -510,7 +515,6 @@
     .content-list
       flex: 1
       font-size: 14px
-      margin-bottom: 23px
       .list-header
         flex: 1
         background: $color-FAFAFA
@@ -520,7 +524,7 @@
         display: flex
         text-align: left
         justify-content: space-between
-        padding-left: 40px
+        padding-left: 2vw
         color: $color-text33
         border-bottom-1px($color-line)
         .header-key
@@ -532,6 +536,7 @@
             flex: 2.2
         .handle
           cursor: pointer
+          flex: 1.2
           .contxt
             position: relative
             &:before
@@ -563,7 +568,7 @@
           display: flex
           align-items: center
           justify-content: space-between
-          padding-left: 40px
+          padding-left: 2vw
           box-sizing: border-box
           border-bottom: 1px solid $color-line
           text-align: left
@@ -697,6 +702,10 @@
           justify-content: center
           align-items: center
 
+    .bot-page
+      height: 60px
+      display: flex
+      align-items: center
   .model-active
     animation: layerFadeIn .3s
 

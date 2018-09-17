@@ -31,7 +31,9 @@
         </div>
       </div>
     </div>
-    <page-detail ref="pageDetail" :pageDtail="pageDetail" @addPage="addPage"></page-detail>
+    <div class="bot-page">
+      <page-detail ref="pageDetail" :pageDtail="pageDetail" @addPage="addPage"></page-detail>
+    </div>
     <toast ref="toast"></toast>
   </div>
 </template>
@@ -140,9 +142,9 @@
     background: $color-white
     border-radius: 5px
     box-shadow: 0 1px 6px 0 rgba(0, 8, 39, 0.10)
-    padding: 30px
-    padding-top: 0
+    padding: 0 1.5vw
     box-sizing: border-box
+    font-family: $fontFamilyRegular
     .content-top
       display: flex
       justify-content: space-between
@@ -154,7 +156,6 @@
       text-align: left
       flex: 1
       font-size: 14px
-      margin-bottom: 23px
       .list-header
         flex: 1
         background: $color-FAFAFA
@@ -163,7 +164,7 @@
         font-family: $fontFamilyMeddle
         display: flex
         justify-content: space-between
-        padding-left: 40px
+        padding-left: 2vw
         color: $color-text33
         border-bottom: 1px solid $color-line
         .header-key
@@ -181,7 +182,7 @@
           display: flex
           align-items: center
           justify-content: space-between
-          padding-left: 40px
+          padding-left: 2vw
           box-sizing: border-box
           border-bottom: 1px solid $color-line
           .item
@@ -201,4 +202,8 @@
             height: 40px
             width: 40px
 
+    .bot-page
+      height: 60px
+      display: flex
+      align-items: center
 </style>
