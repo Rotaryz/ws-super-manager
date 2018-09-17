@@ -426,6 +426,7 @@
           min-width: 182px
           background: #fff
           padding: 10px
+          word-break: break-all
           border-radius: 3px
           bottom: 22px
           left: -95px
@@ -476,6 +477,7 @@
       line-height: 26px
       text-align: center
       border-radius: 3px
+      word-break: break-all
       top: -30px
       left: -77px
       z-index: 11
