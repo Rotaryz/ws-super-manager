@@ -111,6 +111,20 @@
         this.getMemberList()
       },
       handleClick(num) {
+        switch (num) {
+          case 2:
+            this.requestData.sort_type = 7
+            break
+          case 3:
+            this.requestData.sort_type = 1
+            break
+          case 4:
+            this.requestData.sort_type = 3
+            break
+          case 5:
+            this.requestData.sort_type = 5
+            break
+        }
         if (this.handleIndex === num) {
           if (this.headClass[`class${num}`] === 'down') {
             this.headClass[`class${num}`] = 'up'
@@ -130,20 +144,6 @@
             }
           } else {
             this.headClass[`class${num}`] = 'down'
-            switch (num) {
-              case 2:
-                this.requestData.sort_type = 7
-                break
-              case 3:
-                this.requestData.sort_type = 1
-                break
-              case 4:
-                this.requestData.sort_type = 3
-                break
-              case 5:
-                this.requestData.sort_type = 5
-                break
-            }
           }
         } else {
           this.handleIndex = num
@@ -151,20 +151,6 @@
             this.headClass[val] = ''
           }
           this.headClass[`class${num}`] = 'down'
-          switch (num) {
-            case 2:
-              this.requestData.sort_type = 7
-              break
-            case 3:
-              this.requestData.sort_type = 1
-              break
-            case 4:
-              this.requestData.sort_type = 3
-              break
-            case 5:
-              this.requestData.sort_type = 5
-              break
-          }
         }
         this.requestData.page = 1
         this.$refs.pageDetail.beginPage()
@@ -218,7 +204,7 @@
         justify-content: space-between
         padding-left: 2vw
         color: $color-text33
-        border-bottom: 0.5 $color-line
+        border-bottom: 0.5px solid $color-line
         .header-key
           flex: 1
           overflow: hidden
@@ -257,7 +243,7 @@
           justify-content: space-between
           padding-left: 2vw
           box-sizing: border-box
-          border-bottom: 0.5 $color-line
+          border-bottom: 0.5px solid $color-line
           text-align: left
           .item
             flex: 1
