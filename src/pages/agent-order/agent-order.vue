@@ -174,6 +174,7 @@
           &:nth-of-type(4)
             flex: 1.2
           &:nth-of-type(6)
+            padding-right: 30px
             flex: 2.8
       .list-content
         .list-item
