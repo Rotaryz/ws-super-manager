@@ -33,11 +33,8 @@
       setInput(txt) {
         this.txt = txt
       },
-      inputIn(e) {
-        this.inputTxt = e.target.value
-      },
       searchFn() {
-        this.$emit('search', this.inputTxt)
+        this.$emit('search', this.txt)
       }
     }
   }

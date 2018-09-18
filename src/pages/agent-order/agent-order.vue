@@ -197,7 +197,12 @@
             line-height: 18px
             no-wrap()
             .address
-              no-wrap()
+              display: -webkit-box
+              overflow: hidden
+              -webkit-line-clamp: 2
+              -webkit-box-orient: vertical
+              white-space: normal
+              word-break: break-all
           .head-img
             height: 40px
             width: 40px
