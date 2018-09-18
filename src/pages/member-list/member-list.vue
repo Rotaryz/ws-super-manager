@@ -15,12 +15,12 @@
       </div>
       <div class="list-content">
         <div class="list-item" v-for="item in data">
-          <span class="item">{{item.name || '---'}}</span>
-          <span class="item">{{item.active_code || '---'}}</span>
-          <span class="item">{{item.groups_num || '---'}}</span>
-          <span class="item">{{item.potential_num || '---'}}</span>
-          <span class="item">{{item.consume_num || '---'}}</span>
-          <span class="item">{{item.order_num || '---'}}</span>
+          <span class="item">{{item.name + '' || '---'}}</span>
+          <span class="item">{{item.active_code + '' || '---'}}</span>
+          <span class="item">{{item.groups_num + '' || '---'}}</span>
+          <span class="item">{{item.potential_num + '' || '---'}}</span>
+          <span class="item">{{item.consume_num + '' || '---'}}</span>
+          <span class="item">{{item.order_num + '' || '---'}}</span>
         </div>
       </div>
     </div>

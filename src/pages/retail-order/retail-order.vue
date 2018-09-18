@@ -178,7 +178,7 @@
               flex: 1
           .head-img
             width: 40px
-            heihgt: 40px
+            height: 40px
     .bot-page
       height: 60px
       display: flex

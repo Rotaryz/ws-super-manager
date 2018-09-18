@@ -19,16 +19,16 @@
       </div>
       <div class="list-content">
         <div class="list-item" v-for="(item, index) in data">
-          <span class="item">{{item.name || '---'}}</span>
+          <span class="item">{{item.name + '' || '---'}}</span>
           <span class="item">{{item.mobile || '---'}}</span>
           <span class="item">{{item.role_name || '---'}}</span>
           <span class="item">{{item.is_freeze_str || '---'}}</span>
           <span class="item">{{item.status_str || '---'}}</span>
           <span class="item">{{item.service_version || '---'}}</span>
           <span class="item">{{item.open_type_str || '---'}}</span>
-          <span class="item handle">{{item.latent_customer_count || '---'}}</span>
-          <span class="item handle">{{item.customer_count || '---'}}</span>
-          <span class="item handle">{{item.order_count || '---'}}</span>
+          <span class="item handle">{{item.latent_customer_count + '' || '---'}}</span>
+          <span class="item handle">{{item.customer_count + '' || '---'}}</span>
+          <span class="item handle">{{item.order_count + '' || '---'}}</span>
           <span class="item">{{item.created_at || '---'}}</span>
           <span class="item">{{item.expiration_time || '---'}}</span>
           <div class="list-handle item">

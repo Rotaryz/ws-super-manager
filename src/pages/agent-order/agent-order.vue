@@ -16,7 +16,7 @@
           <div class="item">
             <img class="head-img" :src="val.avatar" alt="">
           </div>
-          <span class="item">{{val.nickname || '---'}}</span>
+          <span class="item">{{val.nickname + '' || '---'}}</span>
           <span class="item">{{val.sex * 1 === 1 ? '男' : val.sex * 1 === 0 ? '未知' : '女'}}</span>
           <span class="item area">{{val.area || '---'}}</span>
           <span class="item">{{val.mobile || '---'}}</span>
@@ -25,8 +25,8 @@
             <span>手机号：{{val.receiver_mobile || '---'}}</span>
             <p class="address">收货地址：{{val.receiver_address || '---'}}</p>
           </div>
-          <span class="item">{{val.order_count || '---'}}</span>
-          <span class="item">{{val.order_sum || '---'}}</span>
+          <span class="item">{{val.order_count + '' || '---'}}</span>
+          <span class="item">{{val.order_sum + '' || '---'}}</span>
           <span class="item">{{val.created_at || '---'}}</span>
         </div>
       </div>
