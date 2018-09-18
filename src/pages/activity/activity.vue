@@ -3,7 +3,7 @@
     <div class="ac-tab">
       <date-select @checkTime="_checkTime"></date-select>
       <admin-select :select="activityType" role="activity" @setValue="setValue"></admin-select>
-      <search @search="_search" placeholerTxt="请输入商家名称、活动名称"></search>
+      <search @search="_search" placeholerTxt="请输入活动名称"></search>
       <a :href="downUrl" target="_blank" class="excel">导出Excel</a>
     </div>
     <div class="form-list">
