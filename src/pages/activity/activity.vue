@@ -19,11 +19,11 @@
               <img :src="item.goods_image_url" class="pic">
             </div>
           </div>
-          <div class="list-item list-text">{{item.activity_name || '---'}}</div>
+          <div class="list-item list-text text-overflow-two ">{{item.activity_name || '---'}}</div>
           <div class="list-item list-text">{{item.price || '---'}}</div>
           <div class="list-item list-text">{{item.rule_id === 1 ? '火爆拼团' : item.rule_id === 3 ? '疯狂砍价' : '---'}}</div>
           <div class="list-item list-text">{{item.activity_status_str || '---'}}</div>
-          <div class="list-item list-text">{{item.goods_title || '---'}}</div>
+          <div class="list-item list-text text-overflow-two ">{{item.goods_title || '---'}}</div>
           <div class="list-item list-text">
             <router-link tag="a" target="_blank" :to="'/business-list?num='+ item.merchant_account" class="bule hand">{{item.merchant_name || '---'}}</router-link>
           </div>
