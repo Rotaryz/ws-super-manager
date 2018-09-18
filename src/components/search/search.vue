@@ -2,7 +2,9 @@
   <div class="search-box">
     <div class="input-box-big">
       <span class="after"></span>
-      <input type="text" class="input-box" v-model="txt" :placeholder="placeholerTxt" @input="inputIn">
+      <form action="">
+        <input type="text" class="input-box" v-model="txt" :placeholder="placeholerTxt" @input="inputIn" autocomplete="off">
+      </form>
       <span class="before"></span>
     </div>
     <div class="btn-box hand" @click="searchFn">{{btnTxt}}</div>
