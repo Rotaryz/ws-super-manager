@@ -236,6 +236,7 @@
         font-size: $font-size-small12
         color: rgba(0, 0, 0, .1)
       .list-text
+        /* autoprefixer: off*/
         -webkit-box-orient: vertical
         no-wrap()
         width: 90%
