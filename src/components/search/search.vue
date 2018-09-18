@@ -2,8 +2,8 @@
   <div class="search-box">
     <div class="input-box-big">
       <span class="after"></span>
-      <form action="">
-        <input type="text" class="input-box" v-model="txt" :placeholder="placeholerTxt" @input="inputIn" autocomplete="off">
+      <form autocomplete="off">
+        <input type="text" class="input-box" v-model="txt" :placeholder="placeholerTxt" autocomplete="off">
       </form>
       <span class="before"></span>
     </div>
