@@ -295,7 +295,7 @@
     &:nth-child(2)
       flex: 2.2
       white-space: normal !important
-      padding-right: 5px
+      padding-right: 30px
       word-break: break-all
 
   .list-box-active

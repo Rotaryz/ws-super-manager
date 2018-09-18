@@ -281,7 +281,7 @@
       -webkit-line-clamp: 2
       white-space: normal !important
       text-align: left
-      padding-right: 5px
+      padding-right: 30px
 
   .list-box-active
     background: $color-background

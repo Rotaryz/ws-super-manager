@@ -196,7 +196,7 @@
             flex: 2.8
             line-height: 18px
             no-wrap()
-            padding-right: 5px
+            padding-right: 30px
             .address
               display: -webkit-box
               overflow: hidden

@@ -236,8 +236,8 @@
         font-size: $font-size-small12
         color: rgba(0, 0, 0, .1)
       .list-text
-        no-wrap()
         -webkit-box-orient: vertical
+        no-wrap()
         width: 90%
         color: $color-text-66
         .bule
@@ -303,7 +303,7 @@
       -webkit-line-clamp: 2
       white-space: normal !important
       text-align: left
-      padding-right: 5px
+      padding-right: 30px
 
   .list-box-active
     background: $color-background
