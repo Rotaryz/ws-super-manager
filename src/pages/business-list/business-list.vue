@@ -262,6 +262,17 @@
         this.getBusinessList()
       },
       handleClick(num) {
+        switch (num) {
+          case 7:
+            this.requestData.sort_type = 1
+            break
+          case 8:
+            this.requestData.sort_type = 3
+            break
+          case 9:
+            this.requestData.sort_type = 5
+            break
+        }
         if (this.handleIndex === num) {
           if (this.headClass[`class${num}`] === 'down') {
             this.headClass[`class${num}`] = 'up'
@@ -278,17 +289,6 @@
             }
           } else {
             this.headClass[`class${num}`] = 'down'
-            switch (num) {
-              case 7:
-                this.requestData.sort_type = 1
-                break
-              case 8:
-                this.requestData.sort_type = 3
-                break
-              case 9:
-                this.requestData.sort_type = 5
-                break
-            }
           }
         } else {
           this.handleIndex = num
@@ -296,17 +296,6 @@
             this.headClass[val] = ''
           }
           this.headClass[`class${num}`] = 'down'
-          switch (num) {
-            case 7:
-              this.requestData.sort_type = 1
-              break
-            case 8:
-              this.requestData.sort_type = 3
-              break
-            case 9:
-              this.requestData.sort_type = 5
-              break
-          }
         }
         this.requestData.page = 1
         this.$refs.pageDetail.beginPage()
