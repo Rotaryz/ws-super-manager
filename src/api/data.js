@@ -7,7 +7,7 @@ export default {
    * @returns {*}
    */
   exchangeMoney(data) {
-    let url = '/api/admin/total-payment'
+    let url = '/api/admin/total-today'
     return request.get(url, data)
   },
   /**
