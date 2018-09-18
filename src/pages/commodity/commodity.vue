@@ -236,7 +236,10 @@
         font-size: $font-size-small12
         color: rgba(0, 0, 0, .1)
       .list-text
+        display:-webkit-box
         -webkit-box-orient: vertical
+        -moz-box-orient: vertical
+        box-orient: vertical
         no-wrap()
         width: 90%
         color: $color-text-66
@@ -250,7 +253,7 @@
     display: block
 
   .list-item
-    color: $color-text
+    color: $color-text33
     flex: 1
     position: relative
     text-align: left
