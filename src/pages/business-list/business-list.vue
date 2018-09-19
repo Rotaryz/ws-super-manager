@@ -33,10 +33,10 @@
           <span class="item">{{item.expiration_time || '---'}}</span>
           <div class="list-handle item">
             <span class="handle-item"
-                  @click="openPop('open', item.name, item.id, item.is_freeze_str, item.expiration_time)">开通</span>
-            <span class="handle-item" @click="openPop('freeze', item.name, item.id, item.is_freeze_str, item.expiration_time, item.freeze_reason)">{{item.is_freeze_str === '正常' ? '冻结' : '解冻'}}</span>
-            <span class="handle-item" @click="openPop('authority', item.name, item.id, item.is_freeze_str)">越权</span>
-            <span class="handle-item" @click="openPop('shop', item.name, item.id, item.is_freeze_str)">店铺</span>
+                  @click="openPop('open', item)">开通</span>
+            <span class="handle-item" @click="openPop('freeze', item)">{{item.is_freeze_str === '正常' ? '冻结' : '解冻'}}</span>
+            <span class="handle-item" @click="openPop('authority', item)">{{item.is_over_power * 1 === 0 ? '越权' : '取消越权'}}</span>
+            <span class="handle-item" @click="openPop('shop', item)">店铺</span>
           </div>
         </div>
       </div>
@@ -84,8 +84,8 @@
             <div class="btn active" @click="operate">{{showPopContent === 1 ? '冻结' : '解冻'}}</div>
           </div>
         </div>
-        <div class="pop-main" v-if="showPopContent === 3">
-          <div class="add-call">
+        <div class="pop-main" v-if="showPopContent === 3 || showPopContent === 4">
+          <div class="add-call" v-if="showPopContent === 3">
             操作人手机号：
             <div class="phone-box">
               <span class="before"></span>
@@ -93,11 +93,15 @@
               <span class="after"></span>
             </div>
           </div>
+          <div class="cancelPower" v-if="showPopContent === 4">
+            是否确定取消越权？
+          </div>
           <div class="content-btn">
-            <div class="btn active" @click="overPower">确定</div>
+            <div class="btn" v-if="showPopContent === 4" @click="closePop">取消</div>
+            <div class="btn active" @click="power">确定</div>
           </div>
         </div>
-        <div class="pop-main code" v-if="showPopContent === 4">
+        <div class="pop-main code" v-if="showPopContent === 5">
           <img v-if="!loadImg" :src="codeUrl" alt="" key="1" class="xcx-img">
           <img v-if="loadImg" src="./loading.gif" alt="" key="2" class="load-img">
         </div>
@@ -195,7 +199,7 @@
         showPopContent: false,
         addTime: '',
         authorityNum: '',
-        popTile: ['开通', '冻结', '解冻', '越权', '浏览'],
+        popTile: ['开通', '冻结', '解冻', '越权', '取消越权', '浏览'],
         popType: 'open',
         popName: '',
         merchant_id: '',
@@ -315,31 +319,35 @@
         let accessToken = `access_token=${storage.get('aiToken')}`
         this.excelUrl = `${BASE_URL.api}/api/admin/merchant-list-export?${accessToken}&${query}`
       },
-      openPop(type, name, id, status, endTime, reasonTxt) { // 打开弹窗
+      openPop(type, item) { // 打开弹窗
         this.$emit('showShade')
         this.showPop = true
         this.showActive = true
-        this.popName = name
-        this.merchant_id = id
+        this.popName = item.name
+        this.merchant_id = item.id
         switch (type) {
           case 'open':
-            this.endTime = endTime
+            this.endTime = item.expiration_time
             this.showPopContent = 0
             break
           case 'freeze':
-            if (status === '正常') {
+            if (item.is_freeze_str === '正常') {
               this.showPopContent = 1
             } else {
               this.showPopContent = 2
-              this.reasonTxt = reasonTxt
+              this.reasonTxt = item.freeze_reason
             }
             break
           case 'authority':
-            this.showPopContent = 3
+            if (item.is_over_power * 1 === 0) {
+              this.showPopContent = 3
+            } else {
+              this.showPopContent = 4
+            }
             break
           case 'shop':
             this.previewMerchant()
-            this.showPopContent = 4
+            this.showPopContent = 5
             break
         }
       },
@@ -364,6 +372,13 @@
           this.frozenBusiness()
         } else {
           this.unfreezeBusiness()
+        }
+      },
+      power() {
+        if (this.showPopContent === 3) {
+          this.overPower()
+        } else {
+          this.cancelOverPower()
         }
       },
       getBusinessList() {
@@ -396,6 +411,7 @@
               this.$refs.toast.show(res.message)
               return
             }
+            this.getBusinessList()
             this.$refs.toast.show(res.message)
           })
         this.closePop()
@@ -443,6 +459,19 @@
               this.$refs.toast.show(res.message)
               return
             }
+            this.getBusinessList()
+            this.$refs.toast.show(res.message)
+          })
+        this.closePop()
+      },
+      cancelOverPower() {
+        Business.cancelOverPower({merchant_id: this.merchant_id})
+          .then((res) => {
+            if (res.error !== ERR_OK) {
+              this.$refs.toast.show(res.message)
+              return
+            }
+            this.getBusinessList()
             this.$refs.toast.show(res.message)
           })
         this.closePop()
@@ -526,7 +555,7 @@
           &:nth-of-type(2)
             flex: 1.2
           &:last-child
-            flex: 2.2
+            flex: 2.4
         .handle
           cursor: pointer
           flex: 1.2
@@ -574,7 +603,7 @@
           .handle
             flex: 1.2
           .list-handle
-            flex: 2.2
+            flex: 2.4
             color: $color-4985FC
             white-space: nowrap
             .handle-item
@@ -687,6 +716,7 @@
             height: 40px
           .add-call
             margin-top: 20px
+            padding-bottom: 30px
             display: flex
             align-items: center
             .phone-box
@@ -701,6 +731,9 @@
               border-radius: 3px
               padding: 0 5px
               box-sizing: border-box
+          .cancelPower
+            margin-top: 20px
+            padding-bottom: 40px
         .code
           display: flex
           height: 260px

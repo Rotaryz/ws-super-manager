@@ -56,7 +56,16 @@ export default {
     return request.post(url, data)
   },
   /**
-   * 越权
+   * 取消越权
+   * @param data
+   * @returns {*}
+   */
+  cancelOverPower(data) {
+    let url = 'api/admin/cancel-over-power'
+    return request.post(url, data)
+  },
+  /**
+   * 查看二维码
    * @param data
    * @returns {*}
    */
