@@ -77,7 +77,8 @@
           per_page: 10,
           total_page: 1
         },
-        downUrl: ''
+        downUrl: '',
+        sortType: ''
       }
     },
     async created() {
