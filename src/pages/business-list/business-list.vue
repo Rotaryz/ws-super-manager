@@ -710,7 +710,7 @@
             margin-top: 40px
           .xcx-img
             width: 238px
-            height: 216px
+            height: @width
           .load-img
             width: 40px
             height: 40px
