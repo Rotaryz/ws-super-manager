@@ -594,6 +594,7 @@
     box-shadow: 0 1px 3px 0 rgba(0, 8, 39, 0.10)
     border-radius: 3px
     flex: 1
+    min-height: 300px
     flex-direction: column
     display: flex
     .echart-top
