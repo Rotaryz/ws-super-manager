@@ -155,7 +155,7 @@
           show: false,
           children: [{
             content: '开通方式',
-            data: [{title: '全部', status: '', type: 2}, {title: '线上支付', status: '0', type: 2}, {
+            data: [{title: '全部', status: '', type: 2}, {title: '自费开通', status: '0', type: 2}, {
               title: '激活码开通',
               status: '1',
               type: 2
