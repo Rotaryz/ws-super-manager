@@ -232,7 +232,8 @@
         display: flex
         .page-child
           padding: 0 6.5px
-          height: @width
+          min-width: 26px
+          height: 26px
           box-sizing: border-box
           border-radius: 3px
           border: 0.5px solid $color-ccc
