@@ -231,7 +231,7 @@
         align-items: center
         display: flex
         .page-child
-          width: 26px
+          padding: 0 6.5px
           height: @width
           box-sizing: border-box
           border-radius: 3px
@@ -321,6 +321,7 @@
         cursor: pointer
         padding-right: 33px
         position: relative
+        margin: 0
         border-animate($color-text99, 3px)
         .page-tap
           position: absolute
@@ -428,7 +429,7 @@
         align-items: center
         margin-right: 10px
       .page-box
-        width: 85px
+        min-width: 85px
         height: 29px
         margin-right: 10px
 </style>
