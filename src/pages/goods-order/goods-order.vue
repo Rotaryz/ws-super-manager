@@ -173,10 +173,9 @@
     flex-direction: column
 
   .ac-tab
-    min-height: 88px
-    max-height: 88px
-    box-sizing: border-box
     padding: 0 1.5vw
+    font-family: $fontFamilyRegular
+    min-height: 88px
     display: flex
     align-items: center
     position: relative

@@ -68,11 +68,11 @@
   .date
     display: flex
     .date-item
-      line-height: 27px
+      line-height: 28px
       font-size: $font-size-small12
       color: $color-text-66
       width: 60px
-      height: 26px
+      height: 27px
       position: relative
       transition: all 0.3s ease-out
       border: 0.5px solid $color-textD9

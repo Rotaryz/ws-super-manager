@@ -54,7 +54,6 @@
       .input-box
         position: relative
         z-index: 10
-        box-sizing: border-box
         border: 0.5px solid $color-textD9
         width: 224px
         border-radius: 4px
@@ -63,14 +62,14 @@
         font-family: $fontFamilyRegular
         color: $color-text33
         text-indent: 8px
-        line-height: 26px
+        line-height: 28px
         transition: all 0.4s ease-out
       .after
         border-top: 0.5px solid transparent
         border-bottom: 0.5px solid transparent
         position: absolute
         z-index: 5
-        height: 28px
+        height: 29px
         width: 0
         right: 0
         top: -1px
@@ -83,7 +82,7 @@
         position: absolute
         z-index: 5
         height: 0
-        width: 225px
+        width: 225.5px
         bottom: 0
         left: -1px
         box-sizing: content-box
@@ -96,11 +95,11 @@
         .after
           border-color: $color-text99
           transition: all 0.4s ease-out
-          width: 225px
+          width: 225.5px
         .before
           border-color: $color-text99
           transition: all 0.4s ease-out
-          height: 28px
+          height: 29px
 
     .input-box::-webkit-input-placeholder { /* WebKit browsers */
       color: $color-ccc

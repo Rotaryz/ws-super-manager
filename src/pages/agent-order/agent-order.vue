@@ -149,7 +149,7 @@
       display: flex
       justify-content: space-between
       align-items: center
-      height: 88px
+      min-height: 88px
       .left
         display: flex
     .content-list
