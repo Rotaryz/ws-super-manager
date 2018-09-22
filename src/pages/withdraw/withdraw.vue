@@ -19,14 +19,15 @@
       </div>
       <div class="list">
         <div class="list-box" v-for="(item, index) in withdrawList" v-bind:key="index">
-          <div class="list-item list-text">{{item.withdraw_sn}}</div>
-          <div class="list-item list-text">{{item.created_at}}</div>
-          <div class="list-item list-text">{{item.mobile}}</div>
-          <div class="list-item list-text">{{item.remaining}}</div>
-          <div class="list-item list-text">{{item.blocked_remaining}}</div>
-          <div class="list-item list-text">{{item.money}}</div>
-          <div class="list-item list-text">{{item.user_name}}</div>
-          <div class="list-item list-text">{{item.bank}}</div>
+          <div class="list-item list-text">{{item.withdraw_sn || '---'}}</div>
+          <div class="list-item list-text">{{item.created_at || '---'}}</div>
+          <div class="list-item list-text">{{item.mobile || '---'}}</div>
+          <div class="list-item list-text">{{item.remaining + '' || '---'}}</div>
+          <div class="list-item list-text">{{item.blocked_remaining + '' || '---'}}</div>
+          <div class="list-item list-text">{{item.money + '' || '---'}}</div>
+          <div class="list-item list-text">{{item.user_name || '---'}}</div>
+          <div class="list-item list-text">{{item.submit_weixin_time || '---'}}</div>
+          <div class="list-item list-text">{{item.bank || '---'}}</div>
           <div class="list-item list-text" @mouseenter="showNumber(index)" @mouseleave="hideNumber">
             <div class="hidden">
               *****
@@ -85,7 +86,7 @@
   import {ERR_OK, BASE_URL, BEGIN_TIME} from 'common/js/config'
   import storage from 'storage-controller'
 
-  const TITLELIST = ['订单号', '提交时间', '账号', '可提现金额 ', '冻结金额', '提现金额', '真实姓名', '银行类型', '银行卡号', '提现状态', '操作']
+  const TITLELIST = ['订单号', '提交时间', '账号', '可提现金额 ', '冻结金额', '提现金额', '真实姓名', '微信提交时间', '银行类型', '银行卡号', '提现状态', '操作']
   export default {
     name: 'withdraw',
     data() {
