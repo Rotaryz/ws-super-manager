@@ -296,6 +296,7 @@
           ],
           yAxis: [
             {
+              minInterval: 1,
               splitLine: {
                 show: true,
                 lineStyle: {
@@ -415,6 +416,7 @@
           ],
           yAxis: [
             {
+              minInterval: 1,
               splitLine: {
                 show: true,
                 lineStyle: {
