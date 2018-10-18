@@ -112,12 +112,6 @@
     mounted() {
       this.$emit('setTab', false)
       let that = this
-      setTimeout(() => {
-        this.$refs.times.setDate(1)
-        this.$refs.times2.setDate(1)
-        this.$refs.times3.setDate(1)
-        this.$refs.times4.setDate(1)
-      }, 1000)
       window.onresize = () => {
         return (() => {
           if (that.$route.path === '/data-overview') {
@@ -189,6 +183,10 @@
       totalChart(type, time = 'yesterday', start = '', end = '') {
         let data = {stats_type: type, date_type: time, start_date: start, end_date: end}
         Data.totalChart(data).then(async res => {
+          this.$refs.times.setDate(1)
+          this.$refs.times2.setDate(1)
+          this.$refs.times3.setDate(1)
+          this.$refs.times4.setDate(1)
           if (res.error === ERR_OK) {
             // console.log(res.data)
             switch (type) {
@@ -257,7 +255,7 @@
       drawOpenShop(data, arr, between) {
         data = data || ['2:00', '4:00', '06:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '24:00']
         between = between || ['0:00 ~ 2:00', '2:00 ~ 4:00', '4:00 ~ 6:00', '6:00 ~ 8:00', '8:00 ~ 10:00', '10:00 ~ 12:00', '12:00 ~ 14:00', '14:00 ~ 16:00', '16:00 ~ 18:00', '18:00 ~ 20:00', '20:00 ~ 22:00', '22:00 ~ 24:00']
-        arr = arr || {no_invite_num: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], invite_num: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
+        arr = arr || {online_num: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], platform_num: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], agent_num: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], invite_code_num: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], experience_num: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
         let myChart = this.$echarts.init(document.getElementById('openShop'))
         myChart.setOption({
           tooltip: {
@@ -282,11 +280,7 @@
             itemWidth: 14,
             itemHeight: 14,
             borderRadius: 0,
-            bottom: 19,
-            data: [
-              {name: '开店未激活', icon: 'rect'},
-              {name: '已激活', icon: 'rect'}
-            ]
+            bottom: 19
           },
           grid: {
             left: '3%',
@@ -315,20 +309,44 @@
           ],
           series: [
             {
-              name: '开店未激活',
+              name: '线上开通',
               type: 'bar',
-              stack: '开店统计',
-              data: arr.no_invite_num,
+              stack: '1',
+              data: arr.online_num,
               barWidth: 16,
               color: '#2D4692'
             },
             {
-              name: '已激活',
+              name: '平台开通',
               type: 'bar',
-              stack: '开店统计',
+              stack: '1',
               color: '#6ED1F5',
               barWidth: 16,
-              data: arr.invite_num
+              data: arr.platform_num
+            },
+            {
+              name: '代理开通',
+              type: 'bar',
+              stack: '1',
+              color: '#C74855',
+              barWidth: 16,
+              data: arr.agent_num
+            },
+            {
+              name: '激活码开通',
+              type: 'bar',
+              stack: '1',
+              color: '#FB703F',
+              barWidth: 16,
+              data: arr.invite_code_num
+            },
+            {
+              name: '体验版',
+              type: 'bar',
+              stack: '1',
+              color: '#FFD15B',
+              barWidth: 16,
+              data: arr.experience_num
             }
           ]
         })
@@ -381,11 +399,7 @@
             itemWidth: 14,
             itemHeight: 14,
             borderRadius: 0,
-            bottom: 19,
-            data: [
-              {name: '潜在用户', icon: 'rect'},
-              {name: '消费用户', icon: 'rect'}
-            ]
+            bottom: 19
           },
           grid: {
             left: '3%',

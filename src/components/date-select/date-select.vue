@@ -3,13 +3,15 @@
     <li class="date-item hand" :class="{'date-item-active': tabIndex === index}" v-for="(item, index) in arrTitle" :key="index" @click="checkTab(index)">
       {{item.title}}
       <transition name="fade">
-        <div class="block" v-if="item.status === 'set'" v-show="tabIndex === 5">
+        <div class="block" v-if="item.status === 'set'" v-show="tabIndex === tabActive">
           <el-date-picker
             v-model="moreTime"
             type="daterange"
             range-separator="至"
             start-placeholder="开始日期"
-            end-placeholder="结束日期">
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions"
+          >
           </el-date-picker>
         </div>
       </transition>
@@ -25,16 +27,34 @@
       arrTitle: {
         type: Array,
         default: () => NAV
+      },
+      tabActive: {
+        type: Number,
+        default: 5
       }
     },
     data() {
       return {
         tabIndex: 0,
         showPicker: true,
-        moreTime: ''
+        moreTime: '',
+        pickerOptions: {
+          disabledDate(time) {
+            return time.getTime() > Date.now()
+          }
+        }
       }
     },
     methods: {
+      setDate(times = 0) {
+        this.pickerOptions = {
+          disabledDate(time) {
+            let day1 = new Date()
+            day1.setDate(day1.getDate() - times)
+            return time.getTime() > day1
+          }
+        }
+      },
       setIndex(index) {
         this.tabIndex = index
       },

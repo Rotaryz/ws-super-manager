@@ -16,7 +16,7 @@ export default {
    * @returns {*}
    */
   totalMode(data) {
-    let url = '/api/admin/total-mode'
+    let url = '/api/admin/real-stats'
     return request.get(url, data)
   },
   /**
@@ -24,12 +24,8 @@ export default {
    * @param data
    * @returns {*}
    */
-  totalChart(type = 1, date_type = 1) {
-    let data = {
-      type,
-      date_type
-    }
-    let url = '/api/admin/total-chart'
+  totalChart(data) {
+    let url = '/api/admin/history-stats'
     return request.get(url, data)
   }
 }
