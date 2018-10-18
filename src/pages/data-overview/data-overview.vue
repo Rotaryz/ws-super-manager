@@ -26,7 +26,7 @@
       <div class="data-center-item">
         <div class="data-center-item-top">
           <p class="data-center-name">客户统计</p>
-          <DateSelect ref="times" :arrTitle="navList" :tabActive="3" @checkTime="_custmerDate"></DateSelect>
+          <DateSelect ref="times" :arrTitle="navList" :tabActive="3" @checkTime="_custmerDate" :tabIndex="2"></DateSelect>
         </div>
         <div class="customer-box">
           <div id="customer"></div>
@@ -35,7 +35,7 @@
       <div class="data-center-item">
         <div class="data-center-item-top">
           <p class="data-center-name">开店统计</p>
-          <DateSelect ref="times2" :arrTitle="navList" :tabActive="3" @checkTime="_openDate"></DateSelect>
+          <DateSelect ref="times2" :arrTitle="navList" :tabActive="3" @checkTime="_openDate" :tabIndex="2"></DateSelect>
         </div>
         <div class="customer-box">
           <div id="openShop"></div>
@@ -47,7 +47,7 @@
       <div class="data-center-item">
         <div class="data-center-item-top">
           <p class="data-center-name">订单统计</p>
-          <DateSelect ref="times3" :arrTitle="navList" :tabActive="3" @checkTime="_orderDate"></DateSelect>
+          <DateSelect ref="times3" :arrTitle="navList" :tabActive="3" @checkTime="_orderDate" :tabIndex="2"></DateSelect>
         </div>
         <div class="customer-box">
           <div id="echartLine"></div>
@@ -56,7 +56,7 @@
       <div class="data-center-item">
         <div class="data-center-item-top">
           <p class="data-center-name">交易金额统计</p>
-          <DateSelect ref="times4" :arrTitle="navList" :tabActive="3" @checkTime="_moneyDate"></DateSelect>
+          <DateSelect ref="times4" :arrTitle="navList" :tabActive="3" @checkTime="_moneyDate" :tabIndex="2"></DateSelect>
         </div>
         <div class="customer-box">
           <div id="myLine"></div>
@@ -180,7 +180,7 @@
           }
         })
       },
-      totalChart(type, time = 'yesterday', start = '', end = '') {
+      totalChart(type, time = 'month', start = '', end = '') {
         let data = {stats_type: type, date_type: time, start_date: start, end_date: end}
         Data.totalChart(data).then(async res => {
           this.$refs.times.setDate(1)
