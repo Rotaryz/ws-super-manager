@@ -187,6 +187,10 @@
           this.$refs.times2.setDate(1)
           this.$refs.times3.setDate(1)
           this.$refs.times4.setDate(1)
+          this.$refs.times.setIndex(2)
+          this.$refs.times2.setIndex(2)
+          this.$refs.times3.setIndex(2)
+          this.$refs.times4.setIndex(2)
           if (res.error === ERR_OK) {
             // console.log(res.data)
             switch (type) {
