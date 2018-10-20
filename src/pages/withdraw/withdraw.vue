@@ -36,7 +36,7 @@
               </transition>
             </div>
           </div>
-          <div class="list-item list-text" @mouseenter="showText(index)" @mouseleave="hideText">
+          <div class="list-item list-text hand" @mouseenter="showText(index)" @mouseleave="hideText">
             <div class="text" v-if="item.status * 1 === 0">待审核</div>
             <div class="text" v-if="item.status * 1 === 1">微信受理成功</div>
             <div class="text" v-if="item.status * 1 === 2">审核不通过</div>
@@ -45,7 +45,7 @@
             <div class="text" v-if="item.status * 1 === 5">微信受理失败</div>
             <div class="icon" v-if="item.status * 1 === 2 || item.status * 1 === 5 || item.status * 1 === 4">
               <transition name="fade">
-                <div class="hidden-number" v-show="text  && textIndex * 1 === index" @mouseenter="showText(index)">{{item.note || '未查到原因'}}</div>
+                <div class="hidden-number" v-show="text  && textIndex * 1 === index">{{item.note || '未查到原因'}}</div>
               </transition>
             </div>
           </div>
@@ -360,6 +360,8 @@
     position: relative
     text-align: left
     overflow: hidden
+    display: flex
+    align-items: center
     .sort
       display: flex
       flex-direction: column
@@ -405,51 +407,54 @@
     &:nth-child(9)
       overflow: visible !important
       white-space: normal !important
-    &:nth-child(10)
+    &:nth-child(10), &:nth-child(11)
       flex: 1.1
       overflow: visible !important
       white-space: normal !important
       layout(row)
       align-items: center
-      .icon
-        width: 14px
-        height: 14px
-        position: relative
-        background-size: 14px
-        bg-image(icon-reason)
-        margin-left: 4px
-        .hidden-number
+    .icon
+      width: 14px
+      height: 14px
+      position: relative
+      background-size: 14px
+      bg-image(icon-reason)
+      margin-left: 4px
+      .hidden-number
+        position: absolute
+        font-size: $font-size-medium14
+        color: $color-text33
+        font-family: $fontFamilyRegular
+        min-width: 182px
+        padding: 0 5px
+        background: #fff
+        min-height: 26px
+        line-height: 26px
+        text-align: center
+        border-radius: 3px
+        word-break: break-all
+        bottom: 20px
+        left: -77px
+        z-index: 11
+        margin: auto
+        box-shadow: 0 1px 4px 0 rgba(12, 6, 14, 0.20)
+        &:after
+          content: ''
           position: absolute
-          font-size: $font-size-medium14
-          color: $color-text33
-          font-family: $fontFamilyRegular
-          min-width: 182px
-          background: #fff
-          padding: 10px
-          word-break: break-all
-          border-radius: 3px
-          bottom: 22px
-          left: -95px
-          z-index: 11
-          text-align: center
-          box-shadow: 0 1px 4px 0 rgba(12, 6, 14, 0.20)
-          &:after
-            content: ''
-            position: absolute
-            height: 0
-            left: 0
-            right: 0
-            margin: auto
-            width: 0
-            bottom: -6px
-            border: 3px solid #fff
-            border-bottom: 3px solid transparent
-            border-left: 3px solid transparent
-            border-right: 3px solid transparent
-          &.fade-enter, &.fade-leave-to
-            opacity: 0
-          &.fade-enter-to, &.fade-leave-to
-            transition: all .4s ease-in-out
+          height: 0
+          left: 0
+          right: 23px
+          margin: auto
+          width: 0
+          bottom: -6px
+          border: 3px solid #fff
+          border-bottom: 3px solid transparent
+          border-left: 3px solid transparent
+          border-right: 3px solid transparent
+        &.fade-enter, &.fade-leave-to
+          opacity: 0
+        &.fade-enter-to, &.fade-leave-to
+          transition: all .4s ease-in-out
 
   .list-box-active
     background: $color-background

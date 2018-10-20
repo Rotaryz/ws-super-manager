@@ -31,11 +31,11 @@
       tabActive: {
         type: Number,
         default: 5
-      },
-      tabIndex: {
-        type: Number,
-        default: 0
       }
+      // tabIndex: {
+      //   type: Number,
+      //   default: 0
+      // }
     },
     data() {
       return {
@@ -45,7 +45,8 @@
           disabledDate(time) {
             return time.getTime() > Date.now()
           }
-        }
+        },
+        tabIndex: 0
       }
     },
     methods: {
