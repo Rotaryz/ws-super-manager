@@ -26,7 +26,7 @@
       <div class="data-center-item">
         <div class="data-center-item-top">
           <p class="data-center-name">客户统计</p>
-          <DateSelect ref="times" :arrTitle="navList" :tabActive="3" @checkTime="_custmerDate" :tabIndex="2"></DateSelect>
+          <DateSelect ref="times" :arrTitle="navList" :tabActive="3" @checkTime="_custmerDate"></DateSelect>
         </div>
         <div class="customer-box">
           <div id="customer"></div>
@@ -35,7 +35,7 @@
       <div class="data-center-item">
         <div class="data-center-item-top">
           <p class="data-center-name">开店统计</p>
-          <DateSelect ref="times2" :arrTitle="navList" :tabActive="3" @checkTime="_openDate" :tabIndex="2"></DateSelect>
+          <DateSelect ref="times2" :arrTitle="navList" :tabActive="3" @checkTime="_openDate"></DateSelect>
         </div>
         <div class="customer-box">
           <div id="openShop"></div>
@@ -47,7 +47,7 @@
       <div class="data-center-item">
         <div class="data-center-item-top">
           <p class="data-center-name">订单统计</p>
-          <DateSelect ref="times3" :arrTitle="navList" :tabActive="3" @checkTime="_orderDate" :tabIndex="2"></DateSelect>
+          <DateSelect ref="times3" :arrTitle="navList" :tabActive="3" @checkTime="_orderDate"></DateSelect>
         </div>
         <div class="customer-box">
           <div id="echartLine"></div>
@@ -56,7 +56,7 @@
       <div class="data-center-item">
         <div class="data-center-item-top">
           <p class="data-center-name">交易金额统计</p>
-          <DateSelect ref="times4" :arrTitle="navList" :tabActive="3" @checkTime="_moneyDate" :tabIndex="2"></DateSelect>
+          <DateSelect ref="times4" :arrTitle="navList" :tabActive="3" @checkTime="_moneyDate"></DateSelect>
         </div>
         <div class="customer-box">
           <div id="myLine"></div>
@@ -108,6 +108,12 @@
       this.totalChart(3)
       this.totalChart(4)
       this.$emit('setNull', false)
+      setTimeout(() => {
+        this.$refs.times.setIndex(2)
+        this.$refs.times2.setIndex(2)
+        this.$refs.times3.setIndex(2)
+        this.$refs.times4.setIndex(2)
+      }, 500)
     },
     mounted() {
       this.$emit('setTab', false)
@@ -115,11 +121,6 @@
       window.onresize = () => {
         return (() => {
           if (that.$route.path === '/data-overview') {
-            // this.getTotalMode()
-            // this.totalChart(1)
-            // this.totalChart(2)
-            // this.totalChart(3)
-            // this.totalChart(4)
           }
         })()
       }
@@ -187,10 +188,6 @@
           this.$refs.times2.setDate(1)
           this.$refs.times3.setDate(1)
           this.$refs.times4.setDate(1)
-          this.$refs.times.setIndex(2)
-          this.$refs.times2.setIndex(2)
-          this.$refs.times3.setIndex(2)
-          this.$refs.times4.setIndex(2)
           if (res.error === ERR_OK) {
             // console.log(res.data)
             switch (type) {
