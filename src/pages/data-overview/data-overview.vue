@@ -113,7 +113,7 @@
         this.$refs.times2.setIndex(2)
         this.$refs.times3.setIndex(2)
         this.$refs.times4.setIndex(2)
-      }, 500)
+      }, 100)
     },
     mounted() {
       this.$emit('setTab', false)
